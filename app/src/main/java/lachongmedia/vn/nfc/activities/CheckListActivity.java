@@ -47,6 +47,7 @@ public class CheckListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
         ButterKnife.bind(this);
+        getSupportActionBar().hide();
         adapter = new CheckListAdapter();
         rvCheckList.setAdapter(adapter);
         rvCheckList.setLayoutManager(new LinearLayoutManager(this));

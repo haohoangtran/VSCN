@@ -107,7 +107,7 @@ public class TutorialActivity extends AppCompatActivity {
                 if (current < layouts.length) {
                     viewPager.setCurrentItem(current);
                 } else {
-                    startActivity(new Intent(TutorialActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    startActivity(new Intent(TutorialActivity.this, CheckListActivity.class));
                     TutorialActivity.this.finish();
                 }
             }

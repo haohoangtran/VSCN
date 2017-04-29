@@ -3,6 +3,7 @@ package lachongmedia.vn.nfc.adapters.viewholders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -28,6 +29,26 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     public CheckListViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this,itemView);
+        cbBad.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cbGood.setChecked(false);
+                } else {
+                    cbGood.setChecked(true);
+                }
+            }
+        });
+        cbGood.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    cbBad.setChecked(false);
+                } else {
+                    cbBad.setChecked(true);
+                }
+            }
+        });
     }
     public void bind(CheckMember checkMember){
         tvNameCv.setText("Tên: "+checkMember.getHangMuc());

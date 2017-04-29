@@ -28,6 +28,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder>{
     public void onBindViewHolder(CheckListViewHolder holder, int position) {
         CheckMember checkMember=DbContext.instance.getCheckMembers().get(position);
         holder.bind(checkMember);
+
     }
 
     @Override

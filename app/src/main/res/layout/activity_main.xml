@@ -22,6 +22,16 @@
         android:background="@drawable/warning"
         android:id="@+id/gifImageView" />
 
+    <TextView
+        android:id="@+id/tv_name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 
 

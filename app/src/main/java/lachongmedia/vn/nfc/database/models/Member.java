@@ -16,6 +16,14 @@ public class Member {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Member{" +
+                "UID='" + UID + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public Member(String UID, String name) {
 
         this.UID = UID;

@@ -74,10 +74,11 @@ public class LoginActivity extends AppCompatActivity {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
             if (DbContext.instance.findMemberWithId(id) != null) {
+                SharedPref.instance.putIDMember(id);
                 Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(this, MainActivity.class);
                 startActivity(intent1);
-                SharedPref.instance.putIDMember(id);
+
                 finish();
             } else {
                 Toast.makeText(this, "Bạn chưa được đăng ký!", Toast.LENGTH_SHORT).show();

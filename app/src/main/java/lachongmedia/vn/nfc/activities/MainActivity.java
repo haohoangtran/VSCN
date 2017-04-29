@@ -16,8 +16,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
+    @BindView(R.id.tv_name)
+    TextView tvName;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -45,7 +50,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         getSupportActionBar().hide();
+        String id = SharedPref.instance.getIDMember();
+        Member m = DbContext.instance.findMemberWithId(id);
+        Log.e(TAG, String.format("onCreate: %s", m.toString()));
+        if (m != null) {
+            tvName.setText("Tên nhân viên: " + m.getName());
+        }
     }
 
     @Override

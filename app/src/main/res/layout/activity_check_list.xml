@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/margin_16"
+    android:paddingBottom="@dimen/margin_16"
+    android:paddingEnd="@dimen/margin_16"
+    android:paddingStart="@dimen/margin_16"
     tools:context="lachongmedia.vn.nfc.activities.CheckListActivity">
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/rv_check_list"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-   </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/bt_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/share_button"
+        android:padding="@dimen/margin_8"
+        android:text="Báo cáo sự cố" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_check_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/bt_report"></android.support.v7.widget.RecyclerView>
+
 </RelativeLayout>
