@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAccent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/intro1_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginTop="@dimen/margin_16"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/nvs6" />
+
+        <TextView
+            android:id="@+id/intro1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/intro1_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/margin_8"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="Bước 5:\nVệ sinh bồn bệt và bồn tiểu .dùng bàn chải cọ toilet cọ toàn bộ phía trong bồn .xả nước ,dùng khăn ẩm lau toàn bộ phía ngoài và nắp bồn .lau lại bằng khăn  khô .  Đổ rác ,vệ sinh thùng rác ,thay túi rác cho thùng rác "
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/intro1_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/intro1_title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/margin_8"
+            android:layout_marginTop="16dp"
+            android:text="Yêu cầu:\nBồn bệt ,bồn tiểu phải sạch bền mặt và phía ngoài phải khô ,thùng rác phải được đổ rác và thay túi "
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/intro1_waves"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:src="@drawable/waves_image" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
