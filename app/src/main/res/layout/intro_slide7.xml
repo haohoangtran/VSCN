@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
 
         <ImageView
@@ -32,22 +32,24 @@
             android:layout_below="@id/intro1_logo"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
+            android:text="Kiểm tra giây vệ sinh và xà phòng rửa
+tay .thay giây cho những hộp hết giấy ,đổ thêm
+xã phòng rửa tay vào bình nếu hết ."
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="Bước 4 :\nvệ sinh gương (kính) xịt một lượng hóa chất rửa kính vào gương ,dùng bông chà kính chà đều lên mặt gương ,dùng tay gạt kính gạt từ trên xuống dưới .lau khô các mép gương ,bồn rửa mặt vòi inox bằng khăn khô ."
-            android:textStyle="bold" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/intro1_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/intro1_title"
+            android:layout_below="@+id/intro1_title"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/margin_8"
-            android:layout_marginTop="16dp"
+            android:layout_marginLeft="@dimen/margin_8"
+            android:layout_marginRight="@dimen/margin_8"
+            android:layout_marginTop="14dp"
             android:text="Yêu cầu:\nPhải chắc chắn giấy vệ sinh và xà phòng rửa tay còn  "
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="20dp" />
 
         <ImageView
             android:id="@+id/intro1_waves"

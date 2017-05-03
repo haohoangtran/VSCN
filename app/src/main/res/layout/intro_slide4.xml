@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
 
         <ImageView
@@ -33,9 +33,8 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="Bước 3:\nvệ sinh bồn rửa mặt . xịt một lượng hóa chất sumo vừa đủ vào khăn ẩm .lau  toàn bộ vòi inox ,xịt hóa chất sumo viếng cọ ,cọ toàn bồn rửa mặt .xả nước cho sạch hóa chất, lau phía ngoài bình xà phòng ,máy sấy tay bằng khăn ẩm   "
-            android:textStyle="bold" />
+            android:textSize="23sp"
+            android:text="Vệ sinh bồn rửa mặt . xịt một lượng hóa chất sumo vừa đủ vào khăn ẩm .lau  toàn bộ vòi inox ,xịt hóa chất sumo viếng cọ ,cọ toàn bồn rửa mặt .xả nước cho sạch hóa chất, lau phía ngoài bình xà phòng ,máy sấy tay bằng khăn ẩm   " />
 
         <TextView
             android:id="@+id/intro1_content"
@@ -47,7 +46,7 @@
             android:layout_marginTop="16dp"
             android:text="Yêu cầu:\nVòi inox ,bồn rửa mặt được làm sạch không còn vết bẩn "
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="19sp" />
 
         <ImageView
             android:id="@+id/intro1_waves"

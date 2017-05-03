@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
 
         <ImageView
@@ -33,9 +33,8 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="Bước 6 :\nKiểm tra giây vệ sinh và xà phòng rửa tay .thay giây cho những hộp hết giấy ,đổ thêm xã phòng rửa tay vào bình  nếu hết ."
-            android:textStyle="bold" />
+            android:textSize="24sp"
+            android:text="Kiểm tra giây vệ sinh và xà phòng rửa tay .thay giây cho những hộp hết giấy ,đổ thêm xã phòng rửa tay vào bình  nếu hết ." />
 
         <TextView
             android:id="@+id/intro1_content"
@@ -44,10 +43,9 @@
             android:layout_below="@id/intro1_title"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
-            android:layout_marginTop="16dp"
             android:text="Yêu cầu:\nGương , vòi inox sáng ,bóng và  không còn cặn nước ,bồn rửa mặt phải khô  "
             android:textColor="@color/white"
-            android:textSize="15dp" />
+            android:textSize="24sp" />
 
         <ImageView
             android:id="@+id/intro1_waves"
