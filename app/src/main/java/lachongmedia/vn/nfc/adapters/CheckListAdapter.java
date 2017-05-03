@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.viewholders.CheckListViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.models.CheckMember;
+import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 
 /**
  * Created by hao on 29/04/2017.
@@ -26,9 +29,8 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder>{
 
     @Override
     public void onBindViewHolder(CheckListViewHolder holder, int position) {
-        CheckMember checkMember=DbContext.instance.getCheckMembers().get(position);
+        final CheckMember checkMember=DbContext.instance.getCheckMembers().get(position);
         holder.bind(checkMember);
-
     }
 
     @Override

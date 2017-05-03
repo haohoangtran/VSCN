@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 3:\nvệ sinh bồn rửa mặt . xịt một lượng hóa chất sumo vừa đủ vào khăn ẩm .lau  toàn bộ vòi inox ,xịt hóa chất sumo viếng cọ ,cọ toàn bồn rửa mặt .xả nước cho sạch hóa chất, lau phía ngoài bình xà phòng ,máy sấy tay bằng khăn ẩm   "
             android:textStyle="bold" />
 

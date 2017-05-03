@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 5:\nVệ sinh bồn bệt và bồn tiểu .dùng bàn chải cọ toilet cọ toàn bộ phía trong bồn .xả nước ,dùng khăn ẩm lau toàn bộ phía ngoài và nắp bồn .lau lại bằng khăn  khô .  Đổ rác ,vệ sinh thùng rác ,thay túi rác cho thùng rác "
             android:textStyle="bold" />
 

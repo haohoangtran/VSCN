@@ -22,6 +22,7 @@ public class SharedPref {
     public static void setInstance(Context context) {
         SharedPref.instance = new SharedPref(context);
     }
+
     public void putIDMember(String id){
         sharedPreferences.edit().putString(ID_USER,id).commit();
     }

@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 1:\nGõ cửa 3 lần nói nhân viên vệ sinh ,treo biển cảnh báo, bấm chip giờ  vào .mở cửa vào làm vệ sinh "
             android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
             android:layout_below="@id/intro1_title"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="17dp"
             android:text="Yêu cầu:\nPhải chắc chắn được gõ cửa ,treo biển và bấm chíp  ."
             android:textColor="@color/white"
             android:textSize="15dp" />

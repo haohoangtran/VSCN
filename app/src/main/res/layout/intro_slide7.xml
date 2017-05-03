@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 4 :\nvệ sinh gương (kính) xịt một lượng hóa chất rửa kính vào gương ,dùng bông chà kính chà đều lên mặt gương ,dùng tay gạt kính gạt từ trên xuống dưới .lau khô các mép gương ,bồn rửa mặt vòi inox bằng khăn khô ."
             android:textStyle="bold" />
 

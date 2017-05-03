@@ -10,30 +10,78 @@
         android:id="@+id/iv_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/tang2"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        app:srcCompat="@drawable/tang2" />
 
     <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="143dp"
         android:layout_marginTop="134dp"
-        android:background="@drawable/warning"
-        android:id="@+id/gifImageView" />
+        android:background="@drawable/warning" />
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_16"
+    <LinearLayout
+        android:id="@+id/ll_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            app:srcCompat="@drawable/ic_person_black_24dp" />
 
+        <TextView
+            android:layout_marginTop="@dimen/margin_4"
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:text="Tên"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_time"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_name">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginStart="@dimen/margin_8"
+            app:srcCompat="@drawable/ic_access_time_black_24dp" />
+        <TextView
+            android:id="@+id/tv_time_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian bắt đầu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_time">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginStart="@dimen/margin_8"
+            app:srcCompat="@drawable/ic_timer_black_24dp" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Thời gian làm việc:" />
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -17,11 +17,27 @@
         android:background="@drawable/share_button"
         android:padding="@dimen/margin_8"
         android:text="Báo cáo sự cố" />
+    <RelativeLayout
+        android:id="@+id/rl_rv"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/bt_back_tut"
+            android:layout_width="wrap_content"
+            android:text="Quay lại đọc hướng dẫn"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_above="@id/rl_rv"
         android:id="@+id/rv_check_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/bt_report"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@id/bt_report">
+
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package lachongmedia.vn.nfc.database;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -16,13 +17,41 @@ public class DbContext {
     private List<Member> members;
     private List<WC> wcList;
     private List<CheckMember> checkMembers;
+    private Date dateStart;
+    private Date dateStop;
+    private int posTut;
+
+    public int getPosTut() {
+        return posTut;
+    }
+
+    public void setPosTut(int posTut) {
+        this.posTut = posTut;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public void setDateStop(Date dateStop) {
+        this.dateStop = dateStop;
+    }
 
     private DbContext() {
         members = new Vector<>();
         wcList = new Vector<>();
         checkMembers=new Vector<>();
         addDumData();
+        posTut=0;
         addCheckMembers();
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public Date getDateStop() {
+        return dateStop;
     }
 
     public List<Member> getMembers() {

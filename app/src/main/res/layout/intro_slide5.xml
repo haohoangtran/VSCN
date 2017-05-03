@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 6 :\nKiểm tra giây vệ sinh và xà phòng rửa tay .thay giây cho những hộp hết giấy ,đổ thêm xã phòng rửa tay vào bình  nếu hết ."
             android:textStyle="bold" />
 

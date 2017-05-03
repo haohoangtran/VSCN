@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 2:\nxả nước bồn bệt , xịt hóa chất Gift với lượng vừa phải vào bồn bệt .ngâm hóa chất khoảng 2 phút .tương tự như vậy với bồn tiểu đứng ."
             android:textStyle="bold" />
 

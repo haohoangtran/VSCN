@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
             android:textColor="@color/white"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:text="Bước 7 :\nVệ sinh sàn .cho nước ấm và hóa chất lau làn vào xe lau sàn .giặt cây lau sàn vào xe lau, vắt kiệt nước và tiến hành lau sàn từ trong ra ngoài .thu đồ .bấm chip giờ ra  ,kết thúc công việc ."
             android:textStyle="bold" />
 

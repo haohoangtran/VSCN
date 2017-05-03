@@ -19,6 +19,10 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
@@ -42,22 +46,41 @@ public class MainActivity extends AppCompatActivity {
     };
     @BindView(R.id.tv_name)
     TextView tvName;
+    @BindView(R.id.tv_time_start)
+    TextView tvTimeStart;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
+    Date date;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
         String id = SharedPref.instance.getIDMember();
         Member m = DbContext.instance.findMemberWithId(id);
-        Log.e(TAG, String.format("onCreate: %s", m.toString()));
+        date = DbContext.instance.getDateStart();
         if (m != null) {
+            tvTimeStart.setText("Thời gian bắt đầu: " + Utils.getTime(date));
+            Log.e(TAG, String.format("onCreate: %s", m.toString()));
             tvName.setText("Tên nhân viên: " + m.getName());
         }
+        updateDisplay();
+    }
+
+    private void updateDisplay() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                tvTime.setText("Thời gian làm việc: " + Utils.getTime(date,new Date())+" phút");
+            }
+
+        }, 0, 60000);//Update text every second
     }
 
     @Override
@@ -88,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-            WC wc=DbContext.instance.findWCWithId(id);
+            WC wc = DbContext.instance.findWCWithId(id);
             if (wc != null) {
-                Toast.makeText(this, "Đang kiểm tra "+wc.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Đang kiểm tra " + wc.getName(), Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(this, TutorialActivity.class);
                 startActivity(intent1);
                 SharedPref.instance.putCheckID(id);
@@ -100,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
 
     private void setNameTextView() {

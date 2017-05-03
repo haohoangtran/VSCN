@@ -71,7 +71,9 @@ public class TutorialActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
         btNext.setTypeface(typeface);
         btSkip.setTypeface(typeface);
-        tvStep.setText("Bước 1/8");
+
+
+        tvStep.setText("Bước: "+(DbContext.instance.getPosTut()+1)+"/8");
 
         layouts = new int[]{
                 R.layout.intro_slide1,
@@ -91,11 +93,14 @@ public class TutorialActivity extends AppCompatActivity {
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+        viewPager.setCurrentItem(DbContext.instance.getPosTut());
 
+        Log.e("abas", String.format("onCreate: %s %s", viewPager.getCurrentItem(),DbContext.instance.getPosTut()) );
         btSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(TutorialActivity.this,CheckListActivity.class);
+                DbContext.instance.setPosTut(viewPager.getCurrentItem());
                 startActivity(intent);
             }
         });
@@ -103,7 +108,7 @@ public class TutorialActivity extends AppCompatActivity {
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int current = getItem(+1);
+                int current = getItem(1);
                 if (current < layouts.length) {
                     viewPager.setCurrentItem(current);
                 } else {
@@ -135,6 +140,7 @@ public class TutorialActivity extends AppCompatActivity {
     }
 
     private int getItem(int i) {
+        DbContext.instance.setPosTut(viewPager.getCurrentItem() + i);
         return viewPager.getCurrentItem() + i;
     }
 
@@ -147,6 +153,7 @@ public class TutorialActivity extends AppCompatActivity {
             addBottomDot(position);
 
             tvStep.setText("Bước "+(position+1)+"/"+dots.length);
+            DbContext.instance.setPosTut(position);
             if (position == layouts.length - 1) {
                 btNext.setText("Đã hiểu");
                 btSkip.setVisibility(View.GONE);
@@ -179,6 +186,11 @@ public class TutorialActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     public class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
@@ -196,7 +208,6 @@ public class TutorialActivity extends AppCompatActivity {
             Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
             tv1.setTypeface(typeface1);
             tv2.setTypeface(typeface2);
-
             container.addView(view);
             return view;
         }
