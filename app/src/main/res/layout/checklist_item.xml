@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="7dp"
-    android:layout_marginTop="@dimen/margin_8"
-    android:layout_marginStart="@dimen/margin_8"
     android:layout_marginBottom="@dimen/margin_8"
-    >
+    android:layout_marginStart="@dimen/margin_8"
+    android:layout_marginTop="@dimen/margin_8"
+    android:elevation="7dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -25,7 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_8"
             android:layout_toEndOf="@id/v_tt"
-            android:text="Giay ve sinh" />
+            android:text="Giay ve sinh"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_pp"
@@ -41,6 +42,7 @@
             android:layout_below="@id/tv_name"
             android:layout_marginBottom="@dimen/margin_8"
             android:layout_toEndOf="@id/iv_pp"
+            android:alpha="0.5"
             android:text="Phuong phap:mat thuong bang tay" />
 
         <ImageView
@@ -53,36 +55,53 @@
         <TextView
             android:id="@+id/tv_requitement"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pp"
             android:layout_marginBottom="@dimen/margin_8"
             android:layout_toEndOf="@id/v_rq"
+            android:alpha="0.5"
             android:text="Yeu cau: Đầy đủ giấy ở các ngăn, lắp đúng chiều, dễ lấy	" />
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/iv_happy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:padding="@dimen/margin_8"
+            app:srcCompat="@drawable/ic_unhappy" />
+
+        <ImageView
+            android:id="@+id/iv_unhapy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
-            android:layout_alignParentEnd="true">
+            android:layout_toStartOf="@id/iv_happy"
+            android:padding="@dimen/margin_8"
+            app:srcCompat="@drawable/ic_smiling" />
 
-            <CheckBox
-                android:id="@+id/cb_good"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:scaleX="1.7"
-                android:scaleY="1.7" />
+        <CheckBox
+            android:id="@+id/cb_good"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:clickable="false"
+            android:visibility="gone" />
 
-            <CheckBox
-                android:id="@+id/cb_bad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/checkboxbad"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:scaleX="1.7"
-                android:scaleY="1.7" />
-        </LinearLayout>
+        <CheckBox
+            android:id="@+id/cb_bad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:clickable="false"
+            android:button="@drawable/ic_clear_black_24dp"
+            android:scaleX="1.7"
+            android:scaleY="1.7" />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

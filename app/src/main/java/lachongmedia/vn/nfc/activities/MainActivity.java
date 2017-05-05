@@ -14,10 +14,16 @@ import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
 import java.util.Timer;
@@ -31,6 +37,7 @@ import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.models.Member;
 import lachongmedia.vn.nfc.database.models.WC;
+import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
     private final String[][] techList = new String[][]{
@@ -44,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
+    @BindView(R.id.bt_main)
+    AppCompatButton btMain;
+    @BindView(R.id.bt_action)
+    AppCompatButton btAction;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_time_start)
@@ -51,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_time)
     TextView tvTime;
     Date date;
+    private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.2F);
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -60,15 +72,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+        updateDisplay();
+        addListener();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         String id = SharedPref.instance.getIDMember();
         Member m = DbContext.instance.findMemberWithId(id);
         date = DbContext.instance.getDateStart();
+        Log.e(TAG, String.format("onStart: %s", m == null));
         if (m != null) {
             tvTimeStart.setText("Thời gian bắt đầu: " + Utils.getTime(date));
             Log.e(TAG, String.format("onCreate: %s", m.toString()));
             tvName.setText("Tên nhân viên: " + m.getName());
+            tvTime.setText("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút");
         }
-        updateDisplay();
+    }
+
+    private void addListener() {
+        btAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btAction.startAnimation(buttonClick);
+                Intent intent = new Intent(MainActivity.this, ActionActivity.class);
+                startActivity(intent);
+            }
+        });
+        btMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btMain.startAnimation(buttonClick);
+            }
+        });
     }
 
     private void updateDisplay() {
@@ -77,10 +115,21 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                tvTime.setText("Thời gian làm việc: " + Utils.getTime(date,new Date())+" phút");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // do UI updates here
+                        onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút"));
+                    }
+                });
+
             }
 
         }, 0, 60000);//Update text every second
+    }
+
+    public void onTimeChange(TimeChangeEvent event) {
+        tvTime.setText(event.getTime());
     }
 
     @Override

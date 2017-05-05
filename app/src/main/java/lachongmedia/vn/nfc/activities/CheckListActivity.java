@@ -34,6 +34,7 @@ import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.CheckListAdapter;
+import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 
 public class CheckListActivity extends AppCompatActivity {
@@ -134,9 +135,9 @@ public class CheckListActivity extends AppCompatActivity {
                 if (id.equals(SharedPref.instance.getCheckId())) {
                     Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(this, MainActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    DbContext.instance.setPosTut(0);
                     startActivity(intent1);
-                    SharedPref.instance.putIDMember(id);
-                    finish();
                 } else {
                     Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
                 }

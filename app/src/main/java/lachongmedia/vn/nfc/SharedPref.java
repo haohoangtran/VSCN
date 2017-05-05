@@ -23,6 +23,10 @@ public class SharedPref {
         SharedPref.instance = new SharedPref(context);
     }
 
+    public void logout() {
+        sharedPreferences.edit().clear().commit();
+    }
+
     public void putIDMember(String id){
         sharedPreferences.edit().putString(ID_USER,id).commit();
     }

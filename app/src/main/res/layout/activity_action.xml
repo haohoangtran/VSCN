@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="lachongmedia.vn.nfc.activities.ActionActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_main"
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:gravity="clip_horizontal"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_main"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bản đồ"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/shape_button"
+            android:textAllCaps="false" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:background="@drawable/shape_button"
+            android:id="@+id/bt_action"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/bt_main"
+            android:text="Tác vụ"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_issue"
+            android:textSize="18sp"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_width="wrap_content"
+            android:text="Báo cáo sự cố"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_kehoach"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_below="@id/bt_issue"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:text="     Kế hoạch    "
+            android:textAllCaps="false"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/bt_logout"
+            android:layout_below="@id/bt_kehoach"
+            android:textSize="18sp"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    Đăng xuất    "
+            android:textAllCaps="false" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

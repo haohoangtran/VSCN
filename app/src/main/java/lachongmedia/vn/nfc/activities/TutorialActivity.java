@@ -59,13 +59,11 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            //api 21 méo dc
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
         setContentView(R.layout.activity_tutorial);
-        getSupportActionBar().hide();
+        String s = DbContext.instance.findWCWithId(SharedPref.instance.getCheckId()).getName();
+        getSupportActionBar().show();
+        if (s != null)
+            getSupportActionBar().setTitle(s);
         ButterKnife.bind(this);
         //Roboto-Thin.ttf
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
@@ -73,7 +71,7 @@ public class TutorialActivity extends AppCompatActivity {
         btSkip.setTypeface(typeface);
 
 
-        tvStep.setText("Bước: "+(DbContext.instance.getPosTut()+1)+"/8");
+        tvStep.setText("Bước: " + (DbContext.instance.getPosTut() + 1) + "/8");
 
         layouts = new int[]{
                 R.layout.intro_slide1,
@@ -95,11 +93,11 @@ public class TutorialActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
         viewPager.setCurrentItem(DbContext.instance.getPosTut());
 
-        Log.e("abas", String.format("onCreate: %s %s", viewPager.getCurrentItem(),DbContext.instance.getPosTut()) );
+        Log.e("abas", String.format("onCreate: %s %s", viewPager.getCurrentItem(), DbContext.instance.getPosTut()));
         btSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(TutorialActivity.this,CheckListActivity.class);
+                Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
                 DbContext.instance.setPosTut(viewPager.getCurrentItem());
                 startActivity(intent);
             }
@@ -152,7 +150,7 @@ public class TutorialActivity extends AppCompatActivity {
         public void onPageSelected(int position) {
             addBottomDot(position);
 
-            tvStep.setText("Bước "+(position+1)+"/"+dots.length);
+            tvStep.setText("Bước " + (position + 1) + "/" + dots.length);
             DbContext.instance.setPosTut(position);
             if (position == layouts.length - 1) {
                 btNext.setText("Đã hiểu");

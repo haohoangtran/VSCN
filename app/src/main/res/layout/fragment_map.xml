@@ -4,43 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/margin_8"
     tools:context="lachongmedia.vn.nfc.activities.MainActivity">
-
-    <LinearLayout
-        android:id="@+id/ll_main"
-        android:layout_width="match_parent"
-        android:weightSum="2"
-        android:gravity="clip_horizontal"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/bt_main"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bản đồ"
-            android:layout_marginEnd="1dp"
-            android:background="@drawable/shape_button"
-            android:textAllCaps="false" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:background="@drawable/shape_button"
-            android:id="@+id/bt_action"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/bt_main"
-            android:text="Tác vụ"
-            android:textAllCaps="false" />
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/ll_main"
+        android:layout_alignParentTop="true"
         app:srcCompat="@drawable/tang2" />
 
     <pl.droidsonroids.gif.GifImageView
@@ -60,26 +31,26 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
             app:srcCompat="@drawable/ic_person_black_24dp" />
 
         <TextView
+            android:layout_marginTop="@dimen/margin_4"
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_16"
-            android:layout_marginTop="@dimen/margin_4"
             android:text="Tên"
             android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_time"
+        android:layout_marginTop="@dimen/margin_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ll_name"
-        android:layout_marginTop="@dimen/margin_8">
+        android:layout_above="@id/ll_name">
 
         <ImageView
             android:layout_width="wrap_content"

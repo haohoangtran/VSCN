@@ -8,14 +8,26 @@ public class CheckMember {
     private String hangMuc;
     private String phuongPhap;
     private String requitement;
-    private boolean isGood;
+    private int type;
 
-    public boolean isGood() {
-        return isGood;
+    public void setHangMuc(String hangMuc) {
+        this.hangMuc = hangMuc;
     }
 
-    public void setGood(boolean good) {
-        isGood = good;
+    public void setPhuongPhap(String phuongPhap) {
+        this.phuongPhap = phuongPhap;
+    }
+
+    public void setRequitement(String requitement) {
+        this.requitement = requitement;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getHangMuc() {
@@ -31,7 +43,7 @@ public class CheckMember {
     }
 
     public CheckMember(String hangMuc, String phuongPhap, String requitement) {
-        isGood=false;
+        type = 2;
         this.hangMuc = hangMuc;
         this.phuongPhap = phuongPhap;
         this.requitement = requitement;
