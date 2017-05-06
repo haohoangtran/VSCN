@@ -12,4 +12,5 @@
     <dimen name="intro_logo_padding">50dp</dimen>
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
 </resources>
