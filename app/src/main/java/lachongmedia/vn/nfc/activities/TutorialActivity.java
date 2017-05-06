@@ -54,7 +54,6 @@ public class TutorialActivity extends AppCompatActivity {
     @BindView(R.id.tv_step)
     TextView tvStep;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

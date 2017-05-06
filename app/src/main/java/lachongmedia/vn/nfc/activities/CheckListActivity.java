@@ -62,7 +62,7 @@ public class CheckListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_list);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        getSupportActionBar().hide();
+        getSupportActionBar().setTitle("Hạng mục cần kiểm tra");
         adapter = new CheckListAdapter();
         rvCheckList.setAdapter(adapter);
         rvCheckList.setLayoutManager(new LinearLayoutManager(this));

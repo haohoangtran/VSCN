@@ -6,6 +6,17 @@ package lachongmedia.vn.nfc.database.models;
 
 public class CheckMember {
     private String hangMuc;
+
+    @Override
+    public String toString() {
+        return "CheckMember{" +
+                "hangMuc='" + hangMuc + '\'' +
+                ", phuongPhap='" + phuongPhap + '\'' +
+                ", requitement='" + requitement + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
     private String phuongPhap;
     private String requitement;
     private int type;

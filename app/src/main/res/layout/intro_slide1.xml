@@ -9,17 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/colorAccent"
+        android:background="@color/dot_dark_screen1"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/intro1_logo"
-            android:layout_marginTop="@dimen/margin_16"
-            android:layout_centerHorizontal="true"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.8"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/nvs1"
             android:layout_gravity="center_horizontal"/>
@@ -27,9 +25,9 @@
         <TextView
             android:id="@+id/intro1_title"
             android:textSize="22sp"
+            android:layout_marginTop="@dimen/margin_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/intro1_logo"
             android:layout_margin="@dimen/margin_8"
             android:layout_centerHorizontal="true"
             android:text="Chuẩn bị:\nDụng cụ . Gồm biển cảnh báo, xe lau ,cây lau sàn ,xô chứa nước ,bàn chải cọ toilet, bộ lau kính, gắng tay ,khẩu trang ,túi rác ,giấy vệ sinh ,khăn lau. Hóa chất: lau kính ,lau sàn ,hc :cọ bồn cầu v.v."

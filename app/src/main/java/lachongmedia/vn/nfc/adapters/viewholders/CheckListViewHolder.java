@@ -38,17 +38,79 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     ImageView ivGood;
     @BindView(R.id.iv_unhapy)
     ImageView ivBad;
+    Dialog dialog;
 
     public CheckListViewHolder(final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        dialog = new Dialog(itemView.getContext());
+        dialog.setContentView(R.layout.dialog_question);
+        dialog.setCancelable(false);
+
+
+    }
+
+    private void good(CheckMember checkMember) {
+        cbGood.setVisibility(View.VISIBLE);
+        cbGood.setChecked(true);
+        ivBad.setVisibility(View.GONE);
+        ivGood.setVisibility(View.GONE);
+        cbBad.setVisibility(View.GONE);
+        checkMember.setType(1);
+    }
+
+    private void bad(CheckMember checkMember) {
+        cbBad.setVisibility(View.VISIBLE);
+        cbBad.setChecked(true);
+        ivBad.setVisibility(View.GONE);
+        ivGood.setVisibility(View.GONE);
+        cbGood.setVisibility(View.GONE);
+        checkMember.setType(0);
+    }
+
+    private void none(CheckMember checkMember) {
+        cbBad.setVisibility(View.GONE);
+        cbGood.setVisibility(View.GONE);
+        ivBad.setVisibility(View.VISIBLE);
+        ivGood.setVisibility(View.VISIBLE);
+        checkMember.setType(2);
+    }
+
+    public void bind(final CheckMember checkMember) {
+        tvNameCv.setText(checkMember.getHangMuc());
+        tvPP.setText(checkMember.getPhuongPhap());
+        Log.e(TAG, String.format("bind: %s", checkMember.toString()));
+        dialog.setTitle(checkMember.getHangMuc());
+        tvRequite.setText(checkMember.getRequitement());
+
+        if (checkMember.getType() == 1) {
+            good(checkMember);
+        } else if (checkMember.getType() == 0) {
+            bad(checkMember);
+        } else {
+            none(checkMember);
+        }
+        addListenner(checkMember);
+
+    }
+
+    private void addListenner(final CheckMember checkMember) {
+        ivGood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                good(checkMember);
+            }
+        });
+        ivBad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bad(checkMember);
+            }
+        });
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(itemView.getContext());
-                dialog.setContentView(R.layout.dialog_question);
-                dialog.setTitle("Title");
-                dialog.setCancelable(false);
                 dialog.show();
 
                 // set the custom dialog components - text, image and button
@@ -58,7 +120,7 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 llGood.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        good();
+                        good(checkMember);
                         Log.e(TAG, "onClick: ccccc");
                         dialog.dismiss();
                     }
@@ -66,14 +128,14 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 llBad.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bad();
+                        bad(checkMember);
                         dialog.dismiss();
                     }
                 });
                 llNotCheck.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        none();
+                        none(checkMember);
                         dialog.dismiss();
                     }
                 });
@@ -81,43 +143,7 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 dialog.show();
             }
         });
-
     }
 
-    private void good() {
-        cbGood.setVisibility(View.VISIBLE);
-        cbGood.setChecked(true);
-        ivBad.setVisibility(View.GONE);
-        ivGood.setVisibility(View.GONE);
-        cbBad.setVisibility(View.GONE);
-    }
 
-    private void bad() {
-        cbBad.setVisibility(View.VISIBLE);
-        cbBad.setChecked(true);
-        ivBad.setVisibility(View.GONE);
-        ivGood.setVisibility(View.GONE);
-        cbGood.setVisibility(View.GONE);
-    }
-
-    public void bind(final CheckMember checkMember) {
-        tvNameCv.setText(checkMember.getHangMuc());
-        tvPP.setText(checkMember.getPhuongPhap());
-        tvRequite.setText(checkMember.getRequitement());
-        if (checkMember.getType() == 1) {
-            good();
-        } else if (checkMember.getType() == 0) {
-            bad();
-        } else {
-            none();
-        }
-
-    }
-
-    private void none() {
-        cbBad.setVisibility(View.GONE);
-        cbGood.setVisibility(View.GONE);
-        ivBad.setVisibility(View.VISIBLE);
-        ivGood.setVisibility(View.VISIBLE);
-    }
 }

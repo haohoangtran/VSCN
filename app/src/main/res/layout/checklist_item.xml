@@ -3,9 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_8"
-    android:layout_marginStart="@dimen/margin_8"
-    android:layout_marginTop="@dimen/margin_8"
     android:elevation="7dp">
 
     <RelativeLayout
@@ -16,6 +13,7 @@
             android:id="@+id/v_tt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_8"
             app:srcCompat="@drawable/ic_title_black_24dp" />
 
         <TextView
@@ -33,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_name"
+            android:layout_marginEnd="@dimen/margin_8"
             app:srcCompat="@drawable/ic_build_black_24dp" />
 
         <TextView
@@ -50,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_pp"
+            android:layout_marginEnd="@dimen/margin_8"
             app:srcCompat="@drawable/ic_beenhere_black_24dp" />
 
         <TextView
@@ -62,8 +62,9 @@
             android:alpha="0.5"
             android:text="Yeu cau: Đầy đủ giấy ở các ngăn, lắp đúng chiều, dễ lấy	" />
 
+
         <ImageView
-            android:id="@+id/iv_happy"
+            android:id="@+id/iv_unhapy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -72,11 +73,11 @@
             app:srcCompat="@drawable/ic_unhappy" />
 
         <ImageView
-            android:id="@+id/iv_unhapy"
+            android:id="@+id/iv_happy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_8"
-            android:layout_toStartOf="@id/iv_happy"
+            android:layout_toStartOf="@id/iv_unhapy"
             android:padding="@dimen/margin_8"
             app:srcCompat="@drawable/ic_smiling" />
 
@@ -86,9 +87,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/margin_8"
+            android:clickable="false"
             android:scaleX="1.7"
             android:scaleY="1.7"
-            android:clickable="false"
             android:visibility="gone" />
 
         <CheckBox
@@ -97,8 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/margin_8"
-            android:clickable="false"
             android:button="@drawable/ic_clear_black_24dp"
+            android:clickable="false"
             android:scaleX="1.7"
             android:scaleY="1.7" />
 
