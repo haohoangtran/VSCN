@@ -21,22 +21,6 @@ public class DbContext {
     private Date dateStop;
     private int posTut;
 
-    public int getPosTut() {
-        return posTut;
-    }
-
-    public void setPosTut(int posTut) {
-        this.posTut = posTut;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public void setDateStop(Date dateStop) {
-        this.dateStop = dateStop;
-    }
-
     private DbContext() {
         members = new Vector<>();
         wcList = new Vector<>();
@@ -46,12 +30,28 @@ public class DbContext {
         addCheckMembers();
     }
 
+    public int getPosTut() {
+        return posTut;
+    }
+
+    public void setPosTut(int posTut) {
+        this.posTut = posTut;
+    }
+
     public Date getDateStart() {
         return dateStart;
     }
 
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
     public Date getDateStop() {
         return dateStop;
+    }
+
+    public void setDateStop(Date dateStop) {
+        this.dateStop = dateStop;
     }
 
     public List<Member> getMembers() {
@@ -76,7 +76,7 @@ public class DbContext {
         CheckMember checkMember7=new CheckMember("Lỗ thoát sàn","Mắt thường","Vệ sinh hàng ngày, sạch sẽ, không tắc");
         CheckMember checkMember8=new CheckMember("Mùi","Ngửi","Thơm, không có mùi nước tiểu, mùi lạ");
         CheckMember checkMember9=new CheckMember("Sàn/Tường/Cửa","Mắt thường, bằng tay","Sạch, không bụi bẩn, không hỏng hóc vỡ sứt góc cạnh\t");
-        CheckMember checkMember10=new CheckMember("Máy sấy tay/ Nước rửa tay","Mắt thường, ngửi","Hoạt động bình thường, nước rửa tay đầy đủ\t");
+        CheckMember checkMember10 = new CheckMember("Máy sấy tay/\n Nước rửa tay", "Mắt thường, ngửi", "Hoạt động bình thường, nước rửa tay đầy đủ\t");
         checkMembers.add(checkMember1);
         checkMembers.add(checkMember2);
         checkMembers.add(checkMember3);
