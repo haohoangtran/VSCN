@@ -41,7 +41,8 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.iv_unhapy)
     ImageView ivBad;
     Dialog dialog;
-    private ExplosionField mExplosionField;
+    @BindView(R.id.iv_capture)
+    ImageView ivCapture;
 
     public CheckListViewHolder(final View itemView) {
         super(itemView);
@@ -49,10 +50,6 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
         dialog = new Dialog(itemView.getContext());
         dialog.setContentView(R.layout.dialog_question);
         dialog.setCancelable(false);
-
-        mExplosionField = ExplosionField.attach2Window((Activity) itemView.getContext());
-
-
     }
 
     private void good(CheckMember checkMember) {
@@ -146,6 +143,12 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 });
 
                 dialog.show();
+            }
+        });
+        ivCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new CameraEvent(checkMember));
             }
         });
     }
