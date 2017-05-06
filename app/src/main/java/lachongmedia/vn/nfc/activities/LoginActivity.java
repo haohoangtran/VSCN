@@ -56,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         getSupportActionBar().hide();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         NfcManager manager = (NfcManager) this.getSystemService(Context.NFC_SERVICE);
         NfcAdapter adapter = manager.getDefaultAdapter();
         if (!(adapter != null && adapter.isEnabled())) {
@@ -66,15 +71,9 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(setnfc);
                 }
             }).create();
+            dialog.setCancelable(false);
             dialog.show();
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        NfcManager manager = (NfcManager) this.getSystemService(Context.NFC_SERVICE);
-        NfcAdapter adapter = manager.getDefaultAdapter();
         if (adapter != null && !adapter.isEnabled()) {
             tvName.setText("Bạn phải bật NFC để sử dụng!");
         } else {
@@ -105,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcAdapter.disableForegroundDispatch(this);
     }
+
 
     @Override
     protected void onNewIntent(Intent intent) {

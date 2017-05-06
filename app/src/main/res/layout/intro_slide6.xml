@@ -17,10 +17,10 @@
             android:id="@+id/intro1_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:alpha="0.8"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/nvs6"
-            android:layout_gravity="center_horizontal" />
+            app:srcCompat="@drawable/nvs6" />
 
         <TextView
             android:id="@+id/intro1_title"
@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/margin_8"
+            android:text="Vệ sinh bồn bệt và bồn tiểu .dùng bàn chải cọ toilet cọ toàn bộ phía trong bồn .xả nước ,dùng khăn ẩm lau toàn bộ phía ngoài và nắp bồn .lau lại bằng khăn  khô .  Đổ rác ,vệ sinh thùng rác ,thay túi rác cho thùng rác "
             android:textColor="@color/white"
-            android:textSize="24sp"
-            android:text="Vệ sinh bồn bệt và bồn tiểu .dùng bàn chải cọ toilet cọ toàn bộ phía trong bồn .xả nước ,dùng khăn ẩm lau toàn bộ phía ngoài và nắp bồn .lau lại bằng khăn  khô .  Đổ rác ,vệ sinh thùng rác ,thay túi rác cho thùng rác " />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/intro1_content"
