@@ -1,5 +1,6 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.database.models.CheckMember;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
+import tyrantgit.explosionfield.ExplosionField;
 
 /**
  * Created by hao on 29/04/2017.
@@ -39,6 +41,7 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.iv_unhapy)
     ImageView ivBad;
     Dialog dialog;
+    private ExplosionField mExplosionField;
 
     public CheckListViewHolder(final View itemView) {
         super(itemView);
@@ -46,6 +49,8 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
         dialog = new Dialog(itemView.getContext());
         dialog.setContentView(R.layout.dialog_question);
         dialog.setCancelable(false);
+
+        mExplosionField = ExplosionField.attach2Window((Activity) itemView.getContext());
 
 
     }

@@ -62,46 +62,59 @@
             android:alpha="0.5"
             android:text="Yeu cau: Đầy đủ giấy ở các ngăn, lắp đúng chiều, dễ lấy	" />
 
-
-        <ImageView
-            android:id="@+id/iv_unhapy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:padding="@dimen/margin_8"
-            app:srcCompat="@drawable/ic_unhappy" />
-
-        <ImageView
-            android:id="@+id/iv_happy"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:layout_toStartOf="@id/iv_unhapy"
-            android:padding="@dimen/margin_8"
-            app:srcCompat="@drawable/ic_smiling" />
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:id="@+id/cb_good"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:clickable="false"
-            android:scaleX="1.7"
-            android:scaleY="1.7"
-            android:visibility="gone" />
+            <ImageView
+                android:id="@+id/iv_capture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_camera_alt_black_24dp" />
 
-        <CheckBox
-            android:id="@+id/cb_bad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/margin_8"
-            android:button="@drawable/ic_clear_black_24dp"
-            android:clickable="false"
-            android:scaleX="1.7"
-            android:scaleY="1.7" />
+            <ImageView
+                android:id="@+id/iv_unhapy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:padding="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_unhappy" />
+
+            <ImageView
+                android:id="@+id/iv_happy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:padding="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_smiling" />
+
+            <CheckBox
+                android:id="@+id/cb_good"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:clickable="false"
+                android:scaleX="1.7"
+                android:scaleY="1.7"
+                android:visibility="gone" />
+
+            <CheckBox
+                android:id="@+id/cb_bad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:button="@drawable/ic_clear_black_24dp"
+                android:clickable="false"
+                android:scaleX="1.7"
+                android:scaleY="1.7" />
+
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 
