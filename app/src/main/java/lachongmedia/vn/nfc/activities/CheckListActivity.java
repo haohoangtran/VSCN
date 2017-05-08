@@ -23,10 +23,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,14 +38,21 @@ import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.CheckListAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.models.Member;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 
 public class CheckListActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 124;
+    private static final String TAG = CheckListActivity.class.toString();
     @BindView(R.id.rv_check_list)
     RecyclerView rvCheckList;
     @BindView(R.id.bt_back_tut)
     Button bt_back;
+    @BindView(R.id.tv_name)
+    TextView tvName;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
+    Date date;
     CheckListAdapter adapter;
     private final String[][] techList = new String[][]{
             new String[]{
@@ -74,6 +84,22 @@ public class CheckListActivity extends AppCompatActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        String id = SharedPref.instance.getIDMember();
+        Member m = DbContext.instance.findMemberWithId(id);
+        date = DbContext.instance.getDateStart();
+        Log.e(TAG, String.format("onStart: %s", m == null));
+        if (m != null) {
+            Log.e(TAG, String.format("onCreate: %s", m.toString()));
+            tvName.setText("Tên nhân viên: " + m.getName());
+            tvTime.setText("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút");
+        }
+    }
+
     @Subscribe
     public void onCameraEvent(CameraEvent event){
         AlertDialog dialog=new AlertDialog.Builder(this).setMessage("Bạn có muốn chụp ảnh cho bước kiểm tra "+event.getCheckMember().getHangMuc())

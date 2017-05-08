@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingEnd="@dimen/margin_16"
-    android:paddingStart="@dimen/margin_16"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="lachongmedia.vn.nfc.activities.CheckListActivity">
 
     <RelativeLayout
@@ -13,17 +12,65 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/bt_back_tut"
-            android:layout_width="wrap_content"
-            android:text="Quay lại đọc hướng dẫn"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
 
+        <LinearLayout
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16"
+            android:id="@+id/ll_time2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginStart="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_timer_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian làm việc:" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16"
+            android:layout_below="@id/ll_time2"
+            android:id="@+id/ll_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginStart="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_person_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_4"
+                android:text="Tên"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <Button
+            android:layout_below="@id/ll_name"
+            android:id="@+id/bt_back_tut"
+            android:background="@drawable/shape_button"
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:text="Quay lại đọc hướng dẫn"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:paddingEnd="@dimen/margin_16"
+        android:paddingStart="@dimen/margin_16"
         android:layout_above="@id/rl_rv"
         android:id="@+id/rv_check_list"
         android:scrollbars="vertical"
