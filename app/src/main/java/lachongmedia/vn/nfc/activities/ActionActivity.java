@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -13,7 +14,8 @@ import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 
 public class ActionActivity extends AppCompatActivity {
-
+    @BindView(R.id.ll_map)
+    LinearLayout llMap;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.2F);
 
     @Override
@@ -21,11 +23,20 @@ public class ActionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
         ButterKnife.bind(this);
-        getSupportActionBar().hide();
+        buttonClick.setFillAfter(true);
+        getSupportActionBar().setTitle("Tác vụ");
         addListener();
     }
 
     private void addListener() {
 
+        llMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llMap.startAnimation(buttonClick);
+                Intent intent = new Intent(ActionActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

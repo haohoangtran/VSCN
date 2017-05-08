@@ -46,13 +46,46 @@ public class TutorialActivity extends AppCompatActivity {
     @BindView(R.id.layoutDots)
     LinearLayout dotsLayout;
     TextView[] dots;
-    private int[] layouts;
     @BindView(R.id.bt_skip)
     Button btSkip;
     @BindView(R.id.bt_next)
     Button btNext;
     @BindView(R.id.tv_step)
     TextView tvStep;
+    private int[] layouts;
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+
+        private final String TAG = TutorialActivity.class.getSimpleName();
+
+        @Override
+        public void onPageSelected(int position) {
+            addBottomDot(position);
+
+            tvStep.setText("Bước " + (position + 1) + "/" + dots.length);
+            DbContext.instance.setPosTut(position);
+            if (position == layouts.length - 1) {
+                btNext.setText("Đã hiểu");
+                btSkip.setVisibility(View.GONE);
+            } else {
+                btNext.setText("Tiếp theo");
+                btSkip.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+            Log.e(TAG, String.format("onPageScrolled: %s %s %s", arg0, arg1, arg2));
+
+        }
+
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +129,7 @@ public class TutorialActivity extends AppCompatActivity {
         btSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
+                Intent intent = new Intent(TutorialActivity.this, MainActivity.class);
                 DbContext.instance.setPosTut(viewPager.getCurrentItem());
                 startActivity(intent);
             }
@@ -105,13 +138,8 @@ public class TutorialActivity extends AppCompatActivity {
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int current = getItem(1);
-                if (current < layouts.length) {
-                    viewPager.setCurrentItem(current);
-                } else {
-                    startActivity(new Intent(TutorialActivity.this, CheckListActivity.class));
-                    TutorialActivity.this.finish();
-                }
+                Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -140,40 +168,6 @@ public class TutorialActivity extends AppCompatActivity {
         DbContext.instance.setPosTut(viewPager.getCurrentItem() + i);
         return viewPager.getCurrentItem() + i;
     }
-
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        private final String TAG = TutorialActivity.class.getSimpleName();
-
-        @Override
-        public void onPageSelected(int position) {
-            addBottomDot(position);
-
-            tvStep.setText("Bước " + (position + 1) + "/" + dots.length);
-            DbContext.instance.setPosTut(position);
-            if (position == layouts.length - 1) {
-                btNext.setText("Đã hiểu");
-                btSkip.setVisibility(View.GONE);
-            } else {
-                btNext.setText("Tiếp theo");
-                btSkip.setVisibility(View.VISIBLE);
-            }
-
-
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-            Log.e(TAG, String.format("onPageScrolled: %s %s %s", arg0, arg1, arg2));
-
-        }
-
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
 
     private void changeSttBarColo() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

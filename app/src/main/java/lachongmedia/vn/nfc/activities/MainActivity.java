@@ -40,6 +40,7 @@ import lachongmedia.vn.nfc.database.models.WC;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private final String[][] techList = new String[][]{
             new String[]{
                     NfcA.class.getName(),
@@ -63,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTime;
     Date date;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.2F);
-
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,14 +160,20 @@ public class MainActivity extends AppCompatActivity {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
             WC wc = DbContext.instance.findWCWithId(id);
-            if (wc != null) {
-                Toast.makeText(this, "Đang kiểm tra " + wc.getName(), Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(this, TutorialActivity.class);
+            if (wc == null) {
+                Toast.makeText(MainActivity.this, "Khu vực chưa được đăng ký", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (SharedPref.instance.getCheckId() != null && id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
+                Toast.makeText(MainActivity.this, "Thoát khỏi " + wc.getName(), Toast.LENGTH_SHORT).show();
+
+            } else if (SharedPref.instance.getCheckId() == null) {
+                Toast.makeText(this, "Kiểm tra " + wc.getName(), Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(this, CheckListActivity.class);
                 startActivity(intent1);
-                SharedPref.instance.putCheckID(id);
                 finish();
-            } else {
-                Toast.makeText(this, "Khu vực chưa được đăng ký!", Toast.LENGTH_SHORT).show();
+            } else if (SharedPref.instance.getCheckId() != null && !id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
+                Toast.makeText(this, "Bạn đang ở " + wc.getName() + " bạn không thể vào khu vực khác!", Toast.LENGTH_SHORT).show();
             }
         }
     }
