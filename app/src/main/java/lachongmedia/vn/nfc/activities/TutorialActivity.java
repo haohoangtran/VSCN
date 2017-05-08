@@ -67,7 +67,7 @@ public class TutorialActivity extends AppCompatActivity {
                 btNext.setText("Đã hiểu");
                 btSkip.setVisibility(View.GONE);
             } else {
-                btNext.setText("Tiếp theo");
+                btNext.setText("Báo cáo công việc");
                 btSkip.setVisibility(View.VISIBLE);
             }
 

@@ -20,8 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="1dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_button"
+            android:background="@color/colorPrimary"
             android:text="Bản đồ"
+            android:textColor="@color/white"
             android:textAllCaps="false" />
 
         <android.support.v7.widget.AppCompatButton
@@ -29,8 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/shape_button"
+            android:background="@color/colorPrimary"
             android:text="Tác vụ"
+            android:textColor="@color/white"
             android:textAllCaps="false" />
     </LinearLayout>
 
@@ -119,7 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_main"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:gravity="center"
         android:paddingTop="@dimen/margin_16">
 
