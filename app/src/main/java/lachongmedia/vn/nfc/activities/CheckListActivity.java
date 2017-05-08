@@ -52,6 +52,9 @@ public class CheckListActivity extends AppCompatActivity {
     TextView tvName;
     @BindView(R.id.tv_time)
     TextView tvTime;
+    @BindView(R.id.tv_vitri)
+    TextView tvVitri;
+
     Date date;
     CheckListAdapter adapter;
     private final String[][] techList = new String[][]{
@@ -77,6 +80,7 @@ public class CheckListActivity extends AppCompatActivity {
         rvCheckList.setAdapter(adapter);
         rvCheckList.setLayoutManager(new LinearLayoutManager(this));
         addListenner();
+        tvVitri.setText("Vị trí hiện tại: " + DbContext.instance.findWCWithId(SharedPref.instance.getCheckId()).getName());
     }
 
     @Override
@@ -101,8 +105,8 @@ public class CheckListActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onCameraEvent(CameraEvent event){
-        AlertDialog dialog=new AlertDialog.Builder(this).setMessage("Bạn có muốn chụp ảnh cho bước kiểm tra "+event.getCheckMember().getHangMuc())
+    public void onCameraEvent(CameraEvent event) {
+        AlertDialog dialog = new AlertDialog.Builder(this).setMessage("Bạn có muốn chụp ảnh cho bước kiểm tra " + event.getCheckMember().getHangMuc())
                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -123,7 +127,7 @@ public class CheckListActivity extends AppCompatActivity {
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(CheckListActivity.this,TutorialActivity.class);
+                Intent intent = new Intent(CheckListActivity.this, TutorialActivity.class);
                 startActivity(intent);
             }
         });

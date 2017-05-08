@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_main"
         android:background="@color/colorPrimary"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:paddingTop="@dimen/margin_16">
 
         <TextView

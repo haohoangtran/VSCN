@@ -117,6 +117,14 @@ public class MainActivity extends AppCompatActivity {
                 btMain.startAnimation(buttonClick);
             }
         });
+        llWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,CheckListActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void updateDisplay() {
@@ -178,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
             if (SharedPref.instance.getCheckId() != null && id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
                 Toast.makeText(MainActivity.this, "Thoát khỏi " + wc.getName(), Toast.LENGTH_SHORT).show();
                 SharedPref.instance.putCheckID(null);
+                llWork.setVisibility(View.GONE);
 
             } else if (SharedPref.instance.getCheckId() == null) {
                 Toast.makeText(this, "Kiểm tra " + wc.getName(), Toast.LENGTH_SHORT).show();

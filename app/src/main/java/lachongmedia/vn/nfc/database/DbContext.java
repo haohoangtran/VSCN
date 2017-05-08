@@ -90,10 +90,10 @@ public class DbContext {
     }
 
     public void addDumData() {
-        Member member1 = new Member("846AC9470C4002E0", "Nguyễn Đức Thắng");
+        Member member1 = new Member("846AC9470C4002E0", "Hoàng Trần Hảo");
         Member member2 = new Member("2570C9470C4002E0", "Trần Hán Hiếu");
         Member member3 = new Member("4D70C9470C4002E0", "Bùi Quang Minh");
-        Member member4 = new Member("2D72C9470C4002E0", "Nguyễn Thị Lan");
+        Member member4 = new Member("2D72C9470C4002E0", "Tạ Thanh Lan");
         WC wc=new WC("6B74C9470C4002E0","Nhà vệ sinh tầng 1","Cuối hành lang bên trái",60,null);
         members.add(member1);
         members.add(member2);
