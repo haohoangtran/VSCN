@@ -4,71 +4,188 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context="lachongmedia.vn.nfc.activities.ActionActivity">
 
     <LinearLayout
-        android:id="@+id/ll_main"
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
-        android:weightSum="2"
-        android:gravity="clip_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/bt_main"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_time"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Bản đồ"
-            android:layout_marginEnd="1dp"
-            android:background="@drawable/shape_button"
-            android:textAllCaps="false" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatButton
-            android:background="@drawable/shape_button"
-            android:id="@+id/bt_action"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                app:srcCompat="@drawable/clock" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thời gian làm việc"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_work"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/bt_main"
-            android:text="Tác vụ"
-            android:textAllCaps="false" />
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                app:srcCompat="@drawable/work" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kế hoạch công việc"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll1"
+        android:layout_marginTop="@dimen/margin_16"
+        android:gravity="center">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/bt_issue"
-            android:textSize="18sp"
-            android:layout_marginTop="@dimen/margin_16"
-            android:layout_marginBottom="@dimen/margin_16"
-            android:layout_width="wrap_content"
-            android:text="Báo cáo sự cố"
-            android:textAllCaps="false"
-            android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/bt_kehoach"
-            android:layout_marginBottom="@dimen/margin_16"
-            android:layout_below="@id/bt_issue"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:text="     Kế hoạch    "
-            android:textAllCaps="false"
-            android:layout_height="wrap_content" />
-
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/bt_logout"
-            android:layout_below="@id/bt_kehoach"
-            android:textSize="18sp"
-            android:layout_marginBottom="@dimen/margin_16"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_time1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="    Đăng xuất    "
-            android:textAllCaps="false" />
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                app:srcCompat="@drawable/warning1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Báo cáo sự cố"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_work1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                app:srcCompat="@drawable/report" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Báo cáo đã gửi"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll2"
+        android:layout_marginTop="@dimen/margin_16"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/ll_map"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                app:srcCompat="@drawable/map" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sơ đồ công ty"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                app:srcCompat="@drawable/logout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng xuất"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

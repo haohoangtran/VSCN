@@ -10,27 +10,27 @@
     <LinearLayout
         android:id="@+id/ll_main"
         android:layout_width="match_parent"
-        android:weightSum="2"
+        android:layout_height="wrap_content"
         android:gravity="clip_horizontal"
-        android:layout_height="wrap_content">
+        android:weightSum="2">
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/bt_main"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bản đồ"
             android:layout_marginEnd="1dp"
+            android:layout_weight="1"
             android:background="@drawable/shape_button"
+            android:text="Bản đồ"
             android:textAllCaps="false" />
 
         <android.support.v7.widget.AppCompatButton
-            android:background="@drawable/shape_button"
             android:id="@+id/bt_action"
-            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/bt_main"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button"
             android:text="Tác vụ"
             android:textAllCaps="false" />
     </LinearLayout>
@@ -49,7 +49,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="143dp"
         android:layout_marginTop="134dp"
-        android:background="@drawable/warning" />
+        android:background="@drawable/warning1" />
 
     <LinearLayout
         android:id="@+id/ll_name"

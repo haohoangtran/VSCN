@@ -20,7 +20,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="143dp"
         android:layout_marginTop="134dp"
-        android:background="@drawable/warning" />
+        android:background="@drawable/warning1" />
 
     <LinearLayout
         android:id="@+id/ll_name"
@@ -31,26 +31,26 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_8"
             android:layout_marginEnd="@dimen/margin_8"
+            android:layout_marginStart="@dimen/margin_8"
             app:srcCompat="@drawable/ic_person_black_24dp" />
 
         <TextView
-            android:layout_marginTop="@dimen/margin_4"
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_4"
             android:text="Tên"
             android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_time"
-        android:layout_marginTop="@dimen/margin_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/ll_name">
+        android:layout_above="@id/ll_name"
+        android:layout_marginTop="@dimen/margin_8">
 
         <ImageView
             android:layout_width="wrap_content"

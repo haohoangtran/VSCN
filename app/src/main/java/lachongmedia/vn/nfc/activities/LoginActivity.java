@@ -92,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
         filter.addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
         filter.addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
         filter.addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
-        // enabling foreground dispatch for getting intent from NFC event:
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{filter}, this.techList);
     }
