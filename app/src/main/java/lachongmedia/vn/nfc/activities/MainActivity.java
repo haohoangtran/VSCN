@@ -19,6 +19,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tv_time)
     TextView tvTime;
     Date date;
+    @BindView(R.id.ll_work_now)
+    LinearLayout llWork;
+    @BindView(R.id.tv_name_nvs)
+    TextView tvNameNvs;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.2F);
 
     @Override
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         updateDisplay();
         addListener();
+
     }
 
     @Override
@@ -89,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
             tvName.setText("Tên nhân viên: " + m.getName());
             tvTime.setText("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút");
         }
+        if (SharedPref.instance.getCheckId() != null) {
+            WC wc = DbContext.instance.findWCWithId(SharedPref.instance.getCheckId());
+            tvNameNvs.setText("Bạn đang kiểm tra tại " + wc.getName() + " ấn vào đây để quay lại!");
+        } else
+            llWork.setVisibility(View.GONE);
     }
 
     private void addListener() {
@@ -166,10 +177,12 @@ public class MainActivity extends AppCompatActivity {
             }
             if (SharedPref.instance.getCheckId() != null && id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
                 Toast.makeText(MainActivity.this, "Thoát khỏi " + wc.getName(), Toast.LENGTH_SHORT).show();
+                SharedPref.instance.putCheckID(null);
 
             } else if (SharedPref.instance.getCheckId() == null) {
                 Toast.makeText(this, "Kiểm tra " + wc.getName(), Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(this, CheckListActivity.class);
+                SharedPref.instance.putCheckID(id);
+                Intent intent1 = new Intent(this, TutorialActivity.class);
                 startActivity(intent1);
                 finish();
             } else if (SharedPref.instance.getCheckId() != null && !id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
