@@ -12,10 +12,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
+import lachongmedia.vn.nfc.database.DbContext;
 
 public class ActionActivity extends AppCompatActivity {
     @BindView(R.id.ll_map)
     LinearLayout llMap;
+    @BindView(R.id.ll_logout)
+    LinearLayout llLogout;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.2F);
 
     @Override
@@ -24,7 +27,9 @@ public class ActionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_action);
         ButterKnife.bind(this);
         buttonClick.setFillAfter(true);
-        getSupportActionBar().setTitle("Tác vụ");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Tác vụ");
+        }
         addListener();
     }
 
@@ -36,6 +41,13 @@ public class ActionActivity extends AppCompatActivity {
                 llMap.startAnimation(buttonClick);
                 Intent intent = new Intent(ActionActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+        llLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPref.instance.logout();
             }
         });
     }

@@ -8,6 +8,7 @@
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
         android:name="android.hardware.nfc"
@@ -53,7 +54,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TutorialActivity"></activity>
+        <activity android:name=".activities.TutorialActivity" />
         <activity android:name=".activities.CheckListActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -63,7 +64,11 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActionActivity"></activity>
+        <activity android:name=".activities.ActionActivity" />
+
+        <service android:name=".Service" />
+
+        <activity android:name=".activities.GroundActivity"></activity>
     </application>
 
 </manifest>

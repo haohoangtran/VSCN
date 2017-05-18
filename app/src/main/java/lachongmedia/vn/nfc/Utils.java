@@ -2,6 +2,7 @@ package lachongmedia.vn.nfc;
 
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -24,21 +25,42 @@ public class Utils {
         }
         return out;
     }
-    public static long getTime(Date date1,Date date2){
+
+    public static long getTime(Date date1, Date date2) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        int days,hours,min;
+        int days, hours, min;
 
         long difference = date2.getTime() - date1.getTime();
-        days = (int) (difference / (1000*60*60*24));
-        hours = (int) ((difference - (1000*60*60*24*days)) / (1000*60*60));
-        min = (int) (difference - (1000*60*60*24*days) - (1000*60*60*hours)) / (1000*60);
+        days = (int) (difference / (1000 * 60 * 60 * 24));
+        hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+        min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
         hours = (hours < 0 ? -hours : hours);
-        Log.i("======= Hours"," :: "+hours);
-        return days*1440+hours*60+min;
+        Log.i("======= Hours", " :: " + hours);
+        return days * 1440 + hours * 60 + min;
     }
-    public static String getTime(Date date){
+
+    public static String getTime(Date date) {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
         String time = localDateFormat.format(date);
         return time;
+    }
+
+    public static String dateToString(Date date) {
+        String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+        String stringDate = sdf.format(date);
+        return stringDate;
+    }
+
+    public static Date stringToDate(String str) {
+        String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+        Date date = null;
+        try {
+            date = sdf.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

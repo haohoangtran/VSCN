@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="lachongmedia.vn.nfc.activities.CheckListActivity">
 
     <RelativeLayout
         android:id="@+id/rl_rv"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="@dimen/margin_8">
 
         <LinearLayout
-            android:paddingEnd="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16"
             android:id="@+id/ll_time2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,12 +36,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:paddingEnd="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16"
-            android:layout_below="@id/ll_time2"
             android:id="@+id/ll_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_time2"
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -58,12 +60,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:paddingEnd="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16"
-            android:layout_below="@id/ll_name"
             android:id="@+id/ll_vitri"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_name"
+            android:paddingEnd="@dimen/margin_16"
+            android:paddingStart="@dimen/margin_16">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -83,24 +85,24 @@
         </LinearLayout>
 
         <Button
-            android:layout_below="@id/ll_vitri"
             android:id="@+id/bt_back_tut"
-            android:background="@drawable/shape_button"
             android:layout_width="match_parent"
-            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_vitri"
+            android:background="@drawable/shape_button"
             android:text="Quay lại đọc hướng dẫn"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:paddingEnd="@dimen/margin_16"
-        android:paddingStart="@dimen/margin_16"
+        android:id="@+id/rv_check_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@id/rl_rv"
         android:layout_marginBottom="@dimen/margin_8"
-        android:id="@+id/rv_check_list"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:paddingEnd="@dimen/margin_16"
+        android:paddingStart="@dimen/margin_16"
+        android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
 

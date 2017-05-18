@@ -3,4 +3,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cbCheck">Lưu thông tin đăng nhập</string>
+    <string name="btnLogIn">Đăng nhập</string>
+    <string name="tvPass">Mật khẩu</string>
+    <string name="tvID">Tên đăng nhập</string>
+    <string name="macongty">Mã công ty</string>
+    <string name="about5">Website: http://www.ksmart.vn</string>
+    <string name="about7">Hot line: 090.626.0304</string>
+    <string name="verName">1.0</string>
+    <string name="version">Phiên bản:</string>
+    <string name="tenapp">AdenService</string>
 </resources>

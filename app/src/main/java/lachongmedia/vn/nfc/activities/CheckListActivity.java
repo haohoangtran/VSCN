@@ -44,19 +44,6 @@ import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 public class CheckListActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 124;
     private static final String TAG = CheckListActivity.class.toString();
-    @BindView(R.id.rv_check_list)
-    RecyclerView rvCheckList;
-    @BindView(R.id.bt_back_tut)
-    Button bt_back;
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
-    @BindView(R.id.tv_vitri)
-    TextView tvVitri;
-
-    Date date;
-    CheckListAdapter adapter;
     private final String[][] techList = new String[][]{
             new String[]{
                     NfcA.class.getName(),
@@ -68,6 +55,18 @@ public class CheckListActivity extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
+    @BindView(R.id.rv_check_list)
+    RecyclerView rvCheckList;
+    @BindView(R.id.bt_back_tut)
+    Button bt_back;
+    @BindView(R.id.tv_name)
+    TextView tvName;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
+    @BindView(R.id.tv_vitri)
+    TextView tvVitri;
+    Date date;
+    CheckListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,6 @@ public class CheckListActivity extends AppCompatActivity {
         rvCheckList.setAdapter(adapter);
         rvCheckList.setLayoutManager(new LinearLayoutManager(this));
         addListenner();
-        tvVitri.setText("Vị trí hiện tại: " + DbContext.instance.findWCWithId(SharedPref.instance.getCheckId()).getName());
     }
 
     @Override
@@ -94,19 +92,13 @@ public class CheckListActivity extends AppCompatActivity {
         super.onStart();
 
         String id = SharedPref.instance.getIDMember();
-        Member m = DbContext.instance.findMemberWithId(id);
         date = DbContext.instance.getDateStart();
-        Log.e(TAG, String.format("onStart: %s", m == null));
-        if (m != null) {
-            Log.e(TAG, String.format("onCreate: %s", m.toString()));
-            tvName.setText("Tên nhân viên: " + m.getName());
-            tvTime.setText("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút");
-        }
+
     }
 
     @Subscribe
     public void onCameraEvent(CameraEvent event) {
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage("Bạn có muốn chụp ảnh cho bước kiểm tra " + event.getCheckMember().getHangMuc())
+        AlertDialog dialog = new AlertDialog.Builder(this).setMessage("Bạn có muốn chụp ảnh cho bước kiểm tra ")
                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -151,7 +143,6 @@ public class CheckListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        // disabling foreground dispatch:
         NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         nfcAdapter.disableForegroundDispatch(this);
     }
@@ -166,7 +157,6 @@ public class CheckListActivity extends AppCompatActivity {
                     Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(this, MainActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    DbContext.instance.setPosTut(0);
                     startActivity(intent1);
                 } else {
                     Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();

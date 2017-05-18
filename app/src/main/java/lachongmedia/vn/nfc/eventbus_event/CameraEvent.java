@@ -7,14 +7,8 @@ import lachongmedia.vn.nfc.database.models.CheckMember;
  */
 
 public class CameraEvent {
-    private CheckMember checkMember;
-
-    public CheckMember getCheckMember() {
-        return checkMember;
-    }
 
     public CameraEvent(CheckMember checkMember) {
 
-        this.checkMember = checkMember;
     }
 }

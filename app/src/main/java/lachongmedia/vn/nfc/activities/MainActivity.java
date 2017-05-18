@@ -1,8 +1,10 @@
 package lachongmedia.vn.nfc.activities;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
@@ -13,22 +15,30 @@ import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
-import android.text.format.Time;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +46,9 @@ import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.models.Member;
-import lachongmedia.vn.nfc.database.models.WC;
+import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
+import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
@@ -68,13 +79,21 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout llWork;
     @BindView(R.id.tv_name_nvs)
     TextView tvNameNvs;
+    @BindView(R.id.vp_matbang)
+    ViewPager vpMatBang;
+    MyViewPagerAdapter adapter;
+    List<String> paths;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.2F);
+    private int[] layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        paths = new Vector<>();
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
+        if (getSupportActionBar() != null)
         getSupportActionBar().hide();
         updateDisplay();
         addListener();
@@ -82,24 +101,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(LoginCompleteEvent event) {
+        paths = event.getPath();
+        Log.e(TAG, String.format("onEvent: %s", paths));
+        EventBus.getDefault().removeStickyEvent(LoginCompleteEvent.class);
+        layouts = new int[paths.size()];
+        for (int i = 0; i < layouts.length; i++) {
+            layouts[i] = R.layout.layout_matbang;
+        }
+        adapter = new MyViewPagerAdapter();
+        vpMatBang.setAdapter(adapter);
+
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-
         String id = SharedPref.instance.getIDMember();
-        Member m = DbContext.instance.findMemberWithId(id);
+        LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
         date = DbContext.instance.getDateStart();
-        Log.e(TAG, String.format("onStart: %s", m == null));
-        if (m != null) {
+        if (loginRespon != null) {
             tvTimeStart.setText("Thời gian bắt đầu: " + Utils.getTime(date));
-            Log.e(TAG, String.format("onCreate: %s", m.toString()));
-            tvName.setText("Tên nhân viên: " + m.getName());
+            tvName.setText("Tên nhân viên: " + loginRespon.getNhanvien().getTennhanvien());
             tvTime.setText("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút");
-        }
-        if (SharedPref.instance.getCheckId() != null) {
-            WC wc = DbContext.instance.findWCWithId(SharedPref.instance.getCheckId());
-            tvNameNvs.setText("Bạn đang kiểm tra tại " + wc.getName() + " ấn vào đây để quay lại!");
         } else
             llWork.setVisibility(View.GONE);
+        llWork.setVisibility(View.GONE);//TODO:XOa
     }
 
     private void addListener() {
@@ -120,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         llWork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,CheckListActivity.class);
+                Intent intent = new Intent(MainActivity.this, CheckListActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -143,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-        }, 0, 60000);//Update text every second
+        }, 0, 60000);//Update text every 60 seconds
     }
 
     public void onTimeChange(TimeChangeEvent event) {
@@ -178,37 +211,52 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-            WC wc = DbContext.instance.findWCWithId(id);
-            if (wc == null) {
-                Toast.makeText(MainActivity.this, "Khu vực chưa được đăng ký", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (SharedPref.instance.getCheckId() != null && id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
-                Toast.makeText(MainActivity.this, "Thoát khỏi " + wc.getName(), Toast.LENGTH_SHORT).show();
-                SharedPref.instance.putCheckID(null);
-                llWork.setVisibility(View.GONE);
-
-            } else if (SharedPref.instance.getCheckId() == null) {
-                Toast.makeText(this, "Kiểm tra " + wc.getName(), Toast.LENGTH_SHORT).show();
-                SharedPref.instance.putCheckID(id);
-                Intent intent1 = new Intent(this, TutorialActivity.class);
-                startActivity(intent1);
-                finish();
-            } else if (SharedPref.instance.getCheckId() != null && !id.equalsIgnoreCase(SharedPref.instance.getCheckId())) {
-                Toast.makeText(this, "Bạn đang ở " + wc.getName() + " bạn không thể vào khu vực khác!", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
 
-    private void setNameTextView() {
-        String s = "Thời gian bắt đầu làm việc: ";
-        Time dtNow = new Time();
-        dtNow.setToNow();
-        int hours = dtNow.hour;
-        String lsNow = s + dtNow.format("%Y.%m.%d %H:%M:%S");
-        Member member = DbContext.instance.findMemberWithId(SharedPref.instance.getIDMember());
+    private class MyViewPagerAdapter extends PagerAdapter {
+        private LayoutInflater layoutInflater;
+
+        public MyViewPagerAdapter() {
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+            layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = layoutInflater.inflate(layouts[position], container, false);
+            ImageView img = (ImageView) view.findViewById(R.id.iv_home);
+            TextView tvStep = (TextView) view.findViewById(R.id.tv_step);
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
+            tvStep.setTypeface(typeface);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e(TAG, String.format("onClick: %s", RealmDatabase.instance.getLoginRespon().getKehoach().getDsmatbang().get(position)));
+
+                }
+            });
+            tvStep.setText("Mặt bằng: " + (position + 1) + "/" + layouts.length);
+            Picasso.with(MainActivity.this).load(paths.get(position)).into(img);
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public int getCount() {
+            return layouts.length;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object obj) {
+            return view == obj;
+        }
 
 
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            View view = (View) object;
+            container.removeView(view);
+        }
     }
 }

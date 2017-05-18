@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.tech.IsoDep;
@@ -16,23 +17,43 @@ import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
+import lachongmedia.vn.nfc.database.respon.login.Site;
+import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
+import lachongmedia.vn.nfc.networks.NetContext;
+import lachongmedia.vn.nfc.server.LoginService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String TAG = LoginActivity.class.getSimpleName();
     // list of NFC technologies detected:
     public static Date date;
     private final String[][] techList = new String[][]{
@@ -46,17 +67,19 @@ public class LoginActivity extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
-    @BindView(R.id.tv_name)
-    TextView tvName;
-
+    Vector<String> paths;
+    private int[] layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        getSupportActionBar().hide();
+        paths = new Vector<>();
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
     }
+
 
     @Override
     protected void onStart() {
@@ -67,19 +90,17 @@ public class LoginActivity extends AppCompatActivity {
             AlertDialog dialog = new AlertDialog.Builder(this).setMessage("Bạn chưa bật NFC ấn ok để vào menu").setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent setnfc = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                    startActivity(setnfc);
+                    startActivityForResult(new Intent(Settings.ACTION_NFC_SETTINGS), 0);
                 }
             }).create();
             dialog.setCancelable(false);
             dialog.show();
         }
         if (adapter != null && !adapter.isEnabled()) {
-            tvName.setText("Bạn phải bật NFC để sử dụng!");
+//            tvName.setText("Bạn phải bật NFC để sử dụng!");
         } else {
-            tvName.setText("Bạn chưa vào phiên làm việc! Quẹt thẻ để tiếp tục");
+//            tvName.setText("Bạn chưa vào phiên làm việc! Quẹt thẻ để tiếp tục");
         }
-
     }
 
     @Override
@@ -108,18 +129,41 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-            String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
-            Log.e("UID", String.format("onNewIntent: %s", id));
-            if (DbContext.instance.findMemberWithId(id) != null) {
-                SharedPref.instance.putIDMember(id);
-                Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(this, MainActivity.class);
-                DbContext.instance.setDateStart(new Date());
-                startActivity(intent1);
-                finish();
-            } else {
-                Toast.makeText(this, "Bạn chưa được đăng ký!", Toast.LENGTH_SHORT).show();
-            }
+            final String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
+            Log.e("higu", String.format("onResponse: hihihi %s", id));
+            LoginService loginService = NetContext.instance.create(LoginService.class);
+            loginService.login(id).enqueue(new Callback<LoginRespon>() {
+                @Override
+                public void onResponse(Call<LoginRespon> call, Response<LoginRespon> response) {
+                    if (response.code() == 200) {
+                        final LoginRespon respon = response.body();
+                        if (respon != null) {
+                            RealmDatabase.instance.insertOrUpdateLogin(respon);
+                            Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
+                            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            DbContext.instance.setDateStart(new Date());
+//                        respon.getDskehoach().get(0).getAnhmatbang().getPath()
+
+                            for (int i = 0; i < respon.getKehoach().getDsmatbang().size(); i++) {
+                                paths.add(respon.getKehoach().getDsmatbang().get(i).getAnhmatbang().getPath());
+                            }
+                            Set<String> matbangImgs = new HashSet<>(paths);
+                            paths = new Vector<String>(matbangImgs);
+                            for (String path : paths) {
+                                Log.e(TAG, String.format("onResponse: %s", path));
+                            }
+                            startActivity(intent1);
+                            EventBus.getDefault().postSticky(new LoginCompleteEvent(paths));
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LoginRespon> call, Throwable t) {
+                    Log.e("hihu", String.format("onFailure: %s", t.toString()));
+                }
+            });
         }
     }
 

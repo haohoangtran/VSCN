@@ -17,24 +17,23 @@ import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
  * Created by hao on 29/04/2017.
  */
 
-public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder>{
+public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> {
 
     @Override
     public CheckListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = android.view.LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.checklist_item, parent, false);
-        CheckListViewHolder checkListViewHolder=new CheckListViewHolder(itemView);
+        CheckListViewHolder checkListViewHolder = new CheckListViewHolder(itemView);
         return checkListViewHolder;
     }
 
     @Override
     public void onBindViewHolder(CheckListViewHolder holder, int position) {
-        final CheckMember checkMember=DbContext.instance.getCheckMembers().get(position);
-        holder.bind(checkMember);
+//        holder.bind(checkMember);
     }
 
     @Override
     public int getItemCount() {
-        return DbContext.instance.getCheckMembers().size();
+        return 0;
     }
 }

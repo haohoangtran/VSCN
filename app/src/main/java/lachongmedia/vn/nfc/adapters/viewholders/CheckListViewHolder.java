@@ -92,7 +92,7 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
         } else {
             none(checkMember);
         }
-        addListenner(checkMember);
+
 
     }
 
@@ -143,12 +143,6 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 });
 
                 dialog.show();
-            }
-        });
-        ivCapture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EventBus.getDefault().post(new CameraEvent(checkMember));
             }
         });
     }

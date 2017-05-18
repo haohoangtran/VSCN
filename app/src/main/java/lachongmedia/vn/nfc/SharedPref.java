@@ -10,9 +10,10 @@ import android.content.SharedPreferences;
 public class SharedPref {
     private static final String ID_USER = "iduser";
     private static final String CHECK_ID = "checkida";
-    public static SharedPref instance ;
-    private final String  KEY_PREF = "Predasdas";
+    public static SharedPref instance;
+    private final String KEY_PREF = "Predasdas";
     private SharedPreferences sharedPreferences;
+
     private SharedPref(Context context) {
         sharedPreferences = context.getSharedPreferences(
                 KEY_PREF, Context.MODE_PRIVATE
@@ -27,16 +28,19 @@ public class SharedPref {
         sharedPreferences.edit().clear().commit();
     }
 
-    public void putIDMember(String id){
-        sharedPreferences.edit().putString(ID_USER,id).commit();
+    public void putIDMember(String id) {
+        sharedPreferences.edit().putString(ID_USER, id).commit();
     }
-    public String getIDMember(){
-        return sharedPreferences.getString(ID_USER,null);
+
+    public String getIDMember() {
+        return sharedPreferences.getString(ID_USER, null);
     }
-    public void putCheckID(String id){
-        sharedPreferences.edit().putString(CHECK_ID,id).commit();
+
+    public void putCheckID(String id) {
+        sharedPreferences.edit().putString(CHECK_ID, id).commit();
     }
-    public String getCheckId(){
-       return sharedPreferences.getString(CHECK_ID,null);
+
+    public String getCheckId() {
+        return sharedPreferences.getString(CHECK_ID, null);
     }
 }

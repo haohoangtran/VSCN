@@ -1,19 +1,216 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="lachongmedia.vn.nfc.activities.LoginActivity">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_centerInParent="true"
-        android:id="@+id/tv_name"
-        android:textSize="26sp"
+    <ScrollView
+        android:id="@+id/scrollView10"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="@dimen/margin_16"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/tenapp"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="normal" />
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/ll_ver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/version"
+            android:textColor="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/tv_Vesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dip"
+            android:layout_marginLeft="2dp"
+            android:text="@string/verName"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_web"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_ver"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_hotline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:gravity="center"
+            android:text="@string/about7"
+            android:textColor="@color/colorAccent"
+            android:textColorLink="@color/colorAccent"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_website"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:gravity="center"
+            android:text="@string/about5"
+            android:textColor="@color/colorAccent"
+            android:textColorLink="@color/colorAccent"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_web"
+        android:layout_below="@id/scrollView10"
         android:gravity="center"
-        android:text="Bạn chưa vào phiên làm việc! Quẹt thẻ để tiếp tục" />
+        android:padding="@dimen/margin_16">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_32"
+            android:layout_marginTop="@dimen/margin_16"
+            android:background="@drawable/ic_home_black_24dp" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_mct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_toEndOf="@id/imageView"
+            android:textColorHint="@color/colorAccent">
+
+            <EditText
+                android:id="@+id/etQL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="@color/trans"
+                android:hint="@string/macongty"
+                android:inputType="textCapCharacters"
+                android:paddingTop="6dp"
+                android:singleLine="true"
+                android:textColor="@color/colorAccent"
+                android:textColorHint="@color/colorAccent" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_marginBottom="@dimen/margin_32"
+            android:background="@drawable/ic_person_black_24dp" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_mnv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/til_mct"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:layout_toEndOf="@id/iv_user"
+            android:textColorHint="@color/colorAccent">
+
+            <EditText
+                android:id="@+id/etID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="@color/trans"
+                android:hint="@string/tvID"
+                android:inputType="text"
+                android:paddingTop="6dp"
+                android:textColor="@color/colorAccent"
+                android:textColorHint="@color/colorAccent" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_user"
+            android:background="@drawable/ic_lock_black_24dp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/til_mnv"
+            android:layout_toEndOf="@id/iv_pass"
+            android:layout_weight="1"
+            android:textColorHint="@color/colorAccent">
+
+            <EditText
+                android:id="@+id/etPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="@color/trans"
+                android:hint="@string/tvPass"
+                android:inputType="textPassword"
+                android:paddingTop="6dp"
+                android:textColor="@color/colorAccent"
+                android:textColorHint="@color/colorAccent" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <CheckBox
+            android:id="@+id/cbCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_pass"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="@dimen/margin_32"
+            android:button="@drawable/tick_box"
+            android:drawablePadding="@dimen/margin_16"
+            android:text="@string/cbCheck"
+            android:textColor="@color/colorAccent" />
+
+
+        <Button
+
+            android:id="@+id/btnLogIn"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/cbCheck"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_button_login"
+            android:text="@string/btnLogIn"
+            android:textColor="@color/white" />
+    </RelativeLayout>
 
 
 </RelativeLayout>
