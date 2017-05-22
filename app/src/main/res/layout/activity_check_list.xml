@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context="lachongmedia.vn.nfc.activities.CheckListActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_rv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_8">
+        android:layout_marginTop="@dimen/margin_8"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_time2"
@@ -36,10 +37,32 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_timemax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/margin_16">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginStart="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_timer_off_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_timemax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_4"
+                android:text="Thời gian tại điểm: "
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ll_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_time2"
             android:paddingEnd="@dimen/margin_16"
             android:paddingStart="@dimen/margin_16">
 
@@ -63,7 +86,6 @@
             android:id="@+id/ll_vitri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_name"
             android:paddingEnd="@dimen/margin_16"
             android:paddingStart="@dimen/margin_16">
 
@@ -82,17 +104,18 @@
                 android:layout_marginTop="@dimen/margin_4"
                 android:text="Vị trí hiện tại: "
                 android:textSize="16sp" />
+
         </LinearLayout>
+
 
         <Button
             android:id="@+id/bt_back_tut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_vitri"
             android:background="@drawable/shape_button"
             android:text="Quay lại đọc hướng dẫn"
             android:textColor="@color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_check_list"

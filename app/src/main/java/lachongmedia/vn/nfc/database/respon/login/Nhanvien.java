@@ -17,6 +17,16 @@ public class Nhanvien extends RealmObject {
     private String tendangnhap;
     @SerializedName("MatKhau")
     private String matkhau;
+    @SerializedName("path")
+    private String path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public int getIdNhanvien() {
         return idNhanvien;

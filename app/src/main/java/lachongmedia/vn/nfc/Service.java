@@ -34,8 +34,6 @@ public class Service extends android.app.Service {
             @Override
             public void run() {
                 LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
-
-
             }
         }, 0, 10000);
     }

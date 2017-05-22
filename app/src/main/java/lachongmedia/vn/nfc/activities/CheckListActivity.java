@@ -30,6 +30,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +41,10 @@ import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.CheckListAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.models.Member;
+import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
+import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class CheckListActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 124;
@@ -65,8 +70,11 @@ public class CheckListActivity extends AppCompatActivity {
     TextView tvTime;
     @BindView(R.id.tv_vitri)
     TextView tvVitri;
+    @BindView(R.id.tv_timemax)
+    TextView tvTimeMax;
     Date date;
     CheckListAdapter adapter;
+    DiaDiemSave diaDiemSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +82,17 @@ public class CheckListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_list);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
-        getSupportActionBar().setTitle("Hạng mục cần kiểm tra");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+            getSupportActionBar().setTitle("Hạng mục cần kiểm tra");
+
+        }
         adapter = new CheckListAdapter();
         rvCheckList.setAdapter(adapter);
         rvCheckList.setLayoutManager(new LinearLayoutManager(this));
         addListenner();
+        updateDisplay();
+
     }
 
     @Override
@@ -90,10 +104,43 @@ public class CheckListActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+            diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
+        }
+        tvName.setText("Tên nhân viên: " + diaDiemSave.getNhanvien().getTennhanvien());
+        tvVitri.setText("Tên địa điểm: " + diaDiemSave.getDsdiadiem().getDiadiem().getTendiadiem());
+        date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
 
-        String id = SharedPref.instance.getIDMember();
-        date = DbContext.instance.getDateStart();
+    }
 
+    private void updateDisplay() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // do UI updates here
+                        long minute = Utils.getTime(date, new Date());
+                        if (minute < 60)
+                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
+                        else {
+                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
+                        }
+                    }
+                });
+
+            }
+
+        }, 0, 60000);//Update text every 60 seconds
+    }
+
+    public void onTimeChange(TimeChangeEvent event) {
+        long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
+        tvTime.setText(event.getTime());
+        tvTimeMax.setText("Thời gian tại điểm: " + minute + "/" + diaDiemSave.getDsdiadiem().getDiadiem().getThoigiantoida() + " phút tối đa");
     }
 
     @Subscribe

@@ -1,30 +1,36 @@
-package lachongmedia.vn.nfc.database.respon.login;
+package lachongmedia.vn.nfc.database.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmObject;
+import lachongmedia.vn.nfc.database.respon.login.Diadiem;
 
-public class Diadiem extends RealmObject {
-    @SerializedName("id")
+/**
+ * Created by tranh on 5/19/2017.
+ */
+
+public class Place {
     private int id;
-    @SerializedName("id_thediadiem")
     private String idThediadiem;
-    @SerializedName("id_kehoach")
     private int idKehoach;
-    @SerializedName("id_site")
     private int idSite;
-    @SerializedName("id_matbang")
     private int idMatbang;
-    @SerializedName("loaidiadiem")
     private int loaidiadiem;
-    @SerializedName("tendiadiem")
     private String tendiadiem;
-    @SerializedName("thoigianlamviec")
-    private String thoigianlamviec;
-    @SerializedName("thoigiantoida")
+    private int minuteInDay;
     private int thoigiantoida;
-    @SerializedName("ghichu")
     private String ghichu;
+
+    public Place(Diadiem diadiem) {
+        this.id = diadiem.getId();
+        this.idThediadiem = diadiem.getIdThediadiem();
+        idKehoach = diadiem.getIdKehoach();
+        idSite = diadiem.getIdSite();
+        idMatbang = diadiem.getIdMatbang();
+        loaidiadiem = diadiem.getLoaidiadiem();
+        tendiadiem = diadiem.getTendiadiem();
+        thoigiantoida = diadiem.getThoigiantoida();
+        ghichu = diadiem.getGhichu();
+    }
 
     public int getId() {
         return id;
@@ -82,12 +88,12 @@ public class Diadiem extends RealmObject {
         this.tendiadiem = tendiadiem;
     }
 
-    public String getThoigianlamviec() {
-        return thoigianlamviec;
+    public int getMinuteInDay() {
+        return minuteInDay;
     }
 
-    public void setThoigianlamviec(String thoigianlamviec) {
-        this.thoigianlamviec = thoigianlamviec;
+    public void setMinuteInDay(int minuteInDay) {
+        this.minuteInDay = minuteInDay;
     }
 
     public int getThoigiantoida() {
@@ -96,22 +102,6 @@ public class Diadiem extends RealmObject {
 
     public void setThoigiantoida(int thoigiantoida) {
         this.thoigiantoida = thoigiantoida;
-    }
-
-    @Override
-    public String toString() {
-        return "Diadiem{" +
-                "id=" + id +
-                ", idThediadiem='" + idThediadiem + '\'' +
-                ", idKehoach=" + idKehoach +
-                ", idSite=" + idSite +
-                ", idMatbang=" + idMatbang +
-                ", loaidiadiem=" + loaidiadiem +
-                ", tendiadiem='" + tendiadiem + '\'' +
-                ", thoigianlamviec='" + thoigianlamviec + '\'' +
-                ", thoigiantoida=" + thoigiantoida +
-                ", ghichu='" + ghichu + '\'' +
-                '}';
     }
 
     public String getGhichu() {

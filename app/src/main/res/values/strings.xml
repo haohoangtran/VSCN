@@ -13,4 +13,5 @@
     <string name="verName">1.0</string>
     <string name="version">Phiên bản:</string>
     <string name="tenapp">AdenService</string>
+    <string name="title_activity_report_issue">ReportIssueActivity</string>
 </resources>

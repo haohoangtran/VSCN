@@ -25,19 +25,20 @@ public class SharedPref {
     }
 
     public void logout() {
-        sharedPreferences.edit().clear().commit();
+        sharedPreferences.edit().clear().apply();
     }
 
-    public void putIDMember(String id) {
-        sharedPreferences.edit().putString(ID_USER, id).commit();
+
+    public void putIDUser(int id) {
+        sharedPreferences.edit().putInt(ID_USER, id).apply();
     }
 
-    public String getIDMember() {
-        return sharedPreferences.getString(ID_USER, null);
+    public int getIDUser() {
+        return sharedPreferences.getInt(ID_USER, -1);
     }
 
     public void putCheckID(String id) {
-        sharedPreferences.edit().putString(CHECK_ID, id).commit();
+        sharedPreferences.edit().putString(CHECK_ID, id).apply();
     }
 
     public String getCheckId() {

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Typeface;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.tech.IsoDep;
@@ -17,34 +16,27 @@ import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
+import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.realm.realm_models.DateString;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
-import lachongmedia.vn.nfc.database.respon.login.Site;
 import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
 import lachongmedia.vn.nfc.networks.NetContext;
 import lachongmedia.vn.nfc.server.LoginService;
@@ -141,21 +133,24 @@ public class LoginActivity extends AppCompatActivity {
                             RealmDatabase.instance.insertOrUpdateLogin(respon);
                             Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
                             intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            DbContext.instance.setDateStart(new Date());
-//                        respon.getDskehoach().get(0).getAnhmatbang().getPath()
-
+                            Date da = new Date();
+                            RealmDatabase.instance.addToRealmDateString(new DateString(da, respon.getNhanvien().getIdNhanvien(), 0));
+                            SharedPref.instance.putIDUser(respon.getNhanvien().getIdNhanvien());
                             for (int i = 0; i < respon.getKehoach().getDsmatbang().size(); i++) {
                                 paths.add(respon.getKehoach().getDsmatbang().get(i).getAnhmatbang().getPath());
                             }
                             Set<String> matbangImgs = new HashSet<>(paths);
-                            paths = new Vector<String>(matbangImgs);
+                            paths = new Vector<>(matbangImgs);
                             for (String path : paths) {
                                 Log.e(TAG, String.format("onResponse: %s", path));
                             }
+                            DbContext.instance.setPaths(paths);
+                            EventBus.getDefault().postSticky(new LoginCompleteEvent());
                             startActivity(intent1);
-                            EventBus.getDefault().postSticky(new LoginCompleteEvent(paths));
                             finish();
                         }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Thẻ của bạn chưa được đăng ký!", Toast.LENGTH_LONG).show();
                     }
                 }
 

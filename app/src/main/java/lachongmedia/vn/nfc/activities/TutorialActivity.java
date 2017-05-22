@@ -1,20 +1,9 @@
 package lachongmedia.vn.nfc.activities;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.nfc.NfcAdapter;
-import android.nfc.tech.IsoDep;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
-import android.nfc.tech.Ndef;
-import android.nfc.tech.NfcA;
-import android.nfc.tech.NfcB;
-import android.nfc.tech.NfcF;
-import android.nfc.tech.NfcV;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -28,18 +17,20 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.SharedPref;
-import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 
 public class TutorialActivity extends AppCompatActivity {
+    private static final String TAG = TutorialActivity.class.getSimpleName();
     @BindView(R.id.intro_viewpager)
     ViewPager viewPager;
     MyViewPagerAdapter myViewPagerAdapter;
@@ -89,9 +80,11 @@ public class TutorialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_tutorial);
-        getSupportActionBar().show();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+            getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
+        }
         ButterKnife.bind(this);
         //Roboto-Thin.ttf
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
@@ -99,21 +92,14 @@ public class TutorialActivity extends AppCompatActivity {
         btSkip.setTypeface(typeface);
 
 
-
-        layouts = new int[]{
-                R.layout.intro_slide1,
-                R.layout.intro_slide2,
-                R.layout.intro_slide3,
-                R.layout.intro_slide4,
-                R.layout.intro_slide5,
-                R.layout.intro_slide6,
-                R.layout.intro_slide7,
-                R.layout.intro_slide8
-        };
-
+        layouts = new int[DbContext.instance.getDshuongdanList().size()];
+        for (int i = 0; i < layouts.length; i++) {
+            layouts[i] = R.layout.intro_slide_tutorial;
+        }
         addBottomDot(0);
+        Log.e(TAG, String.format("onCreate: %s", DbContext.instance.getDshuongdanList()));
 
-        changeSttBarColo();
+        changeSttBarColor();
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -160,18 +146,12 @@ public class TutorialActivity extends AppCompatActivity {
         return viewPager.getCurrentItem() + i;
     }
 
-    private void changeSttBarColo() {
+    private void changeSttBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
     }
 
     private class MyViewPagerAdapter extends PagerAdapter {
@@ -184,12 +164,17 @@ public class TutorialActivity extends AppCompatActivity {
         public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(layouts[position], container, false);
-            TextView tv1 = (TextView) view.findViewById(R.id.intro1_title);
-            TextView tv2 = (TextView) view.findViewById(R.id.intro1_content);
+            Dshuongdan ds = DbContext.instance.getDshuongdanList().get(position);
+            TextView tvTren = (TextView) view.findViewById(R.id.intro_title);
+            TextView tvDuoi = (TextView) view.findViewById(R.id.intro_content);
+            ImageView ivTutorial = (ImageView) view.findViewById(R.id.intro_logo);
             Typeface typeface1 = Typeface.createFromAsset(getAssets(), "fonts/RobotoCondensed-Light.ttf");
             Typeface typeface2 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-            tv1.setTypeface(typeface1);
-            tv2.setTypeface(typeface2);
+            tvTren.setTypeface(typeface1);
+            tvDuoi.setTypeface(typeface2);
+            tvTren.setText(ds.getNoidung());
+            tvDuoi.setText(ds.getYeucau());
+            Picasso.with(view.getContext()).load(ds.getPath()).into(ivTutorial);
             container.addView(view);
             return view;
         }

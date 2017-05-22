@@ -7,10 +7,14 @@ import android.view.ViewGroup;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.viewholders.CheckListViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.models.CheckMember;
+import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.Diadiem;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 
 /**
@@ -27,13 +31,18 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
         return checkListViewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(CheckListViewHolder holder, int position) {
-//        holder.bind(checkMember);
+        if (RealmDatabase.instance.getDiaDiemSave().size() != 0)
+            holder.bind(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().get(position));
     }
 
     @Override
     public int getItemCount() {
+        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+            return RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().size();
+        }
         return 0;
     }
 }

@@ -1,5 +1,6 @@
 package lachongmedia.vn.nfc.activities;
 
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -47,12 +48,17 @@ import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
+import lachongmedia.vn.nfc.database.respon.login.Diadiem;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
+import lachongmedia.vn.nfc.database.respon.login.Dsmatbang;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+    final LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
     private final String[][] techList = new String[][]{
             new String[]{
                     NfcA.class.getName(),
@@ -92,47 +98,65 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         paths = new Vector<>();
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
         if (getSupportActionBar() != null)
-        getSupportActionBar().hide();
+            getSupportActionBar().hide();
         updateDisplay();
         addListener();
 
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onEvent(LoginCompleteEvent event) {
-        paths = event.getPath();
-        Log.e(TAG, String.format("onEvent: %s", paths));
-        EventBus.getDefault().removeStickyEvent(LoginCompleteEvent.class);
-        layouts = new int[paths.size()];
-        for (int i = 0; i < layouts.length; i++) {
-            layouts[i] = R.layout.layout_matbang;
-        }
-        adapter = new MyViewPagerAdapter();
-        vpMatBang.setAdapter(adapter);
-
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
-        String id = SharedPref.instance.getIDMember();
+        date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
+        EventBus.getDefault().register(this);
         LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
-        date = DbContext.instance.getDateStart();
         if (loginRespon != null) {
             tvTimeStart.setText("Thời gian bắt đầu: " + Utils.getTime(date));
             tvName.setText("Tên nhân viên: " + loginRespon.getNhanvien().getTennhanvien());
             tvTime.setText("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút");
         } else
             llWork.setVisibility(View.GONE);
-        llWork.setVisibility(View.GONE);//TODO:XOa
+        llWork.setVisibility(View.GONE);
+        paths = DbContext.instance.getPaths();
+        Log.e(TAG, String.format("onEvent: %s", paths));
+        layouts = new int[paths.size()];
+        for (int i = 0; i < layouts.length; i++) {
+            layouts[i] = R.layout.layout_matbang;
+        }
+        adapter = new MyViewPagerAdapter();
+        vpMatBang.setAdapter(adapter);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onFirstLogin(LoginCompleteEvent event) {
+        EventBus.getDefault().removeStickyEvent(LoginCompleteEvent.class);
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.person_dialog);
+        ImageView ivAvt = (ImageView) dialog.findViewById(R.id.iv_avt);
+        AppCompatButton btOk = (AppCompatButton) dialog.findViewById(R.id.bt_ok);
+        TextView tvName = (TextView) dialog.findViewById(R.id.tv_name);
+        TextView tvType = (TextView) dialog.findViewById(R.id.tv_type);
+        TextView tvTime = (TextView) dialog.findViewById(R.id.tv_time);
+        tvTime.setText("Thời gian bắt đầu: " + Utils.getTime(date));
+        tvType.setText("Chức vụ: " + loginRespon.getNhanvien().getTenloainhanvien());
+
+        Picasso.with(this).load(loginRespon.getNhanvien().getPath()).into(ivAvt);
+        tvName.setText("Tên: " + loginRespon.getNhanvien().getTennhanvien());
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setTitle("Thông tin đăng nhập");
+        dialog.show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     private void addListener() {
@@ -170,7 +194,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // do UI updates here
-                        onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + Utils.getTime(date, new Date()) + " phút"));
+                        long minute = Utils.getTime(date, new Date());
+                        if (minute < 60)
+                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
+                        else {
+                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
+                        }
                     }
                 });
 
@@ -211,6 +240,17 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
+            for (int i = 0; i < loginRespon.getKehoach().getDsdiadiem().size(); i++) {
+                Dsdiadiem dsdiadiem = loginRespon.getKehoach().getDsdiadiem().get(i);
+                if (dsdiadiem.getDiadiem().getIdThediadiem().equalsIgnoreCase(id)) {
+                    DiaDiemSave diaDiemSave = new DiaDiemSave(dsdiadiem, loginRespon.getNhanvien());
+                    RealmDatabase.instance.saveDiaDiemSave(diaDiemSave);
+                    DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
+                    Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
+                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getDiadiem().getTendiadiem());
+                    startActivity(intent1);
+                }
+            }
         }
     }
 
@@ -232,7 +272,22 @@ public class MainActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e(TAG, String.format("onClick: %s", RealmDatabase.instance.getLoginRespon().getKehoach().getDsmatbang().get(position)));
+                    Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getDsmatbang().get(position);
+                    Log.e(TAG, String.format("onClick: %s", dsmatbang));
+                    Log.e(TAG, String.format("onClick: %s", dsmatbang.getMatbang()));
+                    int id = dsmatbang.getMatbang().getId();
+                    Vector<Diadiem> diadiems = new Vector<Diadiem>();
+                    for (int i = 0; i < loginRespon.getKehoach().getDsdiadiem().size(); i++) {
+                        Diadiem diadiem = loginRespon.getKehoach().getDsdiadiem().get(i).getDiadiem();
+                        if (id == diadiem.getIdMatbang()) {
+                            diadiems.add(diadiem);
+                            Log.e(TAG, String.format("onClickss: %s", Utils.getTimeWorkPlace(diadiem)));
+                        }
+                    }
+                    DbContext.instance.setDiadiems(diadiems);
+                    Intent intent = new Intent(MainActivity.this, GroundActivity.class);
+                    intent.putExtra("name", dsmatbang.getMatbang().getTenmatbang());
+                    startActivity(intent);
 
                 }
             });

@@ -10,7 +10,7 @@ public class Dschecklist extends RealmObject {
     @SerializedName("id_diadiem")
     private int idDiadiem;
     @SerializedName("giobatdau")
-    private int giobatdau;
+    private float giobatdau;
     @SerializedName("thoigianlamviec")
     private double thoigianlamviec;
     @SerializedName("tenchecklist")
@@ -19,6 +19,30 @@ public class Dschecklist extends RealmObject {
     private boolean trangthaichupanh;
     @SerializedName("trangthai")
     private int trangthai;
+    @SerializedName("phuongphap")
+    private String phuongphap;
+    @SerializedName("yeucau")
+    private String yeucau;
+
+    public boolean isTrangthaichupanh() {
+        return trangthaichupanh;
+    }
+
+    public String getPhuongphap() {
+        return phuongphap;
+    }
+
+    public void setPhuongphap(String phuongphap) {
+        this.phuongphap = phuongphap;
+    }
+
+    public String getYeucau() {
+        return yeucau;
+    }
+
+    public void setYeucau(String yeucau) {
+        this.yeucau = yeucau;
+    }
 
     public int getId() {
         return id;
@@ -36,11 +60,11 @@ public class Dschecklist extends RealmObject {
         this.idDiadiem = idDiadiem;
     }
 
-    public int getGiobatdau() {
+    public float getGiobatdau() {
         return giobatdau;
     }
 
-    public void setGiobatdau(int giobatdau) {
+    public void setGiobatdau(float giobatdau) {
         this.giobatdau = giobatdau;
     }
 

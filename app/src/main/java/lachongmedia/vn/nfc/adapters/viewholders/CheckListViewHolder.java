@@ -17,6 +17,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.database.models.CheckMember;
+import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 import tyrantgit.explosionfield.ExplosionField;
 
@@ -52,61 +54,64 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
         dialog.setCancelable(false);
     }
 
-    private void good(CheckMember checkMember) {
+    private void good(Dschecklist dschecklist) {
         cbGood.setVisibility(View.VISIBLE);
         cbGood.setChecked(true);
         ivBad.setVisibility(View.GONE);
         ivGood.setVisibility(View.GONE);
         cbBad.setVisibility(View.GONE);
-        checkMember.setType(1);
+        RealmDatabase.instance.updateDsCheckList(dschecklist, 1);
     }
 
-    private void bad(CheckMember checkMember) {
+    private void bad(Dschecklist dschecklist) {
         cbBad.setVisibility(View.VISIBLE);
         cbBad.setChecked(true);
         ivBad.setVisibility(View.GONE);
         ivGood.setVisibility(View.GONE);
         cbGood.setVisibility(View.GONE);
-        checkMember.setType(0);
+        RealmDatabase.instance.updateDsCheckList(dschecklist, 0);
     }
 
-    private void none(CheckMember checkMember) {
+    private void none(Dschecklist dschecklist) {
         cbBad.setVisibility(View.GONE);
         cbGood.setVisibility(View.GONE);
         ivBad.setVisibility(View.VISIBLE);
         ivGood.setVisibility(View.VISIBLE);
-        checkMember.setType(2);
+        RealmDatabase.instance.updateDsCheckList(dschecklist, 2);
     }
 
-    public void bind(final CheckMember checkMember) {
-        tvNameCv.setText(checkMember.getHangMuc());
-        tvPP.setText(checkMember.getPhuongPhap());
-        Log.e(TAG, String.format("bind: %s", checkMember.toString()));
-        dialog.setTitle(checkMember.getHangMuc());
-        tvRequite.setText(checkMember.getRequitement());
-
-        if (checkMember.getType() == 1) {
-            good(checkMember);
-        } else if (checkMember.getType() == 0) {
-            bad(checkMember);
+    public void bind(final Dschecklist dschecklist) {
+        tvNameCv.setText(dschecklist.getTenchecklist());
+        tvPP.setText(dschecklist.getPhuongphap());
+        Log.e(TAG, String.format("bind: %s", dschecklist.toString()));
+        dialog.setTitle(dschecklist.getTenchecklist());
+        tvRequite.setText(dschecklist.getYeucau());
+        if (dschecklist.isTrangthaichupanh()) {
+            ivCapture.setVisibility(View.INVISIBLE);
         } else {
-            none(checkMember);
+            ivCapture.setVisibility(View.GONE);
         }
-
-
+        if (dschecklist.getTrangthai() == 0) {
+            bad(dschecklist);
+        } else if (dschecklist.getTrangthai() == 1) {
+            good(dschecklist);
+        } else if (dschecklist.getTrangthai() == 2) {
+            none(dschecklist);
+        }
+        addListenner(dschecklist);
     }
 
-    private void addListenner(final CheckMember checkMember) {
+    private void addListenner(final Dschecklist dschecklist) {
         ivGood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                good(checkMember);
+                good(dschecklist);
             }
         });
         ivBad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bad(checkMember);
+                bad(dschecklist);
             }
         });
 
@@ -122,7 +127,7 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 llGood.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        good(checkMember);
+                        good(dschecklist);
                         Log.e(TAG, "onClick: ccccc");
                         dialog.dismiss();
                     }
@@ -130,14 +135,14 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                 llBad.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bad(checkMember);
+                        bad(dschecklist);
                         dialog.dismiss();
                     }
                 });
                 llNotCheck.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        none(checkMember);
+                        none(dschecklist);
                         dialog.dismiss();
                     }
                 });
