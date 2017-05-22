@@ -36,9 +36,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import butterknife.BindView;
@@ -49,6 +53,7 @@ import lachongmedia.vn.nfc.adapters.ImagesAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
+import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 import lachongmedia.vn.nfc.networks.NetContext;
 import lachongmedia.vn.nfc.server.ReportIssueSerice;
 import okhttp3.MediaType;
@@ -74,6 +79,41 @@ public class ReportIssueActivity extends AppCompatActivity {
     @BindView(R.id.rv_image)
     RecyclerView rvImages;
     LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
+    File finalFile;
+    ImagesAdapter adapter;
+    private Uri fileUri;
+
+    private static Uri getOutputMediaFileUri() {
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    /**
+     * Create a File for saving an image or video
+     */
+    private static File getOutputMediaFile() {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "AdenService");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("AdenService", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_" + timeStamp + ".jpg");
+
+        return mediaFile;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,18 +163,7 @@ public class ReportIssueActivity extends AppCompatActivity {
             }
         });
         addListener();
-    }
-
-    public void upload() {
-        ReportIssueSerice serice = NetContext.instance.create(ReportIssueSerice.class);
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        builder.setType(MultipartBody.FORM);
-        for (int i = 0; i < DbContext.instance.getPathImageIssue().size(); i++) {
-            File file1 = new File(DbContext.instance.getPathImageIssue().get(i));
-            builder.addFormDataPart("files", file1.getName(), RequestBody.create(MediaType.parse("image/*"), file1));
-        }
-        MultipartBody requestBody = builder.build();
-
+        hihihi();
     }
 
     private void addListener() {
@@ -146,6 +175,9 @@ public class ReportIssueActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(ReportIssueActivity.this, PERMISSION, PERMISSION_CAMERA);
                 }
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                fileUri = getOutputMediaFileUri();
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri );
                 startActivityForResult(intent, CAMERA_REQUEST);
             }
         });
@@ -154,14 +186,8 @@ public class ReportIssueActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-//            File f = savebitmap(photo);
-            // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-            Uri tempUri = getImageUri(getApplicationContext(), photo);
-            // CALL THIS METHOD TO GET THE ACTUAL PATH
-
-            File finalFile = new File(getRealPathFromURI(tempUri));
-            Log.e(TAG, String.format("onActivityResult: %s %s", finalFile.getTotalSpace(), finalFile.getPath()));
+            finalFile = getOutputMediaFile();
+            Log.e(TAG, String.format("onActivityResult: %s %s", finalFile.length(), finalFile.getPath()));
             DbContext.instance.getPathImageIssue().add(finalFile.getPath());
         }
     }
@@ -169,54 +195,12 @@ public class ReportIssueActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        ImagesAdapter adapter = new ImagesAdapter();
+        adapter = new ImagesAdapter();
         rvImages.setAdapter(adapter);
         rvImages.setLayoutManager(new GridLayoutManager(this, 4));
     }
 
-    private File savebitmap(Bitmap bmp) {
-        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
 
-        if (!Utils.hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-        }
-        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-        OutputStream outStream = null;
-        // String temp = null;
-        String path = Utils.dateToString(new Date());
-        path = path + ".jpg";
-
-        File file = new File(extStorageDirectory + "/Aden", path);
-        if (file.exists()) {
-            file.delete();
-            file = new File(extStorageDirectory, path);
-        }
-
-        try {
-            outStream = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return file;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
 
     public void uploadMultipart() {
         loginRespon.getNhanvien().getIdNhanvien();
@@ -233,6 +217,30 @@ public class ReportIssueActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, String.format("uploadMultipart: %s", e.toString()));
         }
+
+    }
+
+    public void hihihi() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // do UI updates here
+                        if (adapter != null)
+                            adapter.notifyDataSetChanged();
+                        if (finalFile != null) {
+                            Log.e(TAG, String.format("run: %s %s", finalFile.getTotalSpace(), finalFile.getPath()));
+                        }
+                    }
+                });
+
+            }
+
+        }, 0, 60000);//Update text every 60 seconds
 
     }
 }

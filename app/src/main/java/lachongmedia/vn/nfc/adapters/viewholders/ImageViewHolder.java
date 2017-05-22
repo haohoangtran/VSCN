@@ -4,7 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +29,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(String path) {
-        Picasso.with(itemView.getContext()).load("file://" + path).into(ivImage);
+//        Picasso.with(itemView.getContext()).load("file://" + path).into(ivImage);
+        Glide.with(itemView.getContext()).load(new File(path)).into(ivImage);
     }
 }
