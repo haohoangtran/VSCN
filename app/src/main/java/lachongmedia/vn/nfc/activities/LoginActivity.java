@@ -93,6 +93,42 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 //            tvName.setText("Bạn chưa vào phiên làm việc! Quẹt thẻ để tiếp tục");
         }
+        LoginService loginService = NetContext.instance.create(LoginService.class);
+        loginService.login("846AC9470C4002E0").enqueue(new Callback<LoginRespon>() {
+            @Override
+            public void onResponse(Call<LoginRespon> call, Response<LoginRespon> response) {
+                if (response.code() == 200) {
+                    final LoginRespon respon = response.body();
+                    if (respon != null) {
+                        RealmDatabase.instance.insertOrUpdateLogin(respon);
+                        Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
+                        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        Date da = new Date();
+                        RealmDatabase.instance.addToRealmDateString(new DateString(da, respon.getNhanvien().getIdNhanvien(), 0));
+                        SharedPref.instance.putIDUser(respon.getNhanvien().getIdNhanvien());
+                        for (int i = 0; i < respon.getKehoach().getDsmatbang().size(); i++) {
+                            paths.add(respon.getKehoach().getDsmatbang().get(i).getAnhmatbang().getPath());
+                        }
+                        Set<String> matbangImgs = new HashSet<>(paths);
+                        paths = new Vector<>(matbangImgs);
+                        for (String path : paths) {
+                            Log.e(TAG, String.format("onResponse: %s", path));
+                        }
+                        DbContext.instance.setPaths(paths);
+                        EventBus.getDefault().postSticky(new LoginCompleteEvent());
+                        startActivity(intent1);
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "Thẻ của bạn chưa được đăng ký!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginRespon> call, Throwable t) {
+                Log.e("hihu", String.format("onFailure: %s", t.toString()));
+            }
+        });
     }
 
     @Override

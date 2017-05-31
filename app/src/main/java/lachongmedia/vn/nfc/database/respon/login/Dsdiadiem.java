@@ -31,6 +31,15 @@ public class Dsdiadiem extends RealmObject {
         this.dschecklist = dschecklist;
     }
 
+    @Override
+    public String toString() {
+        return "Dsdiadiem{" +
+                "diadiem=" + diadiem +
+                ", dschecklist=" + dschecklist +
+                ", dshuongdan=" + dshuongdan +
+                '}';
+    }
+
     public RealmList<Dshuongdan> getDshuongdan() {
         return dshuongdan;
     }

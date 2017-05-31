@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
+    <TextView
+        android:id="@+id/tv_time_content"
+        android:layout_margin="@dimen/margin_8"
+        android:layout_width="match_parent"
+        android:textSize="16sp"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/intro1_waves"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:src="@drawable/waves_image" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/intro_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/line_view">
+
     </android.support.v4.view.ViewPager>
 
     <LinearLayout
@@ -36,26 +52,36 @@
         android:alpha=".5"
         android:background="@android:color/white" />
 
-    <Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/bt_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:background="@null"
         android:text="Báo cáo công việc"
         android:textAllCaps="false"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        fbutton:buttonColor="@color/colorAccent"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowColor="@color/fbutton_color_green_sea"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
 
-    <Button
+    <info.hoang8f.widget.FButton
         android:id="@+id/bt_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@null"
         android:text="Trở về menu"
         android:textAllCaps="false"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        fbutton:buttonColor="@color/colorAccent"
+        fbutton:cornerRadius="5dp"
+        fbutton:shadowColor="@color/fbutton_color_green_sea"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="5dp" />
+
+
 
 </RelativeLayout>

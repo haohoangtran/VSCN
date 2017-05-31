@@ -99,4 +99,19 @@ public class Dschecklist extends RealmObject {
     public void setTrangthai(int trangthai) {
         this.trangthai = trangthai;
     }
+
+    @Override
+    public String toString() {
+        return "Dschecklist{" +
+                "id=" + id +
+                ", idDiadiem=" + idDiadiem +
+                ", giobatdau=" + giobatdau +
+                ", thoigianlamviec=" + thoigianlamviec +
+                ", tenchecklist='" + tenchecklist + '\'' +
+                ", trangthaichupanh=" + trangthaichupanh +
+                ", trangthai=" + trangthai +
+                ", phuongphap='" + phuongphap + '\'' +
+                ", yeucau='" + yeucau + '\'' +
+                '}';
+    }
 }

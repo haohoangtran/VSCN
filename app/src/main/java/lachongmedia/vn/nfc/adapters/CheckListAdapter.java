@@ -1,6 +1,7 @@
 package lachongmedia.vn.nfc.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import lachongmedia.vn.nfc.database.models.CheckMember;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Diadiem;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by hao on 29/04/2017.
@@ -34,15 +37,22 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
 
     @Override
     public void onBindViewHolder(CheckListViewHolder holder, int position) {
-        if (RealmDatabase.instance.getDiaDiemSave().size() != 0)
+        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
             holder.bind(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().get(position));
+            Log.e("hihihi", String.format("onBindViewHolder: %s", RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().get(position)));
+        }
+        Log.e(TAG, String.format("onBindViewHolder: %s",RealmDatabase.instance.getDiaDiemSave().size() ) );
     }
 
     @Override
     public int getItemCount() {
+        int a;
         if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
-            return RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().size();
+            a= RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().size();
+        }else {
+            a=0;
         }
-        return 0;
+        Log.e(TAG, "getItemCount: "+a );
+        return a;
     }
 }

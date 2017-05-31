@@ -57,6 +57,7 @@ public class ActionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 llMap.startAnimation(buttonClick);
                 Intent intent = new Intent(ActionActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }
@@ -94,6 +95,7 @@ public class ActionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ActionActivity.this, ReportIssueActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });

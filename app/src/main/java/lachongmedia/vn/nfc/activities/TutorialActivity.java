@@ -20,14 +20,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import info.hoang8f.widget.FButton;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
+import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 public class TutorialActivity extends AppCompatActivity {
     private static final String TAG = TutorialActivity.class.getSimpleName();
@@ -38,12 +43,15 @@ public class TutorialActivity extends AppCompatActivity {
     LinearLayout dotsLayout;
     TextView[] dots;
     @BindView(R.id.bt_skip)
-    Button btSkip;
+    FButton btSkip;
     @BindView(R.id.bt_next)
-    Button btNext;
+    FButton btNext;
     @BindView(R.id.tv_step)
     TextView tvStep;
+    @BindView(R.id.tv_time_content)
+    TextView tvTimeTop;
     private int[] layouts;
+    LoginRespon loginRespon=RealmDatabase.instance.getLoginRespon();
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         private final String TAG = TutorialActivity.class.getSimpleName();
@@ -100,6 +108,11 @@ public class TutorialActivity extends AppCompatActivity {
         Log.e(TAG, String.format("onCreate: %s", DbContext.instance.getDshuongdanList()));
 
         changeSttBarColor();
+        StringBuilder builder=new StringBuilder();
+        builder.append("Địa điểm: 0/").append(loginRespon.getKehoach().getDsdiadiem().size())
+                .append("\t ĐỊa điểm kế tiếp: "+loginRespon.getKehoach().)
+        ;
+        tvTimeTop.setText(builder.toString());
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -116,8 +129,11 @@ public class TutorialActivity extends AppCompatActivity {
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
-                startActivity(intent);
+                if (RealmDatabase.instance.getDiaDiemSave().size()!=0) {
+                    Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
+                    startActivity(intent);
+                }else
+                    Toast.makeText(TutorialActivity.this, "Bạn chưa vào điểm này, không thể báo cáo", Toast.LENGTH_SHORT).show();
             }
         });
     }

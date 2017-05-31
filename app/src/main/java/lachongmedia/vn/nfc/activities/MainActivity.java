@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tvType = (TextView) dialog.findViewById(R.id.tv_type);
         TextView tvTime = (TextView) dialog.findViewById(R.id.tv_time);
         tvTime.setText("Thời gian bắt đầu: " + Utils.getTime(date));
-        tvType.setText("Chức vụ: " + loginRespon.getNhanvien().getTenloainhanvien());
+        tvType.setText("Vị trí: " + loginRespon.getNhanvien().getTenloainhanvien());
 
         Picasso.with(this).load(loginRespon.getNhanvien().getPath()).into(ivAvt);
         tvName.setText("Tên: " + loginRespon.getNhanvien().getTennhanvien());

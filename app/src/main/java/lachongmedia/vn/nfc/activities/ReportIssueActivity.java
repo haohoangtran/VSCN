@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -83,7 +84,8 @@ public class ReportIssueActivity extends AppCompatActivity {
     ImagesAdapter adapter;
     private Uri fileUri;
 
-    private static Uri getOutputMediaFileUri() {
+    private static Uri getOutputMediaFileUri(Activity activity) {
+
         return Uri.fromFile(getOutputMediaFile());
     }
 
@@ -111,6 +113,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_" + timeStamp + ".jpg");
+        Log.e(TAG, String.format("getOutputMediaFile: %s", mediaFile.getPath()));
 
         return mediaFile;
     }
@@ -166,6 +169,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         hihihi();
     }
 
+
     private void addListener() {
         btCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,11 +178,12 @@ public class ReportIssueActivity extends AppCompatActivity {
                 if (!Utils.hasPermissions(ReportIssueActivity.this, PERMISSION)) {
                     ActivityCompat.requestPermissions(ReportIssueActivity.this, PERMISSION, PERMISSION_CAMERA);
                 }
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                fileUri = getOutputMediaFileUri();
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri );
-                startActivityForResult(intent, CAMERA_REQUEST);
+                ActivityCompat.requestPermissions(ReportIssueActivity.this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        1);
+
+
             }
         });
     }
@@ -193,13 +198,23 @@ public class ReportIssueActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            fileUri = getOutputMediaFileUri(ReportIssueActivity.this);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            startActivityForResult(intent, CAMERA_REQUEST);
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         adapter = new ImagesAdapter();
         rvImages.setAdapter(adapter);
         rvImages.setLayoutManager(new GridLayoutManager(this, 4));
     }
-
 
 
     public void uploadMultipart() {
