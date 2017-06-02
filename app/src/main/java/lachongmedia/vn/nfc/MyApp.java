@@ -1,7 +1,9 @@
 package lachongmedia.vn.nfc;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import java.util.Date;
@@ -25,5 +27,11 @@ public class MyApp extends Application {
         SharedPref.setInstance(getApplicationContext());
 //        Intent intent= new Intent(this,Service.class);
 //        startService(intent);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

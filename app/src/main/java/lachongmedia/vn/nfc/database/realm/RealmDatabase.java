@@ -91,6 +91,7 @@ public class RealmDatabase {
         return diaDiemSaves;
     }
 
+
     public void saveDiaDiemSave(DiaDiemSave diaDiemSave) {
         this.realm = Realm.getDefaultInstance();
         realm.beginTransaction();

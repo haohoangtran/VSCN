@@ -108,9 +108,8 @@ public class CheckListActivity extends AppCompatActivity {
             diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
         }
         tvName.setText("Tên nhân viên: " + diaDiemSave.getNhanvien().getTennhanvien());
-        tvVitri.setText("Tên địa điểm: " + diaDiemSave.getDsdiadiem().getDiadiem().getTendiadiem());
+        tvVitri.setText("Tên địa điểm: " + diaDiemSave.getDsdiadiem().getTendiadiem());
         date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
-
     }
 
     private void updateDisplay() {
@@ -140,7 +139,7 @@ public class CheckListActivity extends AppCompatActivity {
     public void onTimeChange(TimeChangeEvent event) {
         long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
         tvTime.setText(event.getTime());
-        tvTimeMax.setText("Thời gian tại điểm: " + minute + "/" + diaDiemSave.getDsdiadiem().getDiadiem().getThoigiantoida() + " phút tối đa");
+        tvTimeMax.setText("Thời gian tại điểm: " + minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida() + " phút tối đa");
     }
 
     @Subscribe

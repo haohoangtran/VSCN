@@ -6,9 +6,14 @@
     android:background="@color/white">
     <TextView
         android:id="@+id/tv_time_content"
-        android:layout_margin="@dimen/margin_8"
-        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
         android:textSize="16sp"
+        android:textDirection="ltr"
+        android:maxLines="1"
+        android:text="a b c d e f sa a af sa dwq fas fds f dsf s as da sf afa sf asfsa  asfsd fas d asfsa da fsa d"
         android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/intro1_waves"
@@ -21,6 +26,7 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/intro_viewpager"
+        android:layout_below="@id/tv_time_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/line_view">

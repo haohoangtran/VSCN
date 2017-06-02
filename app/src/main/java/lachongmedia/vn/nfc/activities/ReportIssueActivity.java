@@ -29,6 +29,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,12 +49,11 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
 public class ReportIssueActivity extends AppCompatActivity {
-    private static final int CAMERA_REQUEST = 1001;
-    private static final int PERMISSION_ALL = 1002;
-    private static final int PERMISSION_CAMERA = 1003;
     private static final String TAG = ReportIssueActivity.class.getSimpleName();
+    private static final int CAPTURE_CODE = 12412;
     @BindView(R.id.sp_places)
     AppCompatSpinner spPlace;
     @BindView(R.id.bt_capture)
@@ -68,7 +68,6 @@ public class ReportIssueActivity extends AppCompatActivity {
     File finalFile;
     ImagesAdapter adapter;
     private Uri fileUri;
-
     private static Uri getOutputMediaFileUri(Activity activity) {
 
         return Uri.fromFile(getOutputMediaFile());
@@ -161,39 +160,12 @@ public class ReportIssueActivity extends AppCompatActivity {
         btCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] PERMISSION = {Manifest.permission.CAMERA};
-                if (!Utils.hasPermissions(ReportIssueActivity.this, PERMISSION)) {
-                    ActivityCompat.requestPermissions(ReportIssueActivity.this, PERMISSION, PERMISSION_CAMERA);
-                }
-
-                ActivityCompat.requestPermissions(ReportIssueActivity.this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        1);
-
-
+                Intent intent = new Intent(ReportIssueActivity.this, ChupAnhActivity.class);
+                startActivityForResult(intent, CAPTURE_CODE);
             }
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            finalFile = getOutputMediaFile();
-            Log.e(TAG, String.format("onActivityResult: %s %s", finalFile.length(), finalFile.getPath()));
-            DbContext.instance.getPathImageIssue().add(finalFile.getPath());
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            fileUri = getOutputMediaFileUri(ReportIssueActivity.this);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(intent, CAMERA_REQUEST);
-        }
-    }
 
     @Override
     protected void onStart() {
@@ -244,5 +216,15 @@ public class ReportIssueActivity extends AppCompatActivity {
 
         }, 0, 60000);//Update text every 60 seconds
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAPTURE_CODE && resultCode == RESULT_OK) {
+            Log.e(TAG, "onActivityResult: %s");
+            DbContext.instance.setPathImageIssue(ChupAnhActivity.pathsList);
+
+        }
     }
 }

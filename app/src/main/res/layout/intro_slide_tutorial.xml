@@ -8,8 +8,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/intro_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/margin_16"
+            android:alpha="0.8"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/nvs1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -27,7 +49,6 @@
                     android:layout_centerHorizontal="true"
                     android:layout_margin="@dimen/margin_8"
                     android:layout_marginTop="@dimen/margin_16"
-                    android:text="Chuẩn bị:\nDụng cụ . Gồm biển cảnh báo, xe lau ,cây lau sàn ,xô chứa nước ,bàn chải cọ toilet, bộ lau kính, gắng tay ,khẩu trang ,túi rác ,giấy vệ sinh ,khăn lau. Hóa chất: lau kính ,lau sàn ,hc :cọ bồn cầu v.v."
                     android:textSize="22sp"
 
                     />
@@ -41,45 +62,11 @@
                     android:layout_margin="@dimen/margin_8"
                     android:layout_marginTop="16dp"
 
-                    android:text="Yêu cầu: Dụng cụ làm việc phải đẩy đủ ,gọn gang ,sạch sẽ, hóa chất phải đúng chủng loại .bình đựng hóa chất phải có nhán mác ghi tên hóa chất "
 
                     android:textSize="19dp" />
             </LinearLayout>
         </ScrollView>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_16"
-        android:layout_weight="1">
-
-        <ImageView
-            android:layout_margin="@dimen/margin_16"
-            android:id="@+id/intro_logo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:alpha="0.8"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/nvs1" />
-
-    </LinearLayout>
-
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:layout_alignParentTop="true"-->
-    <!--android:background="@color/dot_dark_screen2"-->
-    <!--android:orientation="vertical">-->
-
-    <!---->
-
-    <!---->
-
-
-
-    <!--</RelativeLayout>-->
 
 </LinearLayout>

@@ -275,12 +275,7 @@ public class MainActivity extends AppCompatActivity {
                     Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getSite().getDsmatbang().get(position);
                     Log.e(TAG, String.format("onClick: %s", dsmatbang));
                     Log.e(TAG, String.format("onClick: %s", dsmatbang.getTenmatbang()));
-                    int id = dsmatbang.getId();
-                    List<Dsdiadiem> diadiems = new Vector<Dsdiadiem>();
-                    RealmList<Dsmatbang> dsmatbang1 = loginRespon.getKehoach().getSite().getDsmatbang();
-                    diadiems = dsmatbang.getDsdiadiem();
 
-                    DbContext.instance.setDiadiems(diadiems);
                     Intent intent = new Intent(MainActivity.this, GroundActivity.class);
                     intent.putExtra("name", dsmatbang.getTenmatbang());
                     startActivity(intent);

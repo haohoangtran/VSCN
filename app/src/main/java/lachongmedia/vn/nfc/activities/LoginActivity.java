@@ -36,6 +36,7 @@ import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DateString;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
 import lachongmedia.vn.nfc.networks.NetContext;
@@ -93,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 //            tvName.setText("Bạn chưa vào phiên làm việc! Quẹt thẻ để tiếp tục");
         }
-        atemLogin();
 
     }
 
@@ -118,6 +118,13 @@ public class LoginActivity extends AppCompatActivity {
                         for (String path : paths) {
                             Log.e(TAG, String.format("onResponse: %s", path));
                         }
+                        Vector<Dsdiadiem> dsdiadiems = new Vector<>();
+                        for (int i = 0; i < respon.getKehoach().getSite().getDsmatbang().size(); i++) {
+                            for (int i1 = 0; i1 < respon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
+                                dsdiadiems.add(respon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1));
+                            }
+                        }
+                        DbContext.instance.setDiadiems(dsdiadiems);
                         DbContext.instance.setPaths(paths);
                         EventBus.getDefault().postSticky(new LoginCompleteEvent());
                         startActivity(intent1);

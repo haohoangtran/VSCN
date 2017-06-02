@@ -29,6 +29,7 @@ import info.hoang8f.widget.FButton;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 public class TutorialActivity extends AppCompatActivity {
@@ -105,12 +106,17 @@ public class TutorialActivity extends AppCompatActivity {
         Log.e(TAG, String.format("onCreate: %s", DbContext.instance.getDshuongdanList()));
 
         changeSttBarColor();
-        StringBuilder builder=new StringBuilder();
-        builder.append("Địa điểm: 0/").append(loginRespon.getKehoach().getDsdiadiem().size())
-                .append("\t ĐỊa điểm kế tiếp: " + loginRespon.getKehoach());
-        ;
-        tvTimeTop.setText(builder.toString());
+        tvTimeTop.setVisibility(View.GONE);
+        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
 
+            StringBuilder builder = new StringBuilder();
+            builder.append("0/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
+                    .append("\t0/").append(DbContext.instance.getDiadiems().size())
+                    .append("\t" + "hihi");
+            ;
+            tvTimeTop.setVisibility(View.VISIBLE);
+            tvTimeTop.setText(builder.toString());
+        }
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);

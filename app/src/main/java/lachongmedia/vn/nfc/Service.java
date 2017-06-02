@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 /**
  * Created by tranh on 5/17/2017.

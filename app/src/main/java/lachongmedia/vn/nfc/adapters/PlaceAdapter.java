@@ -12,6 +12,8 @@ import lachongmedia.vn.nfc.activities.TutorialActivity;
 import lachongmedia.vn.nfc.adapters.viewholders.PlaceViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
+import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 /**
  * Created by tranh on 5/18/2017.
@@ -32,15 +34,16 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
     @Override
     public void onBindViewHolder(final PlaceViewHolder holder, final int position) {
         Log.e("vv", String.format("onBindViewHolder: %s", position));
-        final Diadiem diadiem = DbContext.instance.getDiadiems().get(position);
+        final Dsdiadiem diadiem = DbContext.instance.getDiadiems().get(position);
         holder.bind(diadiem);
         final LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DbContext.instance.setDshuongdanList(loginRespon.getKehoach().getDsdiadiem().get(position).getDshuongdan());
+                Dsdiadiem dsdiadiem = DbContext.instance.getDiadiems().get(position);
+                DbContext.instance.setDshuongdanList(dsdiadiem.getDshuongdan());
                 Intent intent = new Intent(holder.itemView.getContext(), TutorialActivity.class);
-                intent.putExtra("name", loginRespon.getKehoach().getDsdiadiem().get(position).getDiadiem().getTendiadiem());
+                intent.putExtra("name", dsdiadiem.getTendiadiem());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

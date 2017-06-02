@@ -59,6 +59,10 @@ public class DbContext {
         this.dshuongdanList = dshuongdanList;
     }
 
+    public void setPathImageIssue(List<String> pathImageIssue) {
+        this.pathImageIssue = pathImageIssue;
+    }
+
     public List<String> getPathImageIssue() {
         return pathImageIssue;
     }
