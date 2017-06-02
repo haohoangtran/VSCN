@@ -16,9 +16,8 @@ import retrofit2.http.Path;
  * Created by tranh on 5/20/2017.
  */
 
-public interface ReportIssueSerice {
+public interface ReportIssueService {
     @Multipart
     @POST("images/suco/{id_dd}/{id_nv}")
-    Call<Void> sendReport(@PartMap Map<String, RequestBody> files, @Path("id_dd") String iddd, @Path("id_nv") String idnv);
-//    Call<Void> sendReportIssue(@Body RequestBody files, @Path("id_dd") String iddd, @Path("id_nv")String idnv);
+    Call<Void> uploadSurvey(@Part MultipartBody.Part[] surveyImage, @Path("id_dd") String id_dd, @Path("id_nv") String id_nv);
 }

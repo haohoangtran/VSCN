@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import net.gotev.uploadservice.UploadService;
+
 import java.util.Date;
 
 import io.realm.Realm;
@@ -27,6 +29,9 @@ public class MyApp extends Application {
         SharedPref.setInstance(getApplicationContext());
 //        Intent intent= new Intent(this,Service.class);
 //        startService(intent);
+        UploadService.NAMESPACE = BuildConfig.APPLICATION_ID;
+        // Or, you can define it manually.
+        UploadService.NAMESPACE = "lachongmedia.vn.nfc";
     }
 
     @Override

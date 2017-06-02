@@ -275,7 +275,6 @@ public class MainActivity extends AppCompatActivity {
                     Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getSite().getDsmatbang().get(position);
                     Log.e(TAG, String.format("onClick: %s", dsmatbang));
                     Log.e(TAG, String.format("onClick: %s", dsmatbang.getTenmatbang()));
-
                     Intent intent = new Intent(MainActivity.this, GroundActivity.class);
                     intent.putExtra("name", dsmatbang.getTenmatbang());
                     startActivity(intent);

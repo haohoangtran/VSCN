@@ -1,16 +1,13 @@
 package lachongmedia.vn.nfc.activities;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatSpinner;
@@ -28,9 +25,6 @@ import net.gotev.uploadservice.UploadNotificationConfig;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -38,13 +32,14 @@ import java.util.Vector;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.ImagesAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import lachongmedia.vn.nfc.networks.NetContext;
-import lachongmedia.vn.nfc.server.ReportIssueSerice;
+import lachongmedia.vn.nfc.server.ReportIssueService;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -129,30 +124,55 @@ public class ReportIssueActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Map<String, RequestBody> files = new HashMap<>();
-                ReportIssueSerice serice = NetContext.instance.create(ReportIssueSerice.class);
-                for (int i = 0; i < DbContext.instance.getPathImageIssue().size(); i++) {
 
-                    RequestBody requestBody = Utils.createRequestBody(new File(DbContext.instance.getPathImageIssue().get(i)));
-                    files.put("a" + i, requestBody);
-                }
-                serice.sendReport(files, "1", "1").enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        Log.e(TAG, "onResponse: hihi");
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Log.e(TAG, "onFailure: Looix");
-                    }
-                });
-
+                requestUploadSurvey();
 
             }
         });
         addListener();
         hihihi();
+    }
+
+    private void requestUploadSurvey() {
+
+        MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[DbContext.instance.getPathImageIssue().size()];
+
+        for (int index = 0; index < DbContext.instance.getPathImageIssue().size(); index++) {
+            Log.d(TAG, "requestUploadSurvey: survey image " + index + "  " + DbContext.instance.getPathImageIssue().get(index));
+            File file = new File(DbContext.instance.getPathImageIssue().get(index));
+            RequestBody surveyBody = RequestBody.create(MediaType.parse("image/*"), file);
+            surveyImagesParts[index] = MultipartBody.Part.createFormData("files", file.getName(), surveyBody);
+        }
+        ReportIssueService service = NetContext.instance.create(ReportIssueService.class);
+        service.uploadSurvey(surveyImagesParts, "4", "1").enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                Log.e(TAG, "onResponse: a");
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Log.e(TAG, String.format("onFailure: %s", t.toString()));
+            }
+        });
+        uploadMultipart();
+    }
+
+    public void uploadMultipart() {
+        try {
+            MultipartUploadRequest upload =
+                    new MultipartUploadRequest(this, "http://svaden.ksmart.vn/api/images/suco/4/1")
+                            .setNotificationConfig(new UploadNotificationConfig())
+                            .setMaxRetries(2);
+            for (int i = 0; i < DbContext.instance.getPathImageIssue().size(); i++) {
+                upload.addFileToUpload(DbContext.instance.getPathImageIssue().get(i), "files");
+            }
+            String uploadId = upload.startUpload();
+            Log.e(TAG, "uploadMultipart: " + uploadId);
+
+        } catch (Exception exc) {
+            Log.e("AndroidUploadService", exc.getMessage(), exc);
+        }
     }
 
 
@@ -175,24 +195,6 @@ public class ReportIssueActivity extends AppCompatActivity {
         rvImages.setLayoutManager(new GridLayoutManager(this, 4));
     }
 
-
-    public void uploadMultipart() {
-        loginRespon.getNhanvien().getIdNhanvien();
-        try {
-            MultipartUploadRequest multipartUploadRequest = new MultipartUploadRequest(this, "http://svaden.ksmart.vn/api/images/suco/1/1")
-                    // starting from 3.1+, you can also use content:// URI string instead of absolute file
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2);
-            for (int i = 0; i < DbContext.instance.getPathImageIssue().size(); i++) {
-                multipartUploadRequest.addFileToUpload(DbContext.instance.getPathImageIssue().get(i), "jpg");
-            }
-            String uploadId = multipartUploadRequest.startUpload();
-            Log.e(TAG, String.format("uploadMultipart: %s", uploadId));
-        } catch (Exception e) {
-            Log.e(TAG, String.format("uploadMultipart: %s", e.toString()));
-        }
-
-    }
 
     public void hihihi() {
         Timer timer = new Timer();
@@ -221,7 +223,8 @@ public class ReportIssueActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAPTURE_CODE && resultCode == RESULT_OK) {
+        Log.e(TAG, String.format("onActivityResult: %s", requestCode));
+        if (requestCode == CAPTURE_CODE) {
             Log.e(TAG, "onActivityResult: %s");
             DbContext.instance.setPathImageIssue(ChupAnhActivity.pathsList);
 
