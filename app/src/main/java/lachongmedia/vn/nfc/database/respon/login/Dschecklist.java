@@ -10,39 +10,19 @@ public class Dschecklist extends RealmObject {
     @SerializedName("id_diadiem")
     private int idDiadiem;
     @SerializedName("giobatdau")
-    private float giobatdau;
+    private double giobatdau;
     @SerializedName("thoigianlamviec")
     private double thoigianlamviec;
     @SerializedName("tenchecklist")
     private String tenchecklist;
-    @SerializedName("trangthaichupanh")
-    private boolean trangthaichupanh;
-    @SerializedName("trangthai")
-    private int trangthai;
     @SerializedName("phuongphap")
     private String phuongphap;
     @SerializedName("yeucau")
     private String yeucau;
-
-    public boolean isTrangthaichupanh() {
-        return trangthaichupanh;
-    }
-
-    public String getPhuongphap() {
-        return phuongphap;
-    }
-
-    public void setPhuongphap(String phuongphap) {
-        this.phuongphap = phuongphap;
-    }
-
-    public String getYeucau() {
-        return yeucau;
-    }
-
-    public void setYeucau(String yeucau) {
-        this.yeucau = yeucau;
-    }
+    @SerializedName("trangthaichupanh")
+    private boolean trangthaichupanh;
+    @SerializedName("trangthai")
+    private int trangthai;
 
     public int getId() {
         return id;
@@ -60,11 +40,11 @@ public class Dschecklist extends RealmObject {
         this.idDiadiem = idDiadiem;
     }
 
-    public float getGiobatdau() {
+    public double getGiobatdau() {
         return giobatdau;
     }
 
-    public void setGiobatdau(float giobatdau) {
+    public void setGiobatdau(double giobatdau) {
         this.giobatdau = giobatdau;
     }
 
@@ -84,6 +64,22 @@ public class Dschecklist extends RealmObject {
         this.tenchecklist = tenchecklist;
     }
 
+    public String getPhuongphap() {
+        return phuongphap;
+    }
+
+    public void setPhuongphap(String phuongphap) {
+        this.phuongphap = phuongphap;
+    }
+
+    public String getYeucau() {
+        return yeucau;
+    }
+
+    public void setYeucau(String yeucau) {
+        this.yeucau = yeucau;
+    }
+
     public boolean getTrangthaichupanh() {
         return trangthaichupanh;
     }
@@ -98,20 +94,5 @@ public class Dschecklist extends RealmObject {
 
     public void setTrangthai(int trangthai) {
         this.trangthai = trangthai;
-    }
-
-    @Override
-    public String toString() {
-        return "Dschecklist{" +
-                "id=" + id +
-                ", idDiadiem=" + idDiadiem +
-                ", giobatdau=" + giobatdau +
-                ", thoigianlamviec=" + thoigianlamviec +
-                ", tenchecklist='" + tenchecklist + '\'' +
-                ", trangthaichupanh=" + trangthaichupanh +
-                ", trangthai=" + trangthai +
-                ", phuongphap='" + phuongphap + '\'' +
-                ", yeucau='" + yeucau + '\'' +
-                '}';
     }
 }

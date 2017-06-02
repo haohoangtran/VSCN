@@ -6,17 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
-
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.viewholders.CheckListViewHolder;
-import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.models.CheckMember;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
-import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 
 import static android.content.ContentValues.TAG;
 

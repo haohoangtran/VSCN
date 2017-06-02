@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmObject;
 
 /**
- * Created by tranh on 5/16/2017.
+ * Created by hao on 6/2/17.
  */
 
 public class LoginRespon extends RealmObject {
@@ -29,13 +29,5 @@ public class LoginRespon extends RealmObject {
 
     public void setKehoach(Kehoach kehoach) {
         this.kehoach = kehoach;
-    }
-
-    @Override
-    public String toString() {
-        return "LoginRespon{" +
-                "nhanvien=" + nhanvien +
-                ", kehoach=" + kehoach +
-                '}';
     }
 }

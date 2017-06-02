@@ -2,6 +2,9 @@ package lachongmedia.vn.nfc.database.respon.login;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class Site extends RealmObject {
@@ -13,6 +16,8 @@ public class Site extends RealmObject {
     private String diachi;
     @SerializedName("sodienthoai")
     private String sodienthoai;
+    @SerializedName("dsmatbang")
+    private RealmList<Dsmatbang> dsmatbang;
 
     public int getId() {
         return id;
@@ -44,5 +49,13 @@ public class Site extends RealmObject {
 
     public void setSodienthoai(String sodienthoai) {
         this.sodienthoai = sodienthoai;
+    }
+
+    public RealmList<Dsmatbang> getDsmatbang() {
+        return dsmatbang;
+    }
+
+    public void setDsmatbang(RealmList<Dsmatbang> dsmatbang) {
+        this.dsmatbang = dsmatbang;
     }
 }

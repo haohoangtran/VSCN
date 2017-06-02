@@ -1,26 +1,19 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.database.models.CheckMember;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
-import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
-import tyrantgit.explosionfield.ExplosionField;
 
 /**
  * Created by hao on 29/04/2017.
@@ -86,8 +79,8 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
         Log.e(TAG, String.format("bind: %s", dschecklist.toString()));
         dialog.setTitle(dschecklist.getTenchecklist());
         tvRequite.setText(dschecklist.getYeucau());
-        if (dschecklist.isTrangthaichupanh()) {
-            ivCapture.setVisibility(View.INVISIBLE);
+        if (dschecklist.getTrangthaichupanh()) {
+            ivCapture.setVisibility(View.VISIBLE);
         } else {
             ivCapture.setVisibility(View.GONE);
         }

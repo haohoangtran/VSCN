@@ -93,6 +93,11 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 //            tvName.setText("Bạn chưa vào phiên làm việc! Quẹt thẻ để tiếp tục");
         }
+        atemLogin();
+
+    }
+
+    private void atemLogin() {
         LoginService loginService = NetContext.instance.create(LoginService.class);
         loginService.login("846AC9470C4002E0").enqueue(new Callback<LoginRespon>() {
             @Override
@@ -106,11 +111,10 @@ public class LoginActivity extends AppCompatActivity {
                         Date da = new Date();
                         RealmDatabase.instance.addToRealmDateString(new DateString(da, respon.getNhanvien().getIdNhanvien(), 0));
                         SharedPref.instance.putIDUser(respon.getNhanvien().getIdNhanvien());
-                        for (int i = 0; i < respon.getKehoach().getDsmatbang().size(); i++) {
-                            paths.add(respon.getKehoach().getDsmatbang().get(i).getAnhmatbang().getPath());
+                        for (int i = 0; i < respon.getKehoach().getSite().getDsmatbang().size(); i++) {
+
+                            paths.add(respon.getKehoach().getSite().getDsmatbang().get(i).getAnhmatbang().getPath());
                         }
-                        Set<String> matbangImgs = new HashSet<>(paths);
-                        paths = new Vector<>(matbangImgs);
                         for (String path : paths) {
                             Log.e(TAG, String.format("onResponse: %s", path));
                         }
@@ -172,11 +176,10 @@ public class LoginActivity extends AppCompatActivity {
                             Date da = new Date();
                             RealmDatabase.instance.addToRealmDateString(new DateString(da, respon.getNhanvien().getIdNhanvien(), 0));
                             SharedPref.instance.putIDUser(respon.getNhanvien().getIdNhanvien());
-                            for (int i = 0; i < respon.getKehoach().getDsmatbang().size(); i++) {
-                                paths.add(respon.getKehoach().getDsmatbang().get(i).getAnhmatbang().getPath());
+                            for (int i = 0; i < respon.getKehoach().getSite().getDsmatbang().size(); i++) {
+
+                                paths.add(respon.getKehoach().getSite().getDsmatbang().get(i).getAnhmatbang().getPath());
                             }
-                            Set<String> matbangImgs = new HashSet<>(paths);
-                            paths = new Vector<>(matbangImgs);
                             for (String path : paths) {
                                 Log.e(TAG, String.format("onResponse: %s", path));
                             }

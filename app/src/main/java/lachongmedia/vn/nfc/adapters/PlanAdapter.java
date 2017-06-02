@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+import java.util.Vector;
+
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.adapters.viewholders.PlaceViewHolder;
 import lachongmedia.vn.nfc.adapters.viewholders.PlanViewHolder;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 /**
@@ -17,6 +20,17 @@ import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanViewHolder> {
     LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
+
+    public PlanAdapter() {
+        dsdiadiems = new Vector<>();
+        for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
+            for (int i1 = 0; i1 < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
+                dsdiadiems.add(loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1));
+            }
+        }
+    }
+
+    public List<Dsdiadiem> dsdiadiems;
 
     @Override
     public PlanViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,11 +42,11 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanViewHolder> {
 
     @Override
     public void onBindViewHolder(PlanViewHolder holder, int position) {
-        holder.bind(loginRespon.getKehoach().getDsdiadiem().get(position));
+        holder.bind(dsdiadiems.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return loginRespon.getKehoach().getDsdiadiem().size();
+        return dsdiadiems.size();
     }
 }

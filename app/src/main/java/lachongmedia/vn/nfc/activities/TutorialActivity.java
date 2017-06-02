@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,8 +29,6 @@ import info.hoang8f.widget.FButton;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
-import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 public class TutorialActivity extends AppCompatActivity {
@@ -110,7 +107,7 @@ public class TutorialActivity extends AppCompatActivity {
         changeSttBarColor();
         StringBuilder builder=new StringBuilder();
         builder.append("Địa điểm: 0/").append(loginRespon.getKehoach().getDsdiadiem().size())
-                .append("\t ĐỊa điểm kế tiếp: "+loginRespon.getKehoach().)
+                .append("\t ĐỊa điểm kế tiếp: " + loginRespon.getKehoach());
         ;
         tvTimeTop.setText(builder.toString());
 

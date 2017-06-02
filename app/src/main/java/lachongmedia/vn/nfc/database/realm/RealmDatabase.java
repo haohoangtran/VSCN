@@ -12,8 +12,6 @@ import lachongmedia.vn.nfc.database.realm.realm_models.DateString;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
-import lachongmedia.vn.nfc.database.respon.login.Nhanvien;
-import lachongmedia.vn.nfc.database.respon.login.Site;
 
 /**
  * Created by tranh on 5/15/2017.

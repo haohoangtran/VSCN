@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Vector;
 
 import lachongmedia.vn.nfc.database.models.Place;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -90,7 +90,7 @@ public class Utils {
     }
 
     //"7,7.5,9,9.5"
-    public static String getTimeWorkPlace(Diadiem diadiem) {
+    public static String getTimeWorkPlace(Dsdiadiem diadiem) {
         StringBuilder timeReturn = new StringBuilder();
         String time = diadiem.getThoigianlamviec();
         String[] str = time.split(",");
@@ -114,7 +114,7 @@ public class Utils {
         return timeReturn.toString();
     }
 
-    public static List<Place> getPlaceFromDiaDiem(Diadiem diadiem) {
+    public static List<Place> getPlaceFromDiaDiem(Dsdiadiem diadiem) {
         List<Place> places = new Vector<>();
         String t = diadiem.getThoigianlamviec();
         String[] times = t.split(",");

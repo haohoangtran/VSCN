@@ -10,7 +10,6 @@ import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**
@@ -33,12 +32,11 @@ public class PlanViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Dsdiadiem dsdiadiem) {
-        Diadiem diadiem = dsdiadiem.getDiadiem();
-        tvName.setText(diadiem.getTendiadiem());
-        tvTimeMax.setText(diadiem.getThoigiantoida() + " phút");
-        tvTime.setText(Utils.getTimeWorkPlace(diadiem));
+        tvName.setText(dsdiadiem.getTendiadiem());
+        tvTimeMax.setText(dsdiadiem.getThoigiantoida() + " phút");
+        tvTime.setText(Utils.getTimeWorkPlace(dsdiadiem));
         Log.e("bind", "bind: ");
-        if (DbContext.instance.findMbbyId(diadiem.getIdMatbang()) != null)
-            tvMatBang.setText(DbContext.instance.findMbbyId(diadiem.getIdMatbang()).getTenmatbang());
+        if (DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()) != null)
+            tvMatBang.setText(DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()).getTenmatbang());
     }
 }

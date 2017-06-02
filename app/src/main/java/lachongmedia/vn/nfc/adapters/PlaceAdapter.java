@@ -7,16 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.activities.TutorialActivity;
-import lachongmedia.vn.nfc.adapters.viewholders.CheckListViewHolder;
 import lachongmedia.vn.nfc.adapters.viewholders.PlaceViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
-import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 /**
  * Created by tranh on 5/18/2017.

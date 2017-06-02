@@ -11,22 +11,14 @@ public class Nhanvien extends RealmObject {
     private String idThenhanvien;
     @SerializedName("tenloainhanvien")
     private String tenloainhanvien;
+    @SerializedName("path")
+    private String path;
     @SerializedName("TenNhanVien")
     private String tennhanvien;
     @SerializedName("TenDangNhap")
     private String tendangnhap;
     @SerializedName("MatKhau")
     private String matkhau;
-    @SerializedName("path")
-    private String path;
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
 
     public int getIdNhanvien() {
         return idNhanvien;
@@ -50,6 +42,14 @@ public class Nhanvien extends RealmObject {
 
     public void setTenloainhanvien(String tenloainhanvien) {
         this.tenloainhanvien = tenloainhanvien;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getTennhanvien() {

@@ -43,13 +43,13 @@ import java.util.Vector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmList;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dsmatbang;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
@@ -240,14 +240,14 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-            for (int i = 0; i < loginRespon.getKehoach().getDsdiadiem().size(); i++) {
-                Dsdiadiem dsdiadiem = loginRespon.getKehoach().getDsdiadiem().get(i);
-                if (dsdiadiem.getDiadiem().getIdThediadiem().equalsIgnoreCase(id)) {
+            for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i++) {
+                Dsdiadiem dsdiadiem = loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i);
+                if (dsdiadiem.getIdThediadiem().equalsIgnoreCase(id)) {
                     DiaDiemSave diaDiemSave = new DiaDiemSave(dsdiadiem, loginRespon.getNhanvien());
                     RealmDatabase.instance.saveDiaDiemSave(diaDiemSave);
                     DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
                     Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
-                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getDiadiem().getTendiadiem());
+                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
                     startActivity(intent1);
                 }
             }
@@ -272,23 +272,18 @@ public class MainActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getDsmatbang().get(position);
+                    Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getSite().getDsmatbang().get(position);
                     Log.e(TAG, String.format("onClick: %s", dsmatbang));
-                    Log.e(TAG, String.format("onClick: %s", dsmatbang.getMatbang()));
-                    int id = dsmatbang.getMatbang().getId();
-                    Vector<Diadiem> diadiems = new Vector<Diadiem>();
-                    for (int i = 0; i < loginRespon.getKehoach().getDsdiadiem().size(); i++) {
-                        Diadiem diadiem = loginRespon.getKehoach().getDsdiadiem().get(i).getDiadiem();
-                        if (id == diadiem.getIdMatbang()) {
-                            diadiems.add(diadiem);
-                            Log.e(TAG, String.format("onClickss: %s", Utils.getTimeWorkPlace(diadiem)));
-                        }
-                    }
+                    Log.e(TAG, String.format("onClick: %s", dsmatbang.getTenmatbang()));
+                    int id = dsmatbang.getId();
+                    List<Dsdiadiem> diadiems = new Vector<Dsdiadiem>();
+                    RealmList<Dsmatbang> dsmatbang1 = loginRespon.getKehoach().getSite().getDsmatbang();
+                    diadiems = dsmatbang.getDsdiadiem();
+
                     DbContext.instance.setDiadiems(diadiems);
                     Intent intent = new Intent(MainActivity.this, GroundActivity.class);
-                    intent.putExtra("name", dsmatbang.getMatbang().getTenmatbang());
+                    intent.putExtra("name", dsmatbang.getTenmatbang());
                     startActivity(intent);
-
                 }
             });
             tvStep.setText("Mặt bằng: " + (position + 1) + "/" + layouts.length);

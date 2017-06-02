@@ -2,13 +2,10 @@ package lachongmedia.vn.nfc.database.realm.realm_models;
 
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.realm.RealmObject;
 import lachongmedia.vn.nfc.Utils;
-import lachongmedia.vn.nfc.database.respon.login.Nhanvien;
 
 /**
  * Created by tranh on 5/17/2017.

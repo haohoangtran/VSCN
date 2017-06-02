@@ -2,18 +2,41 @@ package lachongmedia.vn.nfc.database.respon.login;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class Kehoach extends RealmObject {
+    @SerializedName("id")
+    private int id;
+    @SerializedName("id_nhanvien")
+    private int idNhanvien;
+    @SerializedName("id_site")
+    private int idSite;
     @SerializedName("site")
     private Site site;
-    @SerializedName("dsmatbang")
-    private RealmList<Dsmatbang> dsmatbang;
-    @SerializedName("dsdiadiem")
-    private RealmList<Dsdiadiem> dsdiadiem;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdNhanvien() {
+        return idNhanvien;
+    }
+
+    public void setIdNhanvien(int idNhanvien) {
+        this.idNhanvien = idNhanvien;
+    }
+
+    public int getIdSite() {
+        return idSite;
+    }
+
+    public void setIdSite(int idSite) {
+        this.idSite = idSite;
+    }
 
     public Site getSite() {
         return site;
@@ -21,21 +44,5 @@ public class Kehoach extends RealmObject {
 
     public void setSite(Site site) {
         this.site = site;
-    }
-
-    public RealmList<Dsmatbang> getDsmatbang() {
-        return dsmatbang;
-    }
-
-    public void setDsmatbang(RealmList<Dsmatbang> dsmatbang) {
-        this.dsmatbang = dsmatbang;
-    }
-
-    public RealmList<Dsdiadiem> getDsdiadiem() {
-        return dsdiadiem;
-    }
-
-    public void setDsdiadiem(RealmList<Dsdiadiem> dsdiadiem) {
-        this.dsdiadiem = dsdiadiem;
     }
 }

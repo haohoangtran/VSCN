@@ -9,7 +9,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.Utils;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**
@@ -29,7 +28,7 @@ public class PlaceViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Diadiem diadiem) {
+    public void bind(Dsdiadiem diadiem) {
         tvName.setText(diadiem.getTendiadiem());
         tvTimeMax.setText(diadiem.getThoigiantoida() + " phút");
         tvTime.setText(Utils.getTimeWorkPlace(diadiem));

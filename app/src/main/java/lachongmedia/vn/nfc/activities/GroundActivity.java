@@ -4,15 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,12 +16,7 @@ import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.PlaceAdapter;
-import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
-import lachongmedia.vn.nfc.database.respon.login.Dsmatbang;
-import lachongmedia.vn.nfc.database.respon.login.Matbang;
-import lachongmedia.vn.nfc.eventbus_event.GotoGroundActivityEvent;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class GroundActivity extends AppCompatActivity {

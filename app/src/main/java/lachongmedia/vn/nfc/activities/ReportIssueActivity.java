@@ -2,42 +2,30 @@ package lachongmedia.vn.nfc.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,11 +42,8 @@ import lachongmedia.vn.nfc.adapters.ImagesAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
-import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 import lachongmedia.vn.nfc.networks.NetContext;
 import lachongmedia.vn.nfc.server.ReportIssueSerice;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -125,8 +110,10 @@ public class ReportIssueActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Vector<String> strings = new Vector<>();
-        for (int i = 0; i < loginRespon.getKehoach().getDsdiadiem().size(); i++) {
-            strings.add(loginRespon.getKehoach().getDsdiadiem().get(i).getDiadiem().getTendiadiem());
+        for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
+            for (int i1 = 0; i1 < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
+                strings.add(loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1).getTendiadiem());
+            }
         }
         strings.add("Khác");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

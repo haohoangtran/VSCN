@@ -1,8 +1,6 @@
 package lachongmedia.vn.nfc.database.models;
 
-import com.google.gson.annotations.SerializedName;
-
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**
  * Created by tranh on 5/19/2017.
@@ -20,7 +18,7 @@ public class Place {
     private int thoigiantoida;
     private String ghichu;
 
-    public Place(Diadiem diadiem) {
+    public Place(Dsdiadiem diadiem) {
         this.id = diadiem.getId();
         this.idThediadiem = diadiem.getIdThediadiem();
         idKehoach = diadiem.getIdKehoach();

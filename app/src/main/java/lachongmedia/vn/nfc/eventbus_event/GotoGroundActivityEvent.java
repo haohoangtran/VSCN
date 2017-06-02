@@ -2,10 +2,6 @@ package lachongmedia.vn.nfc.eventbus_event;
 
 import java.util.Vector;
 
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
-import lachongmedia.vn.nfc.database.respon.login.Dsmatbang;
-import lachongmedia.vn.nfc.database.respon.login.Matbang;
-
 /**
  * Created by tranh on 5/18/2017.
  */

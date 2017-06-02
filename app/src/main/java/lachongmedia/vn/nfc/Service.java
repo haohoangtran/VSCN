@@ -1,17 +1,13 @@
 package lachongmedia.vn.nfc;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.realm.Realm;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 /**
  * Created by tranh on 5/17/2017.

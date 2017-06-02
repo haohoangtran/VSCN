@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Vector;
 
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.respon.login.Diadiem;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
+import lachongmedia.vn.nfc.database.respon.login.Dsmatbang;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
-import lachongmedia.vn.nfc.database.respon.login.Matbang;
 
 /**
  * Created by hao on 28/04/2017.
@@ -15,7 +15,7 @@ import lachongmedia.vn.nfc.database.respon.login.Matbang;
 
 public class DbContext {
     public static final DbContext instance = new DbContext();
-    private List<Diadiem> diadiems;
+    private List<Dsdiadiem> diadiems;
     private List<Dshuongdan> dshuongdanList;
     private List<String> pathImageIssue;
     private Vector<String> paths;
@@ -33,21 +33,21 @@ public class DbContext {
         this.paths = paths;
     }
 
-    public Matbang findMbbyId(int id) {
+    public Dsmatbang findMbbyId(int id) {
         LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
-        for (int i = 0; i < loginRespon.getKehoach().getDsmatbang().size(); i++) {
-            if (loginRespon.getKehoach().getDsmatbang().get(i).getMatbang().getId() == id) {
-                return loginRespon.getKehoach().getDsmatbang().get(i).getMatbang();
+        for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
+            if (loginRespon.getKehoach().getSite().getDsmatbang().get(i).getId() == id) {
+                return loginRespon.getKehoach().getSite().getDsmatbang().get(i);
             }
         }
         return null;
     }
 
-    public List<Diadiem> getDiadiems() {
+    public List<Dsdiadiem> getDiadiems() {
         return diadiems;
     }
 
-    public void setDiadiems(List<Diadiem> diadiems) {
+    public void setDiadiems(List<Dsdiadiem> diadiems) {
         this.diadiems = diadiems;
     }
 
