@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="trans">#0000</color>
+    <color name="cam">#f46c45</color>
+    <color name="xanh">#1874CD</color>
+    <color name="capnhatfocus">#7AB0ECFF</color>
+    <color name="capnhatunfocus">#c877c5ff</color>
+    <color name="dyfc">#60518D</color>
+    <color name="dynfc">#806CB4</color>
+    <color name="red">#ff0000</color>
+    <color name="yellow">#fee901</color>
+    <color name="toast">#948cc8</color>
+    <color name="green">#8fe316</color>
+    <color name="green_bold">#19A855</color>
+    <color name="xam">#c0c0a5</color>
+    <color name="vangdam">#FFA500</color>
+    <color name="xanhladam">#33cc00</color>
+    <color name="xanhdatroi">#353535</color>
+    <color name="bgcolor">#ACC6DF</color>
+</resources>
