@@ -60,15 +60,12 @@ public class LoginActivity extends AppCompatActivity {
                     MifareUltralight.class.getName(), Ndef.class.getName()
             }
     };
-    Vector<String> paths;
-    private int[] layouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        paths = new Vector<>();
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
     }
@@ -79,6 +76,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         NfcManager manager = (NfcManager) this.getSystemService(Context.NFC_SERVICE);
         NfcAdapter adapter = manager.getDefaultAdapter();
+        if (SharedPref.instance.getIDTag() != null) {
+            Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
+            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent1);
+            finish();
+        }
         if (!(adapter != null && adapter.isEnabled())) {
             AlertDialog dialog = new AlertDialog.Builder(this).setMessage("Bạn chưa bật NFC ấn ok để vào menu").setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -97,50 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void atemLogin() {
-        LoginService loginService = NetContext.instance.create(LoginService.class);
-        loginService.login("846AC9470C4002E0").enqueue(new Callback<LoginRespon>() {
-            @Override
-            public void onResponse(Call<LoginRespon> call, Response<LoginRespon> response) {
-                if (response.code() == 200) {
-                    final LoginRespon respon = response.body();
-                    if (respon != null) {
-                        RealmDatabase.instance.insertOrUpdateLogin(respon);
-                        Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
-                        intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        Date da = new Date();
-                        RealmDatabase.instance.addToRealmDateString(new DateString(da, respon.getNhanvien().getIdNhanvien(), 0));
-                        SharedPref.instance.putIDUser(respon.getNhanvien().getIdNhanvien());
-                        for (int i = 0; i < respon.getKehoach().getSite().getDsmatbang().size(); i++) {
 
-                            paths.add(respon.getKehoach().getSite().getDsmatbang().get(i).getAnhmatbang().getPath());
-                        }
-                        for (String path : paths) {
-                            Log.e(TAG, String.format("onResponse: %s", path));
-                        }
-                        Vector<Dsdiadiem> dsdiadiems = new Vector<>();
-                        for (int i = 0; i < respon.getKehoach().getSite().getDsmatbang().size(); i++) {
-                            for (int i1 = 0; i1 < respon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
-                                dsdiadiems.add(respon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1));
-                            }
-                        }
-                        DbContext.instance.setDiadiems(dsdiadiems);
-                        DbContext.instance.setPaths(paths);
-                        EventBus.getDefault().postSticky(new LoginCompleteEvent());
-                        startActivity(intent1);
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(LoginActivity.this, "Thẻ của bạn chưa được đăng ký!", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginRespon> call, Throwable t) {
-                Log.e("hihu", String.format("onFailure: %s", t.toString()));
-            }
-        });
-    }
 
     @Override
     protected void onResume() {
@@ -183,14 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                             Date da = new Date();
                             RealmDatabase.instance.addToRealmDateString(new DateString(da, respon.getNhanvien().getIdNhanvien(), 0));
                             SharedPref.instance.putIDUser(respon.getNhanvien().getIdNhanvien());
-                            for (int i = 0; i < respon.getKehoach().getSite().getDsmatbang().size(); i++) {
-
-                                paths.add(respon.getKehoach().getSite().getDsmatbang().get(i).getAnhmatbang().getPath());
-                            }
-                            for (String path : paths) {
-                                Log.e(TAG, String.format("onResponse: %s", path));
-                            }
-                            DbContext.instance.setPaths(paths);
+                            SharedPref.instance.putIdTag(id);
                             EventBus.getDefault().postSticky(new LoginCompleteEvent());
                             startActivity(intent1);
                             finish();

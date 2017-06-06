@@ -31,7 +31,7 @@ public class PlaceViewHolder extends RecyclerView.ViewHolder {
     public void bind(Dsdiadiem diadiem) {
         tvName.setText(diadiem.getTendiadiem());
         tvTimeMax.setText(diadiem.getThoigiantoida() + " phút");
-        tvTime.setText(Utils.getTimeWorkPlace(diadiem));
+        tvTime.setText(diadiem.getThoigianlamviec());
         Log.e("bind", "bind: ");
     }
 

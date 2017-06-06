@@ -10,31 +10,11 @@
         android:id="@+id/rl_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_8"
-        android:orientation="vertical">
+        android:layout_alignParentStart="true">
 
-        <LinearLayout
-            android:id="@+id/ll_time2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginStart="@dimen/margin_8"
-                app:srcCompat="@drawable/ic_timer_black_24dp" />
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thời gian làm việc:" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_timemax"
@@ -53,41 +33,17 @@
                 android:id="@+id/tv_timemax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginTop="@dimen/margin_4"
                 android:text="Thời gian tại điểm: "
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_8"
-                android:layout_marginStart="@dimen/margin_8"
-                app:srcCompat="@drawable/ic_person_black_24dp" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_4"
-                android:text="Tên"
-                android:textSize="16sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_vitri"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/margin_16"
-            android:paddingStart="@dimen/margin_16">
+            android:paddingStart="@dimen/margin_16"
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -100,13 +56,34 @@
                 android:id="@+id/tv_vitri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_16"
                 android:layout_marginTop="@dimen/margin_4"
                 android:text="Vị trí hiện tại: "
                 android:textSize="16sp" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_vitritieptheo"
+            android:layout_width="wrap_content"
+            android:paddingStart="@dimen/margin_16"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:layout_marginStart="@dimen/margin_8"
+                app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+            <TextView
+                android:id="@+id/tv_vitritieptheo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                android:text="Vị trí tiếp theo: "
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/bt_back_tut"
@@ -116,6 +93,7 @@
             android:text="Quay lại đọc hướng dẫn"
             android:textColor="@color/white" />
     </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_check_list"
@@ -128,5 +106,4 @@
         android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
-
 </RelativeLayout>

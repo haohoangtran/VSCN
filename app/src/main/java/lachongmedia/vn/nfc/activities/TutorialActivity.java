@@ -23,12 +23,18 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hoang8f.widget.FButton;
 import lachongmedia.vn.nfc.R;
+import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
+import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
@@ -49,7 +55,7 @@ public class TutorialActivity extends AppCompatActivity {
     @BindView(R.id.tv_time_content)
     TextView tvTimeTop;
     private int[] layouts;
-    LoginRespon loginRespon=RealmDatabase.instance.getLoginRespon();
+    LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         private final String TAG = TutorialActivity.class.getSimpleName();
@@ -107,13 +113,31 @@ public class TutorialActivity extends AppCompatActivity {
 
         changeSttBarColor();
         tvTimeTop.setVisibility(View.GONE);
+        StringBuilder builder = new StringBuilder();
         if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+            if (DbContext.instance.getPlaceWorkNext() != null) {
+                builder.append("0/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
+                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                        .append("\t" + DbContext.instance.getPlaceWorkNext().getName());
 
-            StringBuilder builder = new StringBuilder();
-            builder.append("0/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
-                    .append("\t0/").append(DbContext.instance.getDiadiems().size())
-                    .append("\t" + "hihi");
-            ;
+            } else {
+                builder.append("0/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
+                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                        .append("\t Không khả dụng");
+
+            }
+            tvTimeTop.setVisibility(View.VISIBLE);
+            tvTimeTop.setText(builder.toString());
+        } else {
+            if (DbContext.instance.getPlaceWorkNext() != null) {
+                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                        .append("\t " + DbContext.instance.getPlaceWorkNext().getName());
+
+            } else {
+                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                        .append("\t Không khả dụng");
+
+            }
             tvTimeTop.setVisibility(View.VISIBLE);
             tvTimeTop.setText(builder.toString());
         }
@@ -132,13 +156,14 @@ public class TutorialActivity extends AppCompatActivity {
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (RealmDatabase.instance.getDiaDiemSave().size()!=0) {
+                if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
                     Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
                     startActivity(intent);
-                }else
+                } else
                     Toast.makeText(TutorialActivity.this, "Bạn chưa vào điểm này, không thể báo cáo", Toast.LENGTH_SHORT).show();
             }
         });
+        updateDisplay();
     }
 
     private void addBottomDot(int currentPage) {
@@ -159,6 +184,53 @@ public class TutorialActivity extends AppCompatActivity {
 
         if (dots.length > 0)
             dots[currentPage].setTextColor(colorsActive[currentPage]);
+    }
+
+    DiaDiemSave diaDiemSave;
+
+    private void updateDisplay() {
+        Timer timer = new Timer();
+        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+            diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
+        }
+
+        final StringBuilder builder = new StringBuilder();
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (diaDiemSave != null) {
+                            long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
+
+                            if (DbContext.instance.getPlaceWorkNext() != null) {
+                                builder.append(minute).append("/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
+                                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                                        .append("\t Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
+                            } else {
+                                builder.append(minute).append("/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
+                                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                                        .append("\t Địa điểm tiếp theo: Không khả dụng");
+                            }
+                        } else {
+                            if (DbContext.instance.getPlaceWorkNext() != null) {
+                                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                                        .append("\t Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
+                            } else {
+                                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
+                                        .append("\t Địa điểm tiếp theo: Không khả dụng");
+                            }
+                        }
+                        tvTimeTop.setText(builder.toString());
+                        builder.setLength(0);
+                    }
+                });
+
+            }
+
+        }, 0, 60000);//Update text every 60 seconds
     }
 
     private int getItem(int i) {

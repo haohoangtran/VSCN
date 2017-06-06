@@ -1,6 +1,7 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -9,11 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Vector;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
+import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
+import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
 /**
  * Created by hao on 29/04/2017.
@@ -76,7 +83,6 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     public void bind(final Dschecklist dschecklist) {
         tvNameCv.setText(dschecklist.getTenchecklist());
         tvPP.setText(dschecklist.getPhuongphap());
-        Log.e(TAG, String.format("bind: %s", dschecklist.toString()));
         dialog.setTitle(dschecklist.getTenchecklist());
         tvRequite.setText(dschecklist.getYeucau());
         if (dschecklist.getTrangthaichupanh()) {
@@ -105,6 +111,12 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 bad(dschecklist);
+            }
+        });
+        ivCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new CameraEvent(dschecklist));
             }
         });
 
@@ -139,10 +151,12 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
                         dialog.dismiss();
                     }
                 });
+                Log.e(TAG, String.format("onClick: %s", dschecklist.toString()));
 
                 dialog.show();
             }
         });
+
     }
 
 

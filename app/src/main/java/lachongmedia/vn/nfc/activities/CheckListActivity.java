@@ -30,21 +30,28 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmList;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.CheckListAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.models.Member;
+import lachongmedia.vn.nfc.database.models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
+import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
+import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
+import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
 public class CheckListActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 124;
@@ -64,24 +71,22 @@ public class CheckListActivity extends AppCompatActivity {
     RecyclerView rvCheckList;
     @BindView(R.id.bt_back_tut)
     Button bt_back;
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
     @BindView(R.id.tv_vitri)
     TextView tvVitri;
     @BindView(R.id.tv_timemax)
     TextView tvTimeMax;
+    @BindView(R.id.tv_vitritieptheo)
+    TextView tvVitriTieptheo;
     Date date;
     CheckListAdapter adapter;
     DiaDiemSave diaDiemSave;
+    private Dschecklist dschecklistCapture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
         ButterKnife.bind(this);
-        EventBus.getDefault().register(this);
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
             getSupportActionBar().setTitle("Hạng mục cần kiểm tra");
@@ -95,21 +100,27 @@ public class CheckListActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
         if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
             diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
         }
-        tvName.setText("Tên nhân viên: " + diaDiemSave.getNhanvien().getTennhanvien());
+        PlanWork planWork = DbContext.instance.getPlaceWorkNext();
         tvVitri.setText("Tên địa điểm: " + diaDiemSave.getDsdiadiem().getTendiadiem());
         date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
+        if (planWork != null)
+            tvVitriTieptheo.setText("Vị trí tiếp theo: " + planWork.getName());
+        else
+            tvVitriTieptheo.setText("Vị trí tiếp theo: Không khả dụng! ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     private void updateDisplay() {
@@ -138,17 +149,18 @@ public class CheckListActivity extends AppCompatActivity {
 
     public void onTimeChange(TimeChangeEvent event) {
         long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
-        tvTime.setText(event.getTime());
         tvTimeMax.setText("Thời gian tại điểm: " + minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida() + " phút tối đa");
     }
 
     @Subscribe
     public void onCameraEvent(CameraEvent event) {
+        this.dschecklistCapture = event.getDschecklist();
         AlertDialog dialog = new AlertDialog.Builder(this).setMessage("Bạn có muốn chụp ảnh cho bước kiểm tra ")
                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        ChupAnhActivity.pathsList = new Vector<>();
+                        Intent cameraIntent = new Intent(CheckListActivity.this, ChupAnhActivity.class);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
                 })
@@ -215,9 +227,10 @@ public class CheckListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            Toast.makeText(this, "Xong", Toast.LENGTH_SHORT).show();
+        if (requestCode == CAMERA_REQUEST) {
+            if (dschecklistCapture != null) {
+                RealmDatabase.instance.setPathsImage(dschecklistCapture, ChupAnhActivity.pathsList);
+            }
         }
     }
 }

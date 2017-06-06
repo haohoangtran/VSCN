@@ -62,7 +62,6 @@ public class GroundActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // do UI updates here
                         long minute = Utils.getTime(date, new Date());
                         if (minute < 60)
                             onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
@@ -74,7 +73,7 @@ public class GroundActivity extends AppCompatActivity {
 
             }
 
-        }, 0, 60000);//Update text every 60 seconds
+        }, 0, 60000);
     }
 
     public void onTimeChange(TimeChangeEvent event) {

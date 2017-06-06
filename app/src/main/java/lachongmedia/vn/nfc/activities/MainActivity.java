@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     Date date;
     @BindView(R.id.ll_work_now)
     LinearLayout llWork;
+    @BindView(R.id.tv_work_next)
+    TextView tvWorkNext;
     @BindView(R.id.tv_name_nvs)
     TextView tvNameNvs;
     @BindView(R.id.vp_matbang)
@@ -102,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         updateDisplay();
         addListener();
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
+        DbContext.instance.createPlanWorks(loginRespon);
         EventBus.getDefault().register(this);
         LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
         if (loginRespon != null) {
@@ -118,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
         } else
             llWork.setVisibility(View.GONE);
         llWork.setVisibility(View.GONE);
+        if (DbContext.instance.getPlaceWorkNext() != null)
+            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
+        else
+            tvWorkNext.setText("Địa điểm tiếp theo: Không khả dụng");
         paths = DbContext.instance.getPaths();
         Log.e(TAG, String.format("onEvent: %s", paths));
         layouts = new int[paths.size()];
@@ -200,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
                         }
+
+                        if (DbContext.instance.getPlaceWorkNext() != null)
+                            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
+                        else
+                            tvWorkNext.setText("Địa điểm tiếp theo: Không khả dụng");
                     }
                 });
 
@@ -246,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                     DiaDiemSave diaDiemSave = new DiaDiemSave(dsdiadiem, loginRespon.getNhanvien());
                     RealmDatabase.instance.saveDiaDiemSave(diaDiemSave);
                     DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
+                    DbContext.instance.setDateJoinPlace(new Date());
                     Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
                     intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
                     startActivity(intent1);
@@ -269,15 +281,18 @@ public class MainActivity extends AppCompatActivity {
             TextView tvStep = (TextView) view.findViewById(R.id.tv_step);
             Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
             tvStep.setTypeface(typeface);
-            view.setOnClickListener(new View.OnClickListener() {
+            img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getSite().getDsmatbang().get(position);
-                    Log.e(TAG, String.format("onClick: %s", dsmatbang));
-                    Log.e(TAG, String.format("onClick: %s", dsmatbang.getTenmatbang()));
-                    Intent intent = new Intent(MainActivity.this, GroundActivity.class);
-                    intent.putExtra("name", dsmatbang.getTenmatbang());
-                    startActivity(intent);
+                    if (position < RealmDatabase.instance.getLoginRespon().getKehoach().getSite().getDsmatbang().size()) {
+                        Dsmatbang dsmatbang = RealmDatabase.instance.getLoginRespon().getKehoach().getSite().getDsmatbang().get(position);
+                        Log.e(TAG, String.format("onClick: %s", dsmatbang));
+                        Log.e(TAG, String.format("onClick: %s", dsmatbang.getTenmatbang()));
+                        Intent intent = new Intent(MainActivity.this, GroundActivity.class);
+                        DbContext.instance.setListDiadiemMatBang(dsmatbang.getDsdiadiem());
+                        intent.putExtra("name", dsmatbang.getTenmatbang());
+                        startActivity(intent);
+                    }
                 }
             });
             tvStep.setText("Mặt bằng: " + (position + 1) + "/" + layouts.length);

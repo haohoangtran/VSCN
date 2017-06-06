@@ -43,7 +43,7 @@ public class Utils {
 
     public static long getTime(Date date1, Date date2) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-        int days, hours, min;
+        long days, hours, min;
 
         long difference = date2.getTime() - date1.getTime();
         days = (int) (difference / (1000 * 60 * 60 * 24));

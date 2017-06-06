@@ -8,11 +8,12 @@ import android.content.SharedPreferences;
  */
 
 public class SharedPref {
-    private static final String ID_USER = "iduser";
-    private static final String CHECK_ID = "checkida";
+    private final String ID_USER = "iduser";
+    private final String CHECK_ID = "checkida";
     public static SharedPref instance;
     private final String KEY_PREF = "Predasdas";
     private SharedPreferences sharedPreferences;
+    private final String KEY_USER_ID_TAG = "ID_TAG";
 
     private SharedPref(Context context) {
         sharedPreferences = context.getSharedPreferences(
@@ -35,6 +36,14 @@ public class SharedPref {
 
     public int getIDUser() {
         return sharedPreferences.getInt(ID_USER, -1);
+    }
+
+    public void putIdTag(String id) {
+        sharedPreferences.edit().putString(KEY_USER_ID_TAG, id).apply();
+    }
+
+    public String getIDTag() {
+        return sharedPreferences.getString(KEY_USER_ID_TAG, null);
     }
 
     public void putCheckID(String id) {

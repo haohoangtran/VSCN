@@ -2,7 +2,9 @@ package lachongmedia.vn.nfc.database.respon.login;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
+import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
 
 public class Dschecklist extends RealmObject {
     @SerializedName("id")
@@ -10,7 +12,7 @@ public class Dschecklist extends RealmObject {
     @SerializedName("id_diadiem")
     private int idDiadiem;
     @SerializedName("giobatdau")
-    private double giobatdau;
+    private String giobatdau;
     @SerializedName("thoigianlamviec")
     private double thoigianlamviec;
     @SerializedName("tenchecklist")
@@ -23,6 +25,23 @@ public class Dschecklist extends RealmObject {
     private boolean trangthaichupanh;
     @SerializedName("trangthai")
     private int trangthai;
+    private RealmList<RealmString> pathImages;
+
+    public Dschecklist() {
+        pathImages = new RealmList<>();
+    }
+
+    public boolean isTrangthaichupanh() {
+        return trangthaichupanh;
+    }
+
+    public RealmList<RealmString> getPathImages() {
+        return pathImages;
+    }
+
+    public void setPathImages(RealmList<RealmString> pathImages) {
+        this.pathImages = pathImages;
+    }
 
     public int getId() {
         return id;
@@ -40,11 +59,11 @@ public class Dschecklist extends RealmObject {
         this.idDiadiem = idDiadiem;
     }
 
-    public double getGiobatdau() {
+    public String getGiobatdau() {
         return giobatdau;
     }
 
-    public void setGiobatdau(double giobatdau) {
+    public void setGiobatdau(String giobatdau) {
         this.giobatdau = giobatdau;
     }
 
@@ -90,6 +109,22 @@ public class Dschecklist extends RealmObject {
 
     public int getTrangthai() {
         return trangthai;
+    }
+
+    @Override
+    public String toString() {
+        return "Dschecklist{" +
+                "id=" + id +
+                ", idDiadiem=" + idDiadiem +
+                ", giobatdau=" + giobatdau +
+                ", thoigianlamviec=" + thoigianlamviec +
+                ", tenchecklist='" + tenchecklist + '\'' +
+                ", phuongphap='" + phuongphap + '\'' +
+                ", yeucau='" + yeucau + '\'' +
+                ", trangthaichupanh=" + trangthaichupanh +
+                ", trangthai=" + trangthai +
+                ", pathImages=" + pathImages +
+                '}';
     }
 
     public void setTrangthai(int trangthai) {

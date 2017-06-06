@@ -34,7 +34,7 @@ public class PlanViewHolder extends RecyclerView.ViewHolder {
     public void bind(Dsdiadiem dsdiadiem) {
         tvName.setText(dsdiadiem.getTendiadiem());
         tvTimeMax.setText(dsdiadiem.getThoigiantoida() + " phút");
-        tvTime.setText(Utils.getTimeWorkPlace(dsdiadiem));
+        tvTime.setText(dsdiadiem.getThoigianlamviec());
         Log.e("bind", "bind: ");
         if (DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()) != null)
             tvMatBang.setText(DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()).getTenmatbang());

@@ -34,13 +34,13 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
     @Override
     public void onBindViewHolder(final PlaceViewHolder holder, final int position) {
         Log.e("vv", String.format("onBindViewHolder: %s", position));
-        final Dsdiadiem diadiem = DbContext.instance.getDiadiems().get(position);
+        final Dsdiadiem diadiem = DbContext.instance.getListDiadiemMatBang().get(position);
         holder.bind(diadiem);
         final LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Dsdiadiem dsdiadiem = DbContext.instance.getDiadiems().get(position);
+                Dsdiadiem dsdiadiem = DbContext.instance.getListDiadiemMatBang().get(position);
                 DbContext.instance.setDshuongdanList(dsdiadiem.getDshuongdan());
                 Intent intent = new Intent(holder.itemView.getContext(), TutorialActivity.class);
                 intent.putExtra("name", dsdiadiem.getTendiadiem());
@@ -51,6 +51,6 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
 
     @Override
     public int getItemCount() {
-        return DbContext.instance.getDiadiems().size();
+        return DbContext.instance.getListDiadiemMatBang().size();
     }
 }

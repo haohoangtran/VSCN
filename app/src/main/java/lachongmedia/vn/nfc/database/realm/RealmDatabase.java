@@ -4,14 +4,19 @@ import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
 import lachongmedia.vn.nfc.Utils;
+import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.realm_models.DateString;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
+import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
+import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
 /**
  * Created by tranh on 5/15/2017.
@@ -34,6 +39,17 @@ public class RealmDatabase {
         loginRespons.deleteAllFromRealm();
         realm.insertOrUpdate(loginRespon);
         realm.commitTransaction();
+
+        List<Dsdiadiem> dsdiadiems = new Vector<>();
+        for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
+            for (int i1 = 0; i1 < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
+                dsdiadiems.add(loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1));
+            }
+        }
+        for (Dsdiadiem dsdiadiem : dsdiadiems) {
+            Log.e(TAG, "onResponse: " + dsdiadiem.toString());
+        }
+        DbContext.instance.setListDiaDiemAll(dsdiadiems);
     }
 
     public void addToRealmDateString(DateString dateString) {
@@ -88,7 +104,17 @@ public class RealmDatabase {
     public List<DiaDiemSave> getDiaDiemSave() {
         this.realm = Realm.getDefaultInstance();
         final RealmResults<DiaDiemSave> diaDiemSaves = realm.where(DiaDiemSave.class).findAll();
+        Log.e(TAG, "getDiaDiemSave: " + diaDiemSaves.size());
         return diaDiemSaves;
+    }
+
+    public void setPathsImage(Dschecklist dschecklist, List<String> paths) {
+        this.realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        for (int i = 0; i < ChupAnhActivity.pathsList.size(); i++) {
+            dschecklist.getPathImages().add(new RealmString(ChupAnhActivity.pathsList.get(i)));
+        }
+        realm.commitTransaction();
     }
 
 
@@ -106,6 +132,4 @@ public class RealmDatabase {
         dschecklist.setTrangthai(type);
         realm.commitTransaction();
     }
-
-
 }

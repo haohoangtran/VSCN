@@ -48,6 +48,7 @@ import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
 public class ReportIssueActivity extends AppCompatActivity {
     private static final String TAG = ReportIssueActivity.class.getSimpleName();
+    private static final String IMG_JPEG = "image/jpeg";
     private static final int CAPTURE_CODE = 12412;
     @BindView(R.id.sp_places)
     AppCompatSpinner spPlace;
@@ -63,6 +64,7 @@ public class ReportIssueActivity extends AppCompatActivity {
     File finalFile;
     ImagesAdapter adapter;
     private Uri fileUri;
+
     private static Uri getOutputMediaFileUri(Activity activity) {
 
         return Uri.fromFile(getOutputMediaFile());
@@ -140,7 +142,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         for (int index = 0; index < DbContext.instance.getPathImageIssue().size(); index++) {
             Log.d(TAG, "requestUploadSurvey: survey image " + index + "  " + DbContext.instance.getPathImageIssue().get(index));
             File file = new File(DbContext.instance.getPathImageIssue().get(index));
-            RequestBody surveyBody = RequestBody.create(MediaType.parse("image/*"), file);
+            RequestBody surveyBody = RequestBody.create(okhttp3.MediaType.parse(IMG_JPEG), file);
             surveyImagesParts[index] = MultipartBody.Part.createFormData("files", file.getName(), surveyBody);
         }
         ReportIssueService service = NetContext.instance.create(ReportIssueService.class);
@@ -168,6 +170,7 @@ public class ReportIssueActivity extends AppCompatActivity {
                 upload.addFileToUpload(DbContext.instance.getPathImageIssue().get(i), "files");
             }
             String uploadId = upload.startUpload();
+
             Log.e(TAG, "uploadMultipart: " + uploadId);
 
         } catch (Exception exc) {
@@ -227,7 +230,6 @@ public class ReportIssueActivity extends AppCompatActivity {
         if (requestCode == CAPTURE_CODE) {
             Log.e(TAG, "onActivityResult: %s");
             DbContext.instance.setPathImageIssue(ChupAnhActivity.pathsList);
-
         }
     }
 }
