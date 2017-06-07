@@ -91,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             }).create();
             dialog.setCancelable(false);
             dialog.show();
+
         }
         if (adapter != null && !adapter.isEnabled()) {
 //            tvName.setText("Bạn phải bật NFC để sử dụng!");
@@ -137,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                         final LoginRespon respon = response.body();
                         if (respon != null) {
                             RealmDatabase.instance.insertOrUpdateLogin(respon);
+                            Log.d(TAG, String.format("onResponse: %s",respon ));
                             Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
                             intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             Date da = new Date();

@@ -88,11 +88,12 @@ public class DbContext {
     }
 
     public void createPlanWorks(LoginRespon loginRespon) {
+
         if (loginRespon == null)
             return;
         try {
 
-
+            planWorkList.clear();
             for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
                 for (int i1 = 0; i1 < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
                     String str = loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1).getThoigianlamviec();

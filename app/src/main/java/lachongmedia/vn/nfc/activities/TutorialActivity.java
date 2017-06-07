@@ -35,11 +35,14 @@ import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
+import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 public class TutorialActivity extends AppCompatActivity {
     private static final String TAG = TutorialActivity.class.getSimpleName();
+    @BindView(R.id.ll_timework)
+    LinearLayout llTimeWork;
     @BindView(R.id.intro_viewpager)
     ViewPager viewPager;
     MyViewPagerAdapter myViewPagerAdapter;
@@ -52,8 +55,12 @@ public class TutorialActivity extends AppCompatActivity {
     FButton btNext;
     @BindView(R.id.tv_step)
     TextView tvStep;
-    @BindView(R.id.tv_time_content)
-    TextView tvTimeTop;
+    @BindView(R.id.tv_plant_work_list)
+    TextView tvPlantWorklist;
+    @BindView(R.id.tv_location_next)
+    TextView tvLocationNext;
+    @BindView(R.id.tv_time_work)
+    TextView tvTimeWork;
     private int[] layouts;
     LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -66,14 +73,10 @@ public class TutorialActivity extends AppCompatActivity {
 
             tvStep.setText("Bước " + (position + 1) + "/" + dots.length);
             if (position == layouts.length - 1) {
-                btNext.setText("Đã hiểu");
                 btSkip.setVisibility(View.GONE);
             } else {
-                btNext.setText("Báo cáo công việc");
                 btSkip.setVisibility(View.VISIBLE);
             }
-
-
         }
 
         @Override
@@ -88,11 +91,12 @@ public class TutorialActivity extends AppCompatActivity {
 
         }
     };
-
+    String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
+        type=getIntent().getStringExtra("type");
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
             getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
@@ -112,35 +116,8 @@ public class TutorialActivity extends AppCompatActivity {
         Log.e(TAG, String.format("onCreate: %s", DbContext.instance.getDshuongdanList()));
 
         changeSttBarColor();
-        tvTimeTop.setVisibility(View.GONE);
-        StringBuilder builder = new StringBuilder();
-        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
-            if (DbContext.instance.getPlaceWorkNext() != null) {
-                builder.append("0/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
-                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                        .append("\t" + DbContext.instance.getPlaceWorkNext().getName());
 
-            } else {
-                builder.append("0/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
-                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                        .append("\t Không khả dụng");
 
-            }
-            tvTimeTop.setVisibility(View.VISIBLE);
-            tvTimeTop.setText(builder.toString());
-        } else {
-            if (DbContext.instance.getPlaceWorkNext() != null) {
-                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                        .append("\t " + DbContext.instance.getPlaceWorkNext().getName());
-
-            } else {
-                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                        .append("\t Không khả dụng");
-
-            }
-            tvTimeTop.setVisibility(View.VISIBLE);
-            tvTimeTop.setText(builder.toString());
-        }
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
@@ -202,29 +179,17 @@ public class TutorialActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (diaDiemSave != null) {
-                            long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
 
-                            if (DbContext.instance.getPlaceWorkNext() != null) {
-                                builder.append(minute).append("/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
-                                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                                        .append("\t Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
-                            } else {
-                                builder.append(minute).append("/").append(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getThoigiantoida())
-                                        .append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                                        .append("\t Địa điểm tiếp theo: Không khả dụng");
-                            }
-                        } else {
-                            if (DbContext.instance.getPlaceWorkNext() != null) {
-                                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                                        .append("\t Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
-                            } else {
-                                builder.append("\t0/").append(DbContext.instance.getPlanWorkList().size())
-                                        .append("\t Địa điểm tiếp theo: Không khả dụng");
-                            }
-                        }
-                        tvTimeTop.setText(builder.toString());
-                        builder.setLength(0);
+                        long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
+                       if (type.equalsIgnoreCase("dung")) {
+                           llTimeWork.setVisibility(View.VISIBLE);
+                           tvTimeWork.setVisibility(View.VISIBLE);
+                           tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
+                       }else{
+                           llTimeWork.setVisibility(View.GONE);
+                       }
+                        tvLocationNext.setText(DbContext.instance.getPlaceWorkNext().getName());
+                        tvPlantWorklist.setText("0/" + DbContext.instance.getPlanWorkList().size());
                     }
                 });
 

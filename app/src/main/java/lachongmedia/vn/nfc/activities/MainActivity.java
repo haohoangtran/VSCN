@@ -29,6 +29,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -252,6 +253,10 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
+            if (RealmDatabase.instance.getDiaDiemSave().size()!=0){
+                Toast.makeText(this, "Banj owr trong 1 diem", Toast.LENGTH_SHORT).show();
+                return;
+            }
             for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i++) {
                 Dsdiadiem dsdiadiem = loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i);
                 if (dsdiadiem.getIdThediadiem().equalsIgnoreCase(id)) {
@@ -260,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                     DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
                     DbContext.instance.setDateJoinPlace(new Date());
                     Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
-                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
+                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());intent1.putExtra("type","dung");
                     startActivity(intent1);
                 }
             }
