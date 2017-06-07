@@ -65,6 +65,7 @@ public class DbContext {
     }
 
     public List<String> getPaths() {
+        paths.clear();
         for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
 
             paths.add(loginRespon.getKehoach().getSite().getDsmatbang().get(i).getAnhmatbang().getPath());

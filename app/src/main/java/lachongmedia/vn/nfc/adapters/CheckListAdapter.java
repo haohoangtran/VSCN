@@ -33,18 +33,18 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> 
             holder.bind(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().get(position));
             Log.e("hihihi", String.format("onBindViewHolder: %s", RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().get(position)));
         }
-        Log.e(TAG, String.format("onBindViewHolder: %s",RealmDatabase.instance.getDiaDiemSave().size() ) );
+        Log.e(TAG, String.format("onBindViewHolder: %s", RealmDatabase.instance.getDiaDiemSave().size()));
     }
 
     @Override
     public int getItemCount() {
         int a;
         if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
-            a= RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().size();
-        }else {
-            a=0;
+            a = RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getDschecklist().size();
+        } else {
+            a = 0;
         }
-        Log.e(TAG, "getItemCount: "+a );
+        Log.e(TAG, "getItemCount: " + a);
         return a;
     }
 }
