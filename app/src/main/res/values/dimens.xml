@@ -14,4 +14,5 @@
     <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_32">32dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
 </resources>

@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.adapters.PlanAdapter;
+import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
@@ -63,6 +64,8 @@ public class ActionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SharedPref.instance.logout();
+                RealmDatabase.instance.removeAllData();
+                DbContext.instance.reset();
                 Intent intent = new Intent(ActionActivity.this.getApplicationContext(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 ActionActivity.this.startActivity(intent);

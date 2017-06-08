@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             llWork.setVisibility(View.GONE);
         llWork.setVisibility(View.GONE);
         if (DbContext.instance.getPlaceWorkNext() != null)
-            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
+            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
         else
             tvWorkNext.setText("Địa điểm tiếp theo: Không khả dụng");
         paths = DbContext.instance.getPaths();
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         if (DbContext.instance.getPlaceWorkNext() != null)
-                            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getName());
+                            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
                         else
                             tvWorkNext.setText("Địa điểm tiếp theo: Không khả dụng");
                     }

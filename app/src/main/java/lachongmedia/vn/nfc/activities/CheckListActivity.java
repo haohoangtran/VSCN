@@ -112,7 +112,7 @@ public class CheckListActivity extends AppCompatActivity {
         tvVitri.setText("Tên địa điểm: " + diaDiemSave.getDsdiadiem().getTendiadiem());
         date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
         if (planWork != null)
-            tvVitriTieptheo.setText("Vị trí tiếp theo: " + planWork.getName());
+            tvVitriTieptheo.setText("Vị trí tiếp theo: " + planWork.getDsdiadiem().getTendiadiem());
         else
             tvVitriTieptheo.setText("Vị trí tiếp theo: Không khả dụng! ");
     }
@@ -211,15 +211,15 @@ public class CheckListActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-//            if (SharedPref.instance.getCheckId() != null)
-//                if (id.equals(SharedPref.instance.getCheckId())) {
-//                    Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
-//                    Intent intent1 = new Intent(this, MainActivity.class);
-//                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent1);
-//                } else {
-//                    Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
-//                }
+            if (SharedPref.instance.getCheckId() != null)
+                if (id.equals(SharedPref.instance.getCheckId())) {
+                    Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(this, MainActivity.class);
+                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent1);
+                } else {
+                    Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
+                }
         } else {
             Toast.makeText(this, "Bạn chưa vào điểm này", Toast.LENGTH_SHORT).show();
         }

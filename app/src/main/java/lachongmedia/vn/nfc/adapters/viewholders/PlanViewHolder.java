@@ -1,15 +1,20 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
+import android.icu.text.SimpleDateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.models.PlanWork;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**
@@ -19,24 +24,30 @@ import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 public class PlanViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tv_name)
     TextView tvName;
-    @BindView(R.id.tv_time_max)
-    TextView tvTimeMax;
     @BindView(R.id.tv_time)
     TextView tvTime;
-    @BindView(R.id.tv_matbang)
-    TextView tvMatBang;
 
     public PlanViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
-    public void bind(Dsdiadiem dsdiadiem) {
-        tvName.setText(dsdiadiem.getTendiadiem());
-        tvTimeMax.setText(dsdiadiem.getThoigiantoida() + " phút");
-        tvTime.setText(dsdiadiem.getThoigianlamviec());
-        Log.e("bind", "bind: ");
+
+    public void bind(PlanWork planWork) {
+        String DATE_FORMAT_NOW = "HH:mm";
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(DATE_FORMAT_NOW);
+        Dsdiadiem dsdiadiem = planWork.getDsdiadiem();
+        long minutemax = dsdiadiem.getThoigiantoida() * 60000;
+        Date date = planWork.getDate();
+        String stringDateStart = sdf.format(date);
+        date.setTime(date.getTime() + minutemax);
+        String stringDateStop = sdf.format(date);
+        String s = "";
         if (DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()) != null)
-            tvMatBang.setText(DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()).getTenmatbang());
+            s = "- " + DbContext.instance.findMbbyId(dsdiadiem.getIdMatbang()).getTenmatbang();
+        tvName.setText(String.format("%s %s", dsdiadiem.getTendiadiem(), s));
+        tvTime.setText(String.format("%s - %s", stringDateStart, stringDateStop));
+        Log.e("bind", "bind: ");
+
     }
 }

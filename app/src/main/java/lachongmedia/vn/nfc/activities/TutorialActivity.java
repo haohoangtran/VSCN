@@ -45,8 +45,6 @@ import pl.droidsonroids.gif.GifImageView;
 
 public class TutorialActivity extends AppCompatActivity {
     private static final String TAG = TutorialActivity.class.getSimpleName();
-    @BindView(R.id.ll_timework)
-    LinearLayout llTimeWork;
     @BindView(R.id.intro_viewpager)
     ViewPager viewPager;
     MyViewPagerAdapter myViewPagerAdapter;
@@ -65,7 +63,12 @@ public class TutorialActivity extends AppCompatActivity {
     TextView tvLocationNext;
     @BindView(R.id.tv_time_work)
     TextView tvTimeWork;
+    @BindView(R.id.tv_work_now)
+    TextView tvWorkNow;
+    @BindView(R.id.iv_time_work)
+    ImageView ivTimeWork;
     private int[] layouts;
+
     LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -95,16 +98,17 @@ public class TutorialActivity extends AppCompatActivity {
         }
     };
     String type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().show();
-            getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
-        }
         ButterKnife.bind(this);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
+
         //Roboto-Thin.ttf
         final Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
         btNext.setTypeface(typeface);
@@ -189,13 +193,15 @@ public class TutorialActivity extends AppCompatActivity {
                         Log.e(TAG, String.format("run: %s", type));
                         if (type != null && type.equalsIgnoreCase("dung")) {
                             long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
-                           llTimeWork.setVisibility(View.VISIBLE);
-                           tvTimeWork.setVisibility(View.VISIBLE);
-                           tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
-                       }else{
-                           llTimeWork.setVisibility(View.GONE);
-                       }
-                        tvLocationNext.setText(DbContext.instance.getPlaceWorkNext().getName());
+
+                            ivTimeWork.setVisibility(View.VISIBLE);
+                            tvTimeWork.setVisibility(View.VISIBLE);
+                            tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
+                        } else {
+                            ivTimeWork.setVisibility(View.GONE);
+                            tvTimeWork.setVisibility(View.GONE);
+                        }
+                        tvLocationNext.setText(DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
                         tvPlantWorklist.setText("0/" + DbContext.instance.getPlanWorkList().size());
                     }
                 });
@@ -221,12 +227,19 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         type = getIntent().getStringExtra("type");
+        if (diaDiemSave != null) {
+            tvWorkNow.setText(diaDiemSave.getDsdiadiem().getTendiadiem());
+        } else {
+            Log.e(TAG, String.format("onCreate: %s", getIntent().getStringExtra("name")));
+            tvWorkNow.setText(getIntent().getStringExtra("name") != null ? getIntent().getStringExtra("name") : "");
+        }
     }
 
     private class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
         public MyViewPagerAdapter() {
+
         }
 
         @Override

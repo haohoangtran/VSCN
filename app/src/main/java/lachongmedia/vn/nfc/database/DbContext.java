@@ -22,7 +22,7 @@ import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
  */
 
 public class DbContext {
-    public static final DbContext instance = new DbContext();
+    public static DbContext instance = new DbContext();
     private static final String TAG = DbContext.class.getSimpleName();
     private List<Dsdiadiem> listDiadiemMatBang;
     private List<Dshuongdan> dshuongdanList;
@@ -87,6 +87,9 @@ public class DbContext {
         return null;
     }
 
+    public void reset() {
+        instance = new DbContext();
+    }
     public void createPlanWorks(LoginRespon loginRespon) {
 
         if (loginRespon == null)
@@ -113,7 +116,7 @@ public class DbContext {
                             builder.append(cal.get(Calendar.YEAR)).append("-").append(cal.get(Calendar.MONTH) + 1).append("-").append(cal.get(Calendar.DAY_OF_MONTH)).append(" ")
                                     .append(numberArr[0]).append(":").append(numberArr[1]).append(":00");
                             Log.e(TAG, String.format("createPlanWorks: %s", builder.toString()));
-                            PlanWork planWork = new PlanWork(loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1).getTendiadiem(), Utils.stringToDate(builder.toString()));
+                            PlanWork planWork = new PlanWork(loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1), Utils.stringToDate(builder.toString()));
                             planWorkList.add(planWork);
                             builder = new StringBuilder();
                         }

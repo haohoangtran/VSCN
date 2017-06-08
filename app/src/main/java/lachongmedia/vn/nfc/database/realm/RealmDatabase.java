@@ -39,7 +39,6 @@ public class RealmDatabase {
         loginRespons.deleteAllFromRealm();
         realm.insertOrUpdate(loginRespon);
         realm.commitTransaction();
-
         List<Dsdiadiem> dsdiadiems = new Vector<>();
         for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
             for (int i1 = 0; i1 < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
@@ -131,5 +130,15 @@ public class RealmDatabase {
         realm.beginTransaction();
         dschecklist.setTrangthai(type);
         realm.commitTransaction();
+    }
+
+    public void removeAllData() {
+        try {
+            this.realm = Realm.getDefaultInstance();
+            this.realm.close();
+            Realm.deleteRealm(realm.getConfiguration());
+        } catch (Exception e) {
+            Log.e(TAG, "removeAllData:" + e.getMessage());
+        }
     }
 }

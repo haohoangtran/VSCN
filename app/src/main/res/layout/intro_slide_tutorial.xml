@@ -49,7 +49,6 @@
                 android:layout_height="match_parent"
                 android:layout_above="@id/iv_down_arrow"
                 android:elevation="1dp">
-
                 <ScrollView
                     android:id="@+id/sv_tut"
                     android:layout_width="match_parent"
@@ -77,14 +76,13 @@
                             android:layout_marginTop="16dp"
                             android:textSize="19sp" />
                     </LinearLayout>
-                </ScrollView>
 
+                </ScrollView>
 
             </android.support.v7.widget.CardView>
 
         </RelativeLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>
