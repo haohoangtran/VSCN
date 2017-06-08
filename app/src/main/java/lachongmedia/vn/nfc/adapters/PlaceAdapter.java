@@ -44,13 +44,14 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
                 DbContext.instance.setDshuongdanList(dsdiadiem.getDshuongdan());
                 Intent intent = new Intent(holder.itemView.getContext(), TutorialActivity.class);
                 intent.putExtra("name", dsdiadiem.getTendiadiem());
-                if (RealmDatabase.instance.getDiaDiemSave()!=null&&RealmDatabase.instance.getDiaDiemSave().size()!=0){
-                    if (dsdiadiem.getId()==RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getId()){
+                if (RealmDatabase.instance.getDiaDiemSave() != null && RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+                    if (dsdiadiem.getId() == RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getId()) {
                         intent.putExtra("type", "dung");
-                    }else {
-                        intent.putExtra("type", "sai");
+                        holder.itemView.getContext().startActivity(intent);
+                        return;
                     }
                 }
+                intent.putExtra("type", "sai");
                 holder.itemView.getContext().startActivity(intent);
             }
         });

@@ -6,6 +6,9 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 
 import java.io.File;
 import java.text.ParseException;
@@ -87,6 +90,25 @@ public class Utils {
     public static RequestBody createRequestBody(@NonNull String s) {
         return RequestBody.create(
                 MediaType.parse(MULTIPART_FORM_DATA), s);
+    }
+
+    public static boolean canScroll(HorizontalScrollView horizontalScrollView) {
+        View child = (View) horizontalScrollView.getChildAt(0);
+        if (child != null) {
+            int childWidth = (child).getWidth();
+            return horizontalScrollView.getWidth() < childWidth + horizontalScrollView.getPaddingLeft() + horizontalScrollView.getPaddingRight();
+        }
+        return false;
+
+    }
+
+    public static boolean canScroll(ScrollView scrollView) {
+        View child = (View) scrollView.getChildAt(0);
+        if (child != null) {
+            int childHeight = (child).getHeight();
+            return scrollView.getHeight() < childHeight + scrollView.getPaddingTop() + scrollView.getPaddingBottom();
+        }
+        return false;
     }
 
     //"7,7.5,9,9.5"

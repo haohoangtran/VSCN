@@ -49,8 +49,6 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'net.gotev:uploadservice:3.2.4'
     compile 'net.gotev:uploadservice-okhttp:3.2.4'
-
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
     compile project(path: ':chupanhlibrary')
 }

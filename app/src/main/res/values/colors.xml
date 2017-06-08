@@ -18,6 +18,7 @@
     <color name="dot_light_screen3">#93c6fd</color>
     <color name="dot_light_screen4">#e4b5fc</color>
     <color name="trans">#0000</color>
+    <color name="background_color">#F5FCFF</color>
 
 
     <array name="array_dot_active">

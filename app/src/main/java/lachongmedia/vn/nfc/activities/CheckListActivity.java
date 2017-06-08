@@ -178,6 +178,7 @@ public class CheckListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CheckListActivity.this, TutorialActivity.class);
+                intent.putExtra("type", "dung");
                 startActivity(intent);
             }
         });
@@ -210,17 +211,17 @@ public class CheckListActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-            if (SharedPref.instance.getCheckId() != null)
-                if (id.equals(SharedPref.instance.getCheckId())) {
-                    Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent1 = new Intent(this, MainActivity.class);
-                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent1);
-                } else {
-                    Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
-                }
+//            if (SharedPref.instance.getCheckId() != null)
+//                if (id.equals(SharedPref.instance.getCheckId())) {
+//                    Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
+//                    Intent intent1 = new Intent(this, MainActivity.class);
+//                    intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent1);
+//                } else {
+//                    Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
+//                }
         } else {
-            Toast.makeText(this, "Bạn chưa vào vệ sinh", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bạn chưa vào điểm này", Toast.LENGTH_SHORT).show();
         }
     }
 

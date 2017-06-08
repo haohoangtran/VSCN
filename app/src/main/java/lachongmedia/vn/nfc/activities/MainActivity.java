@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
             if (RealmDatabase.instance.getDiaDiemSave().size()!=0){
-                Toast.makeText(this, "Banj owr trong 1 diem", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, String.format("Bạn  đang thực hiện ở: %s", RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getTendiadiem()), Toast.LENGTH_SHORT).show();
                 return;
             }
             for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i++) {
@@ -265,7 +265,8 @@ public class MainActivity extends AppCompatActivity {
                     DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
                     DbContext.instance.setDateJoinPlace(new Date());
                     Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
-                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());intent1.putExtra("type","dung");
+                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
+                    intent1.putExtra("type", "dung");
                     startActivity(intent1);
                 }
             }

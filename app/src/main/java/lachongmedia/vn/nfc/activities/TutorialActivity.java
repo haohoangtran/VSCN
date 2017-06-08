@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -14,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +41,7 @@ import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
+import pl.droidsonroids.gif.GifImageView;
 
 public class TutorialActivity extends AppCompatActivity {
     private static final String TAG = TutorialActivity.class.getSimpleName();
@@ -82,7 +86,6 @@ public class TutorialActivity extends AppCompatActivity {
         @Override
         public void onPageScrolled(int arg0, float arg1, int arg2) {
             Log.e(TAG, String.format("onPageScrolled: %s %s %s", arg0, arg1, arg2));
-
         }
 
 
@@ -96,14 +99,14 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
-        type=getIntent().getStringExtra("type");
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().show();
             getSupportActionBar().setTitle(getIntent().getStringExtra("name"));
         }
         ButterKnife.bind(this);
         //Roboto-Thin.ttf
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
+        final Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
         btNext.setTypeface(typeface);
         btSkip.setTypeface(typeface);
 
@@ -134,8 +137,13 @@ public class TutorialActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
-                    Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
-                    startActivity(intent);
+                    type = getIntent().getStringExtra("type");
+                    if (type.equalsIgnoreCase("dung")) {
+                        Intent intent = new Intent(TutorialActivity.this, CheckListActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(TutorialActivity.this, "Bạn chưa vào địa điểm này!", Toast.LENGTH_SHORT).show();
+                    }
                 } else
                     Toast.makeText(TutorialActivity.this, "Bạn chưa vào điểm này, không thể báo cáo", Toast.LENGTH_SHORT).show();
             }
@@ -170,8 +178,6 @@ public class TutorialActivity extends AppCompatActivity {
         if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
             diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
         }
-
-        final StringBuilder builder = new StringBuilder();
         timer.schedule(new TimerTask() {
 
             @Override
@@ -179,9 +185,10 @@ public class TutorialActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-                        long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
-                       if (type.equalsIgnoreCase("dung")) {
+                        type = getIntent().getStringExtra("type");
+                        Log.e(TAG, String.format("run: %s", type));
+                        if (type != null && type.equalsIgnoreCase("dung")) {
+                            long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
                            llTimeWork.setVisibility(View.VISIBLE);
                            tvTimeWork.setVisibility(View.VISIBLE);
                            tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
@@ -210,6 +217,12 @@ public class TutorialActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        type = getIntent().getStringExtra("type");
+    }
+
     private class MyViewPagerAdapter extends PagerAdapter {
         private LayoutInflater layoutInflater;
 
@@ -221,7 +234,9 @@ public class TutorialActivity extends AppCompatActivity {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(layouts[position], container, false);
             Dshuongdan ds = DbContext.instance.getDshuongdanList().get(position);
+            final ScrollView scrollView = (ScrollView) view.findViewById(R.id.sv_tut);
             TextView tvTren = (TextView) view.findViewById(R.id.intro_title);
+            final GifImageView ivGif = (GifImageView) view.findViewById(R.id.iv_down_arrow);
             TextView tvDuoi = (TextView) view.findViewById(R.id.intro_content);
             ImageView ivTutorial = (ImageView) view.findViewById(R.id.intro_logo);
             Typeface typeface1 = Typeface.createFromAsset(getAssets(), "fonts/RobotoCondensed-Light.ttf");
@@ -231,6 +246,24 @@ public class TutorialActivity extends AppCompatActivity {
             tvTren.setText(ds.getNoidung());
             tvDuoi.setText(ds.getYeucau());
             Picasso.with(view.getContext()).load(ds.getPath()).into(ivTutorial);
+            if (Utils.canScroll(scrollView)) {
+                ivGif.setVisibility(View.INVISIBLE);
+            } else {
+                ivGif.setVisibility(View.VISIBLE);
+            }
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    if (scrollView != null) {
+                        if (scrollView.getChildAt(0).getBottom() <= (scrollView.getHeight() + scrollView.getScrollY())) {
+                            ivGif.setVisibility(View.INVISIBLE);
+                        } else {
+                            //scroll view is not at bottom
+                            ivGif.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            });
             container.addView(view);
             return view;
         }
