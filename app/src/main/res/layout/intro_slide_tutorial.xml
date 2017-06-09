@@ -53,7 +53,7 @@
                     android:id="@+id/sv_tut"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fadeScrollbars="true">
+                   android:scrollbarFadeDuration="0">
 
                     <LinearLayout
                         android:layout_width="wrap_content"

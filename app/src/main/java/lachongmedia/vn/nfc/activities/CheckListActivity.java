@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
 import java.util.List;
@@ -52,6 +53,7 @@ import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
+import lachongmedia.vn.nfc.eventbus_event.PlanworkEvent;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
@@ -83,6 +85,7 @@ public class CheckListActivity extends AppCompatActivity {
     CheckListAdapter adapter;
     DiaDiemSave diaDiemSave;
     private Dschecklist dschecklistCapture;
+    public PlanWork planWork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +191,12 @@ public class CheckListActivity extends AppCompatActivity {
                 }).create();
         dialog.show();
     }
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    public void getPlanWork(PlanworkEvent planworkEvent){
+        this.planWork=planworkEvent.getPlanWork();
+        EventBus.getDefault().removeStickyEvent(PlanworkEvent.class);
 
+    }
     private void addListenner() {
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,6 +243,7 @@ public class CheckListActivity extends AppCompatActivity {
                     startActivity(intent1);
                     RealmDatabase.instance.removePlaceSave();
                     IntentFilter intentFilter = new IntentFilter();
+                    planWork.setCompleted(1);
                     intentFilter.addAction("com.package.ACTION_LOGOUT");
                     registerReceiver(new BroadcastReceiver() {
                         @Override

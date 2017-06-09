@@ -51,12 +51,14 @@ import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dsmatbang;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
+import lachongmedia.vn.nfc.eventbus_event.PlanworkEvent;
 import lachongmedia.vn.nfc.eventbus_event.TimeChangeEvent;
 
 public class MainActivity extends AppCompatActivity {
@@ -101,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (DbContext.instance.getPlanWorkList().size()==0)
+        DbContext.instance.createPlanWorks(loginRespon);
         paths = new Vector<>();
         ButterKnife.bind(this);
         if (getSupportActionBar() != null)
@@ -123,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         date = RealmDatabase.instance.getDateStringStartFromRealm(SharedPref.instance.getIDUser());
-        DbContext.instance.createPlanWorks(loginRespon);
+
         EventBus.getDefault().register(this);
         LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
         if (loginRespon != null) {
@@ -261,23 +265,45 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
             if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
                 Toast.makeText(this, String.format("Bạn  đang thực hiện ở: %s", RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getTendiadiem()), Toast.LENGTH_SHORT).show();
                 return;
             }
+
             for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i++) {
                 Dsdiadiem dsdiadiem = loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i);
                 if (dsdiadiem.getIdThediadiem().equalsIgnoreCase(id)) {
-                    DiaDiemSave diaDiemSave = new DiaDiemSave(dsdiadiem, loginRespon.getNhanvien());
-                    RealmDatabase.instance.saveDiaDiemSave(diaDiemSave);
-                    DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
-                    DbContext.instance.setDateJoinPlace(new Date());
-                    Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
-                    intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
-                    intent1.putExtra("type", "dung");
-                    startActivity(intent1);
+                    if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem)==null){
+                        Toast.makeText(this, "Chưa đến giờ làm việc tại điểm này", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem).isCompleted()==0) {
+                        DiaDiemSave diaDiemSave = new DiaDiemSave(dsdiadiem, loginRespon.getNhanvien());
+                        RealmDatabase.instance.saveDiaDiemSave(diaDiemSave);
+                        DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
+                        DbContext.instance.setDateJoinPlace(new Date());
+                        Intent intent1 = new Intent(MainActivity.this, TutorialActivity.class);
+                        intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
+                        intent1.putExtra("type", "dung");
+                        startActivity(intent1);
+                        PlanWork planWork = DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem);
+                        EventBus.getDefault().postSticky(new PlanworkEvent(planWork));
+                        planWork.setCompleted(2);
+                        List<PlanWork> planWorks=DbContext.instance.getPlanWorkList();
+                        for (int a = 0; a < planWorks.size(); a++) {
+                            Log.e(TAG, String.format("onNewIntent: %s %s",planWorks.get(a).getDsdiadiem().getTendiadiem(), planWorks.get(a).isCompleted()) );
+                        }
+                        Log.d(TAG, String.format("onNewIntent: %s",planWork.toString() ));
+                    }
+                    else if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem).isCompleted()==1){
+
+                        Toast.makeText(this, "Bạn đã hoàn thành công việc", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem).isCompleted()==-1){
+                        Toast.makeText(this,"Bạn đã quá thời gian làm việc",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }

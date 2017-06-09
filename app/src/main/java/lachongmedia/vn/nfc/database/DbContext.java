@@ -103,7 +103,6 @@ public class DbContext {
                     String str = loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i1).getThoigianlamviec();
                     Calendar cal = Calendar.getInstance();
                     Date date = cal.getTime();
-                    Log.e(TAG, String.format("createPlanWorks: %s %s %s", date.getYear(), date.getMonth(), date.getDay()));
                     Log.e(TAG, String.format("createPlanWorks: %s", date.toString()));
 
                     Log.e(TAG, String.format("createPlanWorks: %s", cal.toString()));
@@ -140,6 +139,16 @@ public class DbContext {
             Log.e(TAG, String.format("createPlanWorks: %s", planWork.toString()));
         }
 
+    }
+    public PlanWork getPlanWorkWithDate(Date date, Dsdiadiem dsdiadiem){
+        for (int i = 0; i < planWorkList.size(); i++) {
+            if (planWorkList.get(i).getDsdiadiem().getId()==dsdiadiem.getId()){
+                if (Utils.getTime(date,planWorkList.get(i).getDate())<(dsdiadiem.getThoigiantoida())){
+                    return planWorkList.get(i);
+                }
+            }
+        }
+        return null;
     }
 
     public PlanWork getPlaceWorkNext() {

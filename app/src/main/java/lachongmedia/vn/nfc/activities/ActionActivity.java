@@ -17,16 +17,22 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 
+import java.util.Date;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
+import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.PlanAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 public class ActionActivity extends AppCompatActivity {
+    private static final String TAG = ActionActivity.class.getSimpleName();
     @BindView(R.id.ll_map)
     LinearLayout llMap;
     @BindView(R.id.ll_logout)
@@ -62,6 +68,31 @@ public class ActionActivity extends AppCompatActivity {
                 finish();
             }
         }, intentFilter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        List<PlanWork> planWorks=DbContext.instance.getPlanWorkList();
+        for (int i = 0; i < planWorks.size(); i++) {
+            Log.e(TAG, String.format("onStart1: %s %s",planWorks.get(i).getDsdiadiem().getTendiadiem(), planWorks.get(i).isCompleted()) );
+        }
+        for (int i = 0; i < DbContext.instance.getPlanWorkList().size(); i++) {
+            Date date=new Date();
+            PlanWork planWork = DbContext.instance.getPlanWorkList().get(i);
+            Log.d(TAG, String.format("onStart: %s", date));
+            Log.d(TAG, String.format("onStart: %s", planWork.getDsdiadiem().getThoigiantoida()));
+            date.setTime(date.getTime()-planWork.getDsdiadiem().getThoigiantoida()*60000);
+            Log.d(TAG, String.format("onStart: %s", date));
+           if (planWork.getDate().before(date) && planWork.isCompleted()==0){
+               planWork.setCompleted(-1);
+           }
+        }
+        planWorks=DbContext.instance.getPlanWorkList();
+        for (int i = 0; i < planWorks.size(); i++) {
+            Log.e(TAG, String.format("onStart2: %s %s",planWorks.get(i).getDsdiadiem().getTendiadiem(), planWorks.get(i).isCompleted()) );
+        }
+
     }
 
     private void addListener() {

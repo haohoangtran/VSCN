@@ -10,7 +10,7 @@ import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 public class PlanWork {
     private Date date;
-    private boolean isCompleted;
+    private int isCompleted;
     private Dsdiadiem dsdiadiem;
 
     public Dsdiadiem getDsdiadiem() {
@@ -21,11 +21,11 @@ public class PlanWork {
         this.dsdiadiem = dsdiadiem;
     }
 
-    public boolean isCompleted() {
+    public int isCompleted() {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setCompleted(int completed) {
         isCompleted = completed;
     }
 
@@ -47,7 +47,7 @@ public class PlanWork {
     }
 
     public PlanWork(Dsdiadiem dsdiadiem, Date date) {
-        this.isCompleted = false;
+        this.isCompleted = 0;
         this.date = date;
         this.dsdiadiem = dsdiadiem;
     }

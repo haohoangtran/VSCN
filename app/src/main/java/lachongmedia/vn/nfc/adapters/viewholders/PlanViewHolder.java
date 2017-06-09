@@ -1,5 +1,6 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,8 +29,8 @@ public class PlanViewHolder extends RecyclerView.ViewHolder {
     TextView tvName;
     @BindView(R.id.tv_time)
     TextView tvTime;
-    @BindView(R.id.im_planeitemview)
-    ImageView imItemPlaneView;
+    @BindView(R.id.ll_planitemview)
+    LinearLayout llPlanItemView;
 
     public PlanViewHolder(View itemView) {
         super(itemView);
@@ -52,8 +53,12 @@ public class PlanViewHolder extends RecyclerView.ViewHolder {
         tvName.setText(String.format("%s %s", dsdiadiem.getTendiadiem(), s));
         tvTime.setText(String.format("%s - %s", stringDateStart, stringDateStop));
         Log.e("bind", "bind: ");
-        if (planWork.isCompleted()) {
-            imItemPlaneView.setVisibility(View.VISIBLE);
-        }
+        if (planWork.isCompleted()==1){
+            llPlanItemView.setBackgroundColor(Color.GREEN);
+        }else  if (planWork.isCompleted()==-1){
+            llPlanItemView.setBackgroundColor(Color.GRAY);
+        }else if (planWork.isCompleted()==0)
+            llPlanItemView.setBackgroundColor(Color.WHITE);
+        else llPlanItemView.setBackgroundColor(Color.YELLOW);
     }
 }
