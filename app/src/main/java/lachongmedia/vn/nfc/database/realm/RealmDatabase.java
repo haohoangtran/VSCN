@@ -141,4 +141,12 @@ public class RealmDatabase {
             Log.e(TAG, "removeAllData:" + e.getMessage());
         }
     }
+
+    public void removePlaceSave() {
+        this.realm = Realm.getDefaultInstance();
+        RealmResults<DiaDiemSave> result = realm.where(DiaDiemSave.class).findAll();
+        realm.beginTransaction();
+        result.deleteAllFromRealm();
+        realm.commitTransaction();
+    }
 }

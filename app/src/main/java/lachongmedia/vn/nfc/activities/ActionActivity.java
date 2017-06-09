@@ -1,12 +1,16 @@
 package lachongmedia.vn.nfc.activities;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
@@ -46,6 +50,16 @@ public class ActionActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Tác vụ");
         }
         addListener();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                //At this point you should start the login activity and finish this one
+                finish();
+            }
+        }, intentFilter);
     }
 
     private void addListener() {
@@ -67,6 +81,9 @@ public class ActionActivity extends AppCompatActivity {
                 RealmDatabase.instance.removeAllData();
                 DbContext.instance.reset();
                 Intent intent = new Intent(ActionActivity.this.getApplicationContext(), LoginActivity.class);
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                sendBroadcast(broadcastIntent);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 ActionActivity.this.startActivity(intent);
             }

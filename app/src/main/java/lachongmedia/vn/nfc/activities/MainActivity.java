@@ -2,6 +2,7 @@ package lachongmedia.vn.nfc.activities;
 
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -106,6 +107,16 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         updateDisplay();
         addListener();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                //At this point you should start the login activity and finish this one
+                finish();
+            }
+        }, intentFilter);
     }
 
     @Override

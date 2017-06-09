@@ -2,6 +2,8 @@ package lachongmedia.vn.nfc.activities;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -97,7 +99,16 @@ public class CheckListActivity extends AppCompatActivity {
         rvCheckList.setLayoutManager(new LinearLayoutManager(this));
         addListenner();
         updateDisplay();
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                //At this point you should start the login activity and finish this one
+                finish();
+            }
+        }, intentFilter);
     }
 
 
@@ -211,17 +222,16 @@ public class CheckListActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-            if (SharedPref.instance.getCheckId() != null)
-                if (id.equals(SharedPref.instance.getCheckId())) {
+            if (RealmDatabase.instance.getDiaDiemSave().size() != 0)
+                if (id.equals(RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getIdThediadiem())) {
                     Toast.makeText(this, "Báo cáo thành công", Toast.LENGTH_SHORT).show();
                     Intent intent1 = new Intent(this, MainActivity.class);
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent1);
+                    RealmDatabase.instance.removePlaceSave();
                 } else {
                     Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
                 }
-        } else {
-            Toast.makeText(this, "Bạn chưa vào điểm này", Toast.LENGTH_SHORT).show();
         }
     }
 

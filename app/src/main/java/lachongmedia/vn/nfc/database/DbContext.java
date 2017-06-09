@@ -31,7 +31,7 @@ public class DbContext {
     private List<PlanWork> planWorkList;
     private Date dateJoinPlace;
     private List<Dsdiadiem> listDiaDiemAll;
-    LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
+
 
     public List<PlanWork> getPlanWorkList() {
         return planWorkList;
@@ -65,6 +65,7 @@ public class DbContext {
     }
 
     public List<String> getPaths() {
+        LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
         paths.clear();
         for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
 

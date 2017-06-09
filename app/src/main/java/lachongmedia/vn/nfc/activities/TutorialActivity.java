@@ -1,7 +1,9 @@
 package lachongmedia.vn.nfc.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -68,7 +70,6 @@ public class TutorialActivity extends AppCompatActivity {
     @BindView(R.id.iv_time_work)
     ImageView ivTimeWork;
     private int[] layouts;
-
     LoginRespon loginRespon = RealmDatabase.instance.getLoginRespon();
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
@@ -107,24 +108,18 @@ public class TutorialActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
-
         //Roboto-Thin.ttf
         final Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
         btNext.setTypeface(typeface);
         btSkip.setTypeface(typeface);
-
-
         layouts = new int[DbContext.instance.getDshuongdanList().size()];
         for (int i = 0; i < layouts.length; i++) {
             layouts[i] = R.layout.intro_slide_tutorial;
         }
+
         addBottomDot(0);
         Log.e(TAG, String.format("onCreate: %s", DbContext.instance.getDshuongdanList()));
-
         changeSttBarColor();
-
-
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
@@ -153,6 +148,15 @@ public class TutorialActivity extends AppCompatActivity {
             }
         });
         updateDisplay();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                finish();
+            }
+        }, intentFilter);
     }
 
     private void addBottomDot(int currentPage) {

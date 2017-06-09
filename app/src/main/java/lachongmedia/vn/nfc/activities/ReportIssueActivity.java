@@ -1,7 +1,10 @@
 package lachongmedia.vn.nfc.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -70,19 +73,11 @@ public class ReportIssueActivity extends AppCompatActivity {
         return Uri.fromFile(getOutputMediaFile());
     }
 
-    /**
-     * Create a File for saving an image or video
-     */
     private static File getOutputMediaFile() {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "AdenService");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
 
-        // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 Log.d("AdenService", "failed to create directory");
@@ -133,6 +128,16 @@ public class ReportIssueActivity extends AppCompatActivity {
         });
         addListener();
         hihihi();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.package.ACTION_LOGOUT");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("onReceive", "Logout in progress");
+                //At this point you should start the login activity and finish this one
+                finish();
+            }
+        }, intentFilter);
     }
 
     private void requestUploadSurvey() {
@@ -188,7 +193,6 @@ public class ReportIssueActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onStart() {
