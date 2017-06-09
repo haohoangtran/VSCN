@@ -3,8 +3,10 @@ package lachongmedia.vn.nfc.activities;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -77,15 +79,26 @@ public class ActionActivity extends AppCompatActivity {
         llLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPref.instance.logout();
-                RealmDatabase.instance.removeAllData();
-                DbContext.instance.reset();
-                Intent intent = new Intent(ActionActivity.this.getApplicationContext(), LoginActivity.class);
-                Intent broadcastIntent = new Intent();
-                broadcastIntent.setAction("com.package.ACTION_LOGOUT");
-                sendBroadcast(broadcastIntent);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                ActionActivity.this.startActivity(intent);
+                Dialog dialog = new AlertDialog.Builder(ActionActivity.this).setMessage("Kết thúc ca làm việc").setTitle("Đăng xuất")
+                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPref.instance.logout();
+                                RealmDatabase.instance.removeAllData();
+                                DbContext.instance.reset();
+                                Intent intent = new Intent(ActionActivity.this.getApplicationContext(), LoginActivity.class);
+                                Intent broadcastIntent = new Intent();
+                                broadcastIntent.setAction("com.package.ACTION_LOGOUT");
+                                sendBroadcast(broadcastIntent);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                ActionActivity.this.startActivity(intent);
+                            }
+                        }).setPositiveButton("Hủy", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
         });
         llKehoach.setOnClickListener(new View.OnClickListener() {

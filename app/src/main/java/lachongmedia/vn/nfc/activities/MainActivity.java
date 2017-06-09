@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
         TextView tvTime = (TextView) dialog.findViewById(R.id.tv_time);
         tvTime.setText("Thời gian bắt đầu: " + Utils.getTime(date));
         tvType.setText("Vị trí: " + loginRespon.getNhanvien().getTenloainhanvien());
-
         Picasso.with(this).load(loginRespon.getNhanvien().getPath()).into(ivAvt);
         tvName.setText("Tên: " + loginRespon.getNhanvien().getTennhanvien());
         btOk.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
-            if (RealmDatabase.instance.getDiaDiemSave().size()!=0){
+            if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
                 Toast.makeText(this, String.format("Bạn  đang thực hiện ở: %s", RealmDatabase.instance.getDiaDiemSave().get(0).getDsdiadiem().getTendiadiem()), Toast.LENGTH_SHORT).show();
                 return;
             }
