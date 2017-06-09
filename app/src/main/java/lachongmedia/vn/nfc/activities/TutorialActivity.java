@@ -183,9 +183,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     private void updateDisplay() {
         Timer timer = new Timer();
-        if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
-            diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
-        }
+
         timer.schedule(new TimerTask() {
 
             @Override
@@ -195,12 +193,17 @@ public class TutorialActivity extends AppCompatActivity {
                     public void run() {
                         type = getIntent().getStringExtra("type");
                         Log.e(TAG, String.format("run: %s", type));
+                        long minute =0;
                         if (type != null && type.equalsIgnoreCase("dung")) {
-                            long minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
+                            if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+                                diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
+                               minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
+                                tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
+                            }
 
                             ivTimeWork.setVisibility(View.VISIBLE);
                             tvTimeWork.setVisibility(View.VISIBLE);
-                            tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
+
                         } else {
                             ivTimeWork.setVisibility(View.GONE);
                             tvTimeWork.setVisibility(View.GONE);

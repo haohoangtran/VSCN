@@ -11,6 +11,7 @@ import java.util.Vector;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.viewholders.PlanViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
+import lachongmedia.vn.nfc.database.models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
@@ -36,6 +37,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanViewHolder> {
     @Override
     public void onBindViewHolder(PlanViewHolder holder, int position) {
         holder.bind(DbContext.instance.getPlanWorkList().get(position));
+
     }
 
     @Override

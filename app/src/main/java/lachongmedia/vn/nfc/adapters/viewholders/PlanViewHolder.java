@@ -4,6 +4,8 @@ import android.icu.text.SimpleDateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Date;
@@ -26,6 +28,8 @@ public class PlanViewHolder extends RecyclerView.ViewHolder {
     TextView tvName;
     @BindView(R.id.tv_time)
     TextView tvTime;
+    @BindView(R.id.im_planeitemview)
+    ImageView imItemPlaneView;
 
     public PlanViewHolder(View itemView) {
         super(itemView);
@@ -48,6 +52,8 @@ public class PlanViewHolder extends RecyclerView.ViewHolder {
         tvName.setText(String.format("%s %s", dsdiadiem.getTendiadiem(), s));
         tvTime.setText(String.format("%s - %s", stringDateStart, stringDateStop));
         Log.e("bind", "bind: ");
-
+        if (planWork.isCompleted()) {
+            imItemPlaneView.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -135,7 +135,7 @@ public class CheckListActivity extends AppCompatActivity {
     }
 
     private void updateDisplay() {
-        Timer timer = new Timer();
+        final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             @Override
@@ -143,12 +143,17 @@ public class CheckListActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (diaDiemSave == null) timer.cancel();
                         // do UI updates here
                         long minute = Utils.getTime(date, new Date());
-                        if (minute < 60)
-                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
-                        else {
-                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
+                        try {
+                            if (minute < 60)
+                                onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
+                            else {
+                                onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
+                            }
+                        }catch (Exception e){
+                            Log.d(TAG, String.format("run: %s", e));
                         }
                     }
                 });
@@ -229,6 +234,16 @@ public class CheckListActivity extends AppCompatActivity {
                     intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent1);
                     RealmDatabase.instance.removePlaceSave();
+                    IntentFilter intentFilter = new IntentFilter();
+                    intentFilter.addAction("com.package.ACTION_LOGOUT");
+                    registerReceiver(new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            Log.d("onReceive", "Logout in progress");
+                            //At this point you should start the login activity and finish this one
+                            finish();
+                        }
+                    }, intentFilter);
                 } else {
                     Toast.makeText(this, "Báo cáo lỗi,thẻ k hợp lệ", Toast.LENGTH_SHORT).show();
                 }

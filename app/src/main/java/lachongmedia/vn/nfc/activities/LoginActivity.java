@@ -1,5 +1,6 @@
 package lachongmedia.vn.nfc.activities;
 
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.nfc.tech.NfcA;
 import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     // list of NFC technologies detected:
     public static Date date;
+
     private final String[][] techList = new String[][]{
             new String[]{
                     NfcA.class.getName(),
@@ -66,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
     }
@@ -128,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
+           final Dialog builder=new AlertDialog.Builder(this).setMessage("Đang đăng nhập").show();
             final String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("higu", String.format("onResponse: hihihi %s", id));
             LoginService loginService = NetContext.instance.create(LoginService.class);
@@ -137,6 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.code() == 200) {
                         final LoginRespon respon = response.body();
                         if (respon != null) {
+                            builder.dismiss();
                             RealmDatabase.instance.insertOrUpdateLogin(respon);
                             Log.d(TAG, String.format("onResponse: %s",respon ));
                             Intent intent1 = new Intent(LoginActivity.this, MainActivity.class);
@@ -150,12 +156,14 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                     } else {
+                        builder.dismiss();
                         Toast.makeText(LoginActivity.this, "Thẻ của bạn chưa được đăng ký!", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<LoginRespon> call, Throwable t) {
+                    builder.dismiss();
                     Log.e("hihu", String.format("onFailure: %s", t.toString()));
                 }
             });
