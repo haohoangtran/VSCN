@@ -188,6 +188,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         btCapture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ChupAnhActivity.pathsList.clear();
                 Intent intent = new Intent(ReportIssueActivity.this, ChupAnhActivity.class);
                 startActivityForResult(intent, CAPTURE_CODE);
             }
