@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
+    android:layout_marginLeft="8dp"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -9,8 +10,7 @@
         android:layout_width="80dp"
         android:layout_height="100dp"
         android:layout_marginTop="@dimen/margin_16"
-        android:clickable="false"
-        android:src="@color/cardview_dark_background" />
+        android:clickable="false" />
 
     <ImageView
         android:id="@+id/iv_remove"

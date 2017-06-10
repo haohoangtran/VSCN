@@ -2,6 +2,9 @@ package lachongmedia.vn.nfc.database.respon.login;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import java.util.Vector;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
@@ -26,6 +29,7 @@ public class Dschecklist extends RealmObject {
     @SerializedName("trangthai")
     private int trangthai;
     private RealmList<RealmString> pathImages;
+
 
     public Dschecklist() {
         pathImages = new RealmList<>();
@@ -126,7 +130,14 @@ public class Dschecklist extends RealmObject {
                 ", pathImages=" + pathImages +
                 '}';
     }
+    public List<String> getPathString(){
+        List<String> strings = new Vector<>();
+        for (int i = 0; i < pathImages.size(); i++) {
+            strings.add( pathImages.get(i).getValue());
 
+        }
+        return strings;
+    }
     public void setTrangthai(int trangthai) {
         this.trangthai = trangthai;
     }

@@ -1,5 +1,6 @@
 package lachongmedia.vn.nfc.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder> {
+
 
     @Override
     public CheckListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

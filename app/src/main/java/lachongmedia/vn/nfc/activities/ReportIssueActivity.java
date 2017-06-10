@@ -198,7 +198,7 @@ public class ReportIssueActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        adapter = new ImagesAdapter();
+        adapter = new ImagesAdapter(DbContext.instance.getPathImageIssue());
         rvImages.setAdapter(adapter);
         rvImages.setLayoutManager(new GridLayoutManager(this, 4));
     }

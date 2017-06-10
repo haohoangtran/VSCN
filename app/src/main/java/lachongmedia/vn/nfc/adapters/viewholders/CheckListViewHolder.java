@@ -1,7 +1,10 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +20,8 @@ import java.util.Vector;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
+import lachongmedia.vn.nfc.adapters.ImagesAdapter;
+import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
@@ -45,12 +50,14 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     Dialog dialog;
     @BindView(R.id.iv_capture)
     ImageView ivCapture;
-
+    RecyclerView rvImageQuestions;
     public CheckListViewHolder(final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         dialog = new Dialog(itemView.getContext());
         dialog.setContentView(R.layout.dialog_question);
+        rvImageQuestions= (RecyclerView) dialog.findViewById(R.id.rv_image_questions);
+
         dialog.setCancelable(false);
     }
 
@@ -81,6 +88,7 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final Dschecklist dschecklist) {
+
         tvNameCv.setText(dschecklist.getTenchecklist());
         tvPP.setText(dschecklist.getPhuongphap());
         dialog.setTitle(dschecklist.getTenchecklist());
@@ -123,6 +131,8 @@ public class CheckListViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rvImageQuestions.setAdapter(new ImagesAdapter(dschecklist.getPathString()));
+                rvImageQuestions.setLayoutManager(new GridLayoutManager(itemView.getContext(),3));
                 dialog.show();
 
                 // set the custom dialog components - text, image and button

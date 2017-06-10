@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -169,7 +170,7 @@ public class CheckListActivity extends AppCompatActivity {
                 .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ChupAnhActivity.pathsList = new Vector<>();
+                        ChupAnhActivity.pathsList.clear();
                         Intent cameraIntent = new Intent(CheckListActivity.this, ChupAnhActivity.class);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     }
@@ -234,6 +235,15 @@ public class CheckListActivity extends AppCompatActivity {
                     startActivity(intent1);
                     RealmDatabase.instance.removePlaceSave();
                     IntentFilter intentFilter = new IntentFilter();
+                    List<PlanWork> planWorks = RealmDatabase.instance.getPlanWorkList();
+                    if (planWork==null){
+                        for (int i = 0; i <planWorks.size(); i++) {
+                            if (planWorks.get(i).isCompleted()==2){
+                                planWork=planWorks.get(i);
+                                break;
+                            }
+                        }
+                    }
                     RealmDatabase.instance.setPlaneWork(planWork, 1);
                     intentFilter.addAction("com.package.ACTION_LOGOUT");
                     registerReceiver(new BroadcastReceiver() {

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.viewholders.ImageViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
@@ -14,6 +16,12 @@ import lachongmedia.vn.nfc.database.DbContext;
  */
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
+    List<String> pathList;
+
+    public ImagesAdapter(List<String> pathList) {
+        this.pathList = pathList;
+    }
+
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = android.view.LayoutInflater.from(parent.getContext());
@@ -24,11 +32,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        holder.bind(DbContext.instance.getPathImageIssue().get(position));
+        holder.bind(pathList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return DbContext.instance.getPathImageIssue().size();
+        return pathList.size();
     }
 }

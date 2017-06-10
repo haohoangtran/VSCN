@@ -84,7 +84,7 @@ public class ActionActivity extends AppCompatActivity {
             date.setTime(date.getTime()-planWork.getDsdiadiem().getThoigiantoida()*60000);
             Log.d(TAG, String.format("onStart: %s", date));
            if (planWork.getDate().before(date) && planWork.isCompleted()==0){
-               RealmDatabase.instance.setPlaneWork(planWork, -1);
+              RealmDatabase.instance.setPlaneWork(planWork,-1);
            }
         }
         planWorks=DbContext.instance.getPlanWorkList();

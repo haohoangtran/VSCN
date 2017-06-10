@@ -148,9 +148,10 @@ public class DbContext {
         List<Date> dates = new Vector<>();
         List<PlanWork> dsPlans = new Vector<>();
         for (int i = 0; i < planWorkList.size(); i++) {
-            if (planWorkList.get(i).getDsdiadiem().getId() == dsdiadiem.getId()) {
+            if (planWorkList.get(i).getDsdiadiem().getId() == dsdiadiem.getId() && (planWorkList.get(i).isCompleted() == 0 || planWorkList.get(i).isCompleted()==1)) {
                 dsPlans.add(planWorkList.get(i));
                 dates.add(planWorkList.get(i).getDate());
+
             }
         }
         Date closest = Collections.min(dates, new Comparator<Date>() {
@@ -166,19 +167,8 @@ public class DbContext {
                 planWork = dsPlans.get(i);
             }
         }
-        Log.e(TAG, String.format("getPlanWorkWithDate: %s", planWork));
-        if (planWork == null) {
-            return null;
-        }
-        date.setTime(date.getTime() - (planWork.getDsdiadiem().getThoigiantoida() + 10) * 60000);
-        Log.e(TAG, String.format("getPlanWorkWithDate1: %s", date.toString()));
-        Log.e(TAG, String.format("getPlanWorkWithDate2: %s", planWork.getDate().toString()));
-        if (planWork.getDate().after(date)) {
-            Log.e(TAG, String.format("getPlanWorkWithDat: %s", planWork));
-            return planWork;
-
-        }
-        return null;
+        Log.d(TAG, String.format("getPlanWorkWitohDate123: %s", planWork));
+        return planWork;
     }
 
     private int compare(long x, long y) {
