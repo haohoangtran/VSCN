@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (DbContext.instance.getPlanWorkList().size() == 0)
+        if (RealmDatabase.instance.getPlanWorkList().size() == 0)
             DbContext.instance.createPlanWorks(loginRespon);
         paths = new Vector<>();
         ButterKnife.bind(this);
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent1);
                         PlanWork planWork = DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem);
                         EventBus.getDefault().postSticky(new PlanworkEvent(planWork));
-                        planWork.setCompleted(2);
+                        RealmDatabase.instance.setPlaneWork(planWork, 2);
                         Log.d(TAG, String.format("onNewIntent: %s", planWork.toString()));
                     } else if (DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem).isCompleted() == 1) {
 

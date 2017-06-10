@@ -25,16 +25,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
@@ -237,7 +234,7 @@ public class CheckListActivity extends AppCompatActivity {
                     startActivity(intent1);
                     RealmDatabase.instance.removePlaceSave();
                     IntentFilter intentFilter = new IntentFilter();
-                    planWork.setCompleted(1);
+                    RealmDatabase.instance.setPlaneWork(planWork, 1);
                     intentFilter.addAction("com.package.ACTION_LOGOUT");
                     registerReceiver(new BroadcastReceiver() {
                         @Override

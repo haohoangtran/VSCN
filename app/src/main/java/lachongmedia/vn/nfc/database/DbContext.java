@@ -91,12 +91,12 @@ public class DbContext {
     public void reset() {
         instance = new DbContext();
     }
+
     public void createPlanWorks(LoginRespon loginRespon) {
 
         if (loginRespon == null)
             return;
         try {
-
             planWorkList.clear();
             for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().size(); i++) {
                 for (int i1 = 0; i1 < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i1++) {
@@ -104,7 +104,6 @@ public class DbContext {
                     Calendar cal = Calendar.getInstance();
                     Date date = cal.getTime();
                     Log.e(TAG, String.format("createPlanWorks: %s", date.toString()));
-
                     Log.e(TAG, String.format("createPlanWorks: %s", cal.toString()));
                     StringBuilder builder = new StringBuilder();
                     if (str != null && str.length() > 0) {

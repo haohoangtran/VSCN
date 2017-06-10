@@ -50,6 +50,7 @@ public class RealmDatabase {
             Log.e(TAG, "onResponse: " + dsdiadiem.toString());
         }
         DbContext.instance.setListDiaDiemAll(dsdiadiems);
+
     }
 
     public void addToRealmDateString(DateString dateString) {
@@ -165,5 +166,12 @@ public class RealmDatabase {
     public List<PlanWork> getPlanWorkList() {
         this.realm = Realm.getDefaultInstance();
         return realm.where(PlanWork.class).findAll();
+    }
+
+    public void setPlaneWork(PlanWork planeWork, int type) {
+        this.realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        planeWork.setCompleted(type);
+        realm.commitTransaction();
     }
 }
