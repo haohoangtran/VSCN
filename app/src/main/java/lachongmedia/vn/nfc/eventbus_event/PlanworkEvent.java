@@ -1,6 +1,6 @@
 package lachongmedia.vn.nfc.eventbus_event;
 
-import lachongmedia.vn.nfc.database.models.PlanWork;
+import lachongmedia.vn.nfc.database.realm.realm_models.PlanWork;
 
 /**
  * Created by Quoc Viet Dang on 6/9/2017.

@@ -1,17 +1,22 @@
-package lachongmedia.vn.nfc.database.models;
+package lachongmedia.vn.nfc.database.realm.realm_models;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**
  * Created by hao on 6/4/17.
  */
 
-public class PlanWork {
-    private Date date;
+public class PlanWork extends RealmObject {
+    private String date;
     private int isCompleted;
     private Dsdiadiem dsdiadiem;
+
+    public PlanWork() {
+    }
 
     public Dsdiadiem getDsdiadiem() {
         return dsdiadiem;
@@ -39,16 +44,16 @@ public class PlanWork {
     }
 
     public Date getDate() {
-        return date;
+        return Utils.stringToDate(date);
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = Utils.dateToString(date);
     }
 
     public PlanWork(Dsdiadiem dsdiadiem, Date date) {
         this.isCompleted = 0;
-        this.date = date;
+        this.date = Utils.dateToString(date);
         this.dsdiadiem = dsdiadiem;
     }
 }

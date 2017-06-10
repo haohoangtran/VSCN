@@ -46,12 +46,11 @@ import java.util.Vector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.RealmList;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.models.PlanWork;
+import lachongmedia.vn.nfc.database.realm.realm_models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
@@ -103,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (DbContext.instance.getPlanWorkList().size()==0)
-        DbContext.instance.createPlanWorks(loginRespon);
+        if (DbContext.instance.getPlanWorkList().size() == 0)
+            DbContext.instance.createPlanWorks(loginRespon);
         paths = new Vector<>();
         ButterKnife.bind(this);
         if (getSupportActionBar() != null)
@@ -216,17 +215,21 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // do UI updates here
-                        long minute = Utils.getTime(date, new Date());
-                        if (minute < 60)
-                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
-                        else {
-                            onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
-                        }
+                        try {
+                            long minute = Utils.getTime(date, new Date());
+                            if (minute < 60)
+                                onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + minute + " phút"));
+                            else {
+                                onTimeChange(new TimeChangeEvent("Thời gian làm việc: " + (int) minute / 60 + " giờ " + minute % 60 + " phút"));
+                            }
 
-                        if (DbContext.instance.getPlaceWorkNext() != null)
-                            tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
-                        else
-                            tvWorkNext.setText("Địa điểm tiếp theo: Không khả dụng");
+                            if (DbContext.instance.getPlaceWorkNext() != null)
+                                tvWorkNext.setText("Địa điểm tiếp theo: " + DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
+                            else
+                                tvWorkNext.setText("Địa điểm tiếp theo: Không khả dụng");
+                        } catch (Exception e) {
+                            Log.e(TAG, String.format("run: %s", e.toString()));
+                        }
                     }
                 });
 
@@ -265,7 +268,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         if (intent.getAction().equals(NfcAdapter.ACTION_TAG_DISCOVERED)) {
-
             String id = Utils.byteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
             Log.e("UID", String.format("onNewIntent: %s", id));
             if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
@@ -276,10 +278,9 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().size(); i++) {
                 Dsdiadiem dsdiadiem = loginRespon.getKehoach().getSite().getDsmatbang().get(i).getDsdiadiem().get(i);
                 if (dsdiadiem.getIdThediadiem().equalsIgnoreCase(id)) {
-                    if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem)==null){
+                    if (DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem) == null) {
                         Toast.makeText(this, "Chưa đến giờ làm việc tại điểm này", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem).isCompleted()==0) {
+                    } else if (DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem).isCompleted() == 0) {
                         DiaDiemSave diaDiemSave = new DiaDiemSave(dsdiadiem, loginRespon.getNhanvien());
                         RealmDatabase.instance.saveDiaDiemSave(diaDiemSave);
                         DbContext.instance.setDshuongdanList(diaDiemSave.getDsdiadiem().getDshuongdan());
@@ -288,21 +289,15 @@ public class MainActivity extends AppCompatActivity {
                         intent1.putExtra("name", diaDiemSave.getDsdiadiem().getTendiadiem());
                         intent1.putExtra("type", "dung");
                         startActivity(intent1);
-                        PlanWork planWork = DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem);
+                        PlanWork planWork = DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem);
                         EventBus.getDefault().postSticky(new PlanworkEvent(planWork));
                         planWork.setCompleted(2);
-                        List<PlanWork> planWorks=DbContext.instance.getPlanWorkList();
-                        for (int a = 0; a < planWorks.size(); a++) {
-                            Log.e(TAG, String.format("onNewIntent: %s %s",planWorks.get(a).getDsdiadiem().getTendiadiem(), planWorks.get(a).isCompleted()) );
-                        }
-                        Log.d(TAG, String.format("onNewIntent: %s",planWork.toString() ));
-                    }
-                    else if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem).isCompleted()==1){
+                        Log.d(TAG, String.format("onNewIntent: %s", planWork.toString()));
+                    } else if (DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem).isCompleted() == 1) {
 
                         Toast.makeText(this, "Bạn đã hoàn thành công việc", Toast.LENGTH_SHORT).show();
-                    }
-                    else if (DbContext.instance.getPlanWorkWithDate(new Date(),dsdiadiem).isCompleted()==-1){
-                        Toast.makeText(this,"Bạn đã quá thời gian làm việc",Toast.LENGTH_SHORT).show();
+                    } else if (DbContext.instance.getPlanWorkWithDate(new Date(), dsdiadiem).isCompleted() == -1) {
+                        Toast.makeText(this, "Bạn đã quá thời gian làm việc", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

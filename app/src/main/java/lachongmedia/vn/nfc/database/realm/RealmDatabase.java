@@ -12,6 +12,7 @@ import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.realm_models.DateString;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
+import lachongmedia.vn.nfc.database.realm.realm_models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
@@ -148,5 +149,21 @@ public class RealmDatabase {
         realm.beginTransaction();
         result.deleteAllFromRealm();
         realm.commitTransaction();
+    }
+
+    public void insertOrUpdatePlanWork(List<PlanWork> planWorks) {
+        this.realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.insertOrUpdate(planWorks);
+        realm.commitTransaction();
+        RealmResults<PlanWork> result = realm.where(PlanWork.class).findAll();
+        for (int i = 0; i < result.size(); i++) {
+            Log.e(TAG, String.format("insertOrUpdatePlanWork: %s", result.get(i).toString()));
+        }
+    }
+
+    public List<PlanWork> getPlanWorkList() {
+        this.realm = Realm.getDefaultInstance();
+        return realm.where(PlanWork.class).findAll();
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 import lachongmedia.vn.nfc.Utils;
-import lachongmedia.vn.nfc.database.models.PlanWork;
+import lachongmedia.vn.nfc.database.realm.realm_models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
@@ -138,25 +138,61 @@ public class DbContext {
         for (PlanWork planWork : planWorkList) {
             Log.e(TAG, String.format("createPlanWorks: %s", planWork.toString()));
         }
+        RealmDatabase.instance.insertOrUpdatePlanWork(planWorkList);
 
     }
-    public PlanWork getPlanWorkWithDate(Date date, Dsdiadiem dsdiadiem){
+
+    public PlanWork getPlanWorkWithDate(final Date date, Dsdiadiem dsdiadiem) {
+        if (planWorkList.size() == 0) {
+            planWorkList = RealmDatabase.instance.getPlanWorkList();
+        }
+        List<Date> dates = new Vector<>();
+        List<PlanWork> dsPlans = new Vector<>();
         for (int i = 0; i < planWorkList.size(); i++) {
-            if (planWorkList.get(i).getDsdiadiem().getId()==dsdiadiem.getId()){
-                if (Utils.getTime(date,planWorkList.get(i).getDate())<(dsdiadiem.getThoigiantoida())){
-                    return planWorkList.get(i);
-                }
+            if (planWorkList.get(i).getDsdiadiem().getId() == dsdiadiem.getId()) {
+                dsPlans.add(planWorkList.get(i));
+                dates.add(planWorkList.get(i).getDate());
             }
         }
+        Date closest = Collections.min(dates, new Comparator<Date>() {
+            public int compare(Date d1, Date d2) {
+                long diff1 = Math.abs(d1.getTime() - date.getTime());
+                long diff2 = Math.abs(d2.getTime() - date.getTime());
+                return DbContext.this.compare(diff1, diff2);
+            }
+        });
+        PlanWork planWork = null;
+        for (int i = 0; i < dsPlans.size(); i++) {
+            if (dsPlans.get(i).getDate().getTime() == closest.getTime()) {
+                planWork = dsPlans.get(i);
+            }
+        }
+        Log.e(TAG, String.format("getPlanWorkWithDate: %s", planWork));
+        if (planWork == null) {
+            return null;
+        }
+        date.setTime(date.getTime() - (planWork.getDsdiadiem().getThoigiantoida() + 10) * 60000);
+        Log.e(TAG, String.format("getPlanWorkWithDate1: %s", date.toString()));
+        Log.e(TAG, String.format("getPlanWorkWithDate2: %s", planWork.getDate().toString()));
+        if (planWork.getDate().after(date)) {
+            Log.e(TAG, String.format("getPlanWorkWithDat: %s", planWork));
+            return planWork;
+
+        }
         return null;
+    }
+
+    private int compare(long x, long y) {
+        return (x < y) ? -1 : ((x == y) ? 0 : 1);
     }
 
     public PlanWork getPlaceWorkNext() {
         Date date = new Date();
         Log.e(TAG, String.format("getPlaceWorkNext: %s", date));
+        if (planWorkList.size() == 0) {
+            planWorkList = RealmDatabase.instance.getPlanWorkList();
+        }
         try {
-
-
             for (int i = 0; i < planWorkList.size(); i++) {
 
                 if (i < (planWorkList.size() - 1)) {

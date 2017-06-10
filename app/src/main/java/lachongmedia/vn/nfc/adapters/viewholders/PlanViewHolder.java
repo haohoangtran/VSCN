@@ -1,23 +1,19 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
 import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Date;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.models.PlanWork;
+import lachongmedia.vn.nfc.database.realm.realm_models.PlanWork;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**

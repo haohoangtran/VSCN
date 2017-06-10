@@ -191,25 +191,30 @@ public class TutorialActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        type = getIntent().getStringExtra("type");
-                        Log.e(TAG, String.format("run: %s", type));
-                        long minute =0;
-                        if (type != null && type.equalsIgnoreCase("dung")) {
-                            if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
-                                diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
-                               minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
-                                tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
+                        try {
+
+                            type = getIntent().getStringExtra("type");
+                            Log.e(TAG, String.format("run: %s", type));
+                            long minute = 0;
+                            if (type != null && type.equalsIgnoreCase("dung")) {
+                                if (RealmDatabase.instance.getDiaDiemSave().size() != 0) {
+                                    diaDiemSave = RealmDatabase.instance.getDiaDiemSave().get(0);
+                                    minute = Utils.getTime(Utils.stringToDate(diaDiemSave.getTime()), new Date());
+                                    tvTimeWork.setText(minute + "/" + diaDiemSave.getDsdiadiem().getThoigiantoida());
+                                }
+
+                                ivTimeWork.setVisibility(View.VISIBLE);
+                                tvTimeWork.setVisibility(View.VISIBLE);
+
+                            } else {
+                                ivTimeWork.setVisibility(View.GONE);
+                                tvTimeWork.setVisibility(View.GONE);
                             }
-
-                            ivTimeWork.setVisibility(View.VISIBLE);
-                            tvTimeWork.setVisibility(View.VISIBLE);
-
-                        } else {
-                            ivTimeWork.setVisibility(View.GONE);
-                            tvTimeWork.setVisibility(View.GONE);
+                            tvLocationNext.setText(DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
+                            tvPlantWorklist.setText("0/" + DbContext.instance.getPlanWorkList().size());
+                        } catch (Exception e) {
+                            Log.e(TAG, String.format("run: %s", e.toString()));
                         }
-                        tvLocationNext.setText(DbContext.instance.getPlaceWorkNext().getDsdiadiem().getTendiadiem());
-                        tvPlantWorklist.setText("0/" + DbContext.instance.getPlanWorkList().size());
                     }
                 });
 

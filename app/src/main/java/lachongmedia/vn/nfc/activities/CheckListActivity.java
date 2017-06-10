@@ -1,13 +1,11 @@
 package lachongmedia.vn.nfc.activities;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
 import android.nfc.tech.MifareClassic;
@@ -33,24 +31,20 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.RealmList;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.adapters.CheckListAdapter;
 import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.models.Member;
-import lachongmedia.vn.nfc.database.models.PlanWork;
+import lachongmedia.vn.nfc.database.realm.realm_models.PlanWork;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
-import lachongmedia.vn.nfc.database.realm.realm_models.RealmString;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
 import lachongmedia.vn.nfc.eventbus_event.PlanworkEvent;

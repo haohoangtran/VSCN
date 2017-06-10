@@ -5,16 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-import java.util.Vector;
-
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.viewholders.PlanViewHolder;
 import lachongmedia.vn.nfc.database.DbContext;
-import lachongmedia.vn.nfc.database.models.PlanWork;
-import lachongmedia.vn.nfc.database.realm.RealmDatabase;
-import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
-import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 
 /**
  * Created by tranh on 5/19/2017.
