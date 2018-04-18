@@ -1,9 +1,6 @@
 package lachongmedia.vn.nfc.adapters.viewholders;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,17 +12,13 @@ import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Vector;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.adapters.ImagesAdapter;
-import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 import lachongmedia.vn.nfc.eventbus_event.CameraEvent;
-import vn.lachongmedia.ksmartg.chupanhlibrary.activities.ChupAnhActivity;
 
 /**
  * Created by hao on 29/04/2017.

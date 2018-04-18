@@ -29,7 +29,6 @@ public class RealmDatabase {
     private Realm realm;
 
     public RealmDatabase() {
-
         this.realm = Realm.getDefaultInstance();
     }
 

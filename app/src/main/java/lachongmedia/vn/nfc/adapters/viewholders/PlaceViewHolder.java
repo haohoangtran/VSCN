@@ -8,7 +8,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
-import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 
 /**

@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ScrollingView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -20,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -34,13 +34,12 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import info.hoang8f.widget.FButton;
+import info.hoang8f.widget.*;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.Utils;
 import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DiaDiemSave;
-import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.Dshuongdan;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import pl.droidsonroids.gif.GifImageView;
@@ -54,9 +53,9 @@ public class TutorialActivity extends AppCompatActivity {
     LinearLayout dotsLayout;
     TextView[] dots;
     @BindView(R.id.bt_skip)
-    FButton btSkip;
+    Button btSkip;
     @BindView(R.id.bt_next)
-    FButton btNext;
+    Button btNext;
     @BindView(R.id.tv_step)
     TextView tvStep;
     @BindView(R.id.tv_plant_work_list)

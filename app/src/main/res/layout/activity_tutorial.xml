@@ -150,7 +150,8 @@
         android:alpha=".5"
         android:background="@android:color/white" />
 
-    <info.hoang8f.widget.FButton
+    <Button
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:id="@+id/bt_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -158,14 +159,10 @@
         android:layout_alignParentEnd="true"
         android:text="Thực Hiện"
         android:textAllCaps="true"
-        android:textColor="@android:color/black"
-        fbutton:buttonColor="@color/colorAccent"
-        fbutton:cornerRadius="5dp"
-        fbutton:shadowColor="@color/fbutton_color_green_sea"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="5dp" />
+        />
 
-    <info.hoang8f.widget.FButton
+    <Button
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:id="@+id/bt_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -174,9 +171,5 @@
         android:text="Trở về menu"
         android:textAllCaps="true"
         android:textColor="@android:color/black"
-        fbutton:buttonColor="@color/colorAccent"
-        fbutton:cornerRadius="5dp"
-        fbutton:shadowColor="@color/fbutton_color_green_sea"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="5dp" />
+        />
 </RelativeLayout>

@@ -16,7 +16,6 @@ import android.nfc.tech.NfcA;
 import android.nfc.tech.NfcB;
 import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
@@ -27,18 +26,13 @@ import android.widget.Toast;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Vector;
 
 import butterknife.ButterKnife;
 import lachongmedia.vn.nfc.R;
 import lachongmedia.vn.nfc.SharedPref;
 import lachongmedia.vn.nfc.Utils;
-import lachongmedia.vn.nfc.database.DbContext;
 import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.realm.realm_models.DateString;
-import lachongmedia.vn.nfc.database.respon.login.Dsdiadiem;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import lachongmedia.vn.nfc.eventbus_event.LoginCompleteEvent;
 import lachongmedia.vn.nfc.networks.NetContext;

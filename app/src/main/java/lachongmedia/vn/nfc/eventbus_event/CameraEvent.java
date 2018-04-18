@@ -1,6 +1,5 @@
 package lachongmedia.vn.nfc.eventbus_event;
 
-import lachongmedia.vn.nfc.database.models.CheckMember;
 import lachongmedia.vn.nfc.database.respon.login.Dschecklist;
 
 /**

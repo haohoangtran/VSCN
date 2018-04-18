@@ -41,7 +41,6 @@ import lachongmedia.vn.nfc.database.realm.RealmDatabase;
 import lachongmedia.vn.nfc.database.respon.login.LoginRespon;
 import lachongmedia.vn.nfc.networks.NetContext;
 import lachongmedia.vn.nfc.server.ReportIssueService;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
